@@ -10,10 +10,11 @@ func main() {
 	indexer.Start()
 
 	r := gin.Default()
-	r.GET("/ping", func(c *gin.Context) {
+	r.GET("/", func(c *gin.Context) {
 		c.JSON(http.StatusOK, gin.H{
-			"message": "pong",
+			"message": "Indexer working",
 		})
 	})
+
 	r.Run("0.0.0.0:6480")
 }

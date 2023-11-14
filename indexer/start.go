@@ -1,5 +1,10 @@
 package indexer
 
+import (
+	"vortex-notes/indexer/drivers"
+)
+
 func Start() {
-	return
+	localIndexer := drivers.LocalIndexer{}
+	StartIndexer(localIndexer)
 }
