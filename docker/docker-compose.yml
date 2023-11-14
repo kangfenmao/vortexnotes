@@ -11,7 +11,7 @@ services:
     networks:
       - vortexnotes-network
     volumes:
-      - ./data/meilisearch:/data.ms
+      - ./app/data/meilisearch:/data.ms
     restart: unless-stopped
 
 networks:

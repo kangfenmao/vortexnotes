@@ -1,5 +1,7 @@
 package indexer
 
+import "vortex-notes/indexer/drivers"
+
 type Indexer interface {
 	ListAllNotes() []string
 	IndexExist(path string) bool
@@ -15,4 +17,9 @@ func StartIndexer(indexer Indexer) {
 			indexer.AddNoteToIndex(note, parsedNote)
 		}
 	}
+}
+
+func Start() {
+	localIndexer := drivers.LocalIndexer{}
+	StartIndexer(localIndexer)
 }
