@@ -1,6 +1,10 @@
 package indexer
 
-import "vortex-notes/indexer/drivers"
+import (
+	"fmt"
+	"vortex-notes/indexer/drivers"
+	"vortex-notes/indexer/sqlite"
+)
 
 type Indexer interface {
 	ListAllNotes() []string
@@ -20,6 +24,13 @@ func StartIndexer(indexer Indexer) {
 }
 
 func Start() {
+	err := sqlite.InitializeDatabase()
+	if err != nil {
+		fmt.Println("Error:", err)
+		return
+	}
+	fmt.Println("Database initialized successfully!")
+
 	localIndexer := drivers.LocalIndexer{}
 	StartIndexer(localIndexer)
 }
