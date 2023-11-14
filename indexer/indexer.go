@@ -1,7 +1,7 @@
 package indexer
 
 import (
-	"vortex-notes/indexer/drivers"
+	"vortex-notes/indexer/drivers/local"
 	"vortex-notes/indexer/logger"
 	"vortex-notes/indexer/sqlite"
 )
@@ -32,6 +32,7 @@ func Start() {
 		return
 	}
 
-	localIndexer := drivers.LocalIndexer{}
+	localIndexer := local.Indexer{}
+
 	StartIndexer(localIndexer)
 }

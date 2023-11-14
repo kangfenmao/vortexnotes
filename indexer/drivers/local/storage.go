@@ -1,4 +1,4 @@
-package file
+package local
 
 import (
 	"crypto/md5"
@@ -7,6 +7,7 @@ import (
 	"os"
 	"path/filepath"
 	"strings"
+	"vortex-notes/indexer/logger"
 )
 
 func CalculateFileHash(filePath string) (string, error) {
@@ -36,7 +37,13 @@ func ListTextFiles(dirPath string) ([]string, error) {
 	if err != nil {
 		return nil, err
 	}
-	defer dir.Close()
+
+	defer func(dir *os.File) {
+		err := dir.Close()
+		if err != nil {
+			logger.Logger.Println("Close dir error", err)
+		}
+	}(dir)
 
 	fileInfos, err := dir.Readdir(-1)
 	if err != nil {
