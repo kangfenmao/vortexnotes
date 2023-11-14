@@ -2,10 +2,10 @@ package sqlite
 
 import (
 	"database/sql"
-	"fmt"
 	_ "github.com/mattn/go-sqlite3"
 	"os"
-	"vortex-notes/indexer/utils"
+	"vortex-notes/indexer/logger"
+	"vortex-notes/indexer/utils/file"
 )
 
 const DbFilePath = "./data/vortex.db"
@@ -25,13 +25,15 @@ func InitializeDatabase() error {
 			id INTEGER PRIMARY KEY AUTOINCREMENT,
 			name TEXT,
 			content TEXT,
-			hash TEXT
+			hash TEXT unique
 		);
 	`)
 
 	if err != nil {
 		return err
 	}
+
+	logger.Logger.Println("Database initialized successfully!")
 
 	return nil
 }
@@ -42,17 +44,26 @@ func InsertFile(filePath string) error {
 		return err
 	}
 
-	hash, _ := utils.CalculateFileHash(filePath)
+	hash, _ := file.CalculateFileHash(filePath)
 
 	content, err := os.ReadFile(filePath)
 	if err != nil {
-		fmt.Println("Error:", err)
+		logger.Logger.Fatal("ReadFile Error:", err)
 		return err
 	}
 
-	fmt.Println(fileInfo.Name(), hash)
+	logger.Logger.Println("Add file to sqlite:", fileInfo.Name(), hash)
 
-	stmt, err := db.Prepare("INSERT INTO files(name, content, hash) VALUES(?, ?, ?)")
+	err = InsertOrUpdateFile(fileInfo.Name(), content, hash)
+	if err != nil {
+		return err
+	}
+
+	return err
+}
+
+func InsertOrUpdateFile(name string, content []byte, hash string) error {
+	stmt, err := db.Prepare("INSERT OR REPLACE INTO files(name, content, hash) VALUES(?, ?, ?)")
 	if err != nil {
 		return err
 	}
@@ -60,11 +71,11 @@ func InsertFile(filePath string) error {
 	defer func(stmt *sql.Stmt) {
 		err := stmt.Close()
 		if err != nil {
-			fmt.Println("Close connection error:", err)
+			logger.Logger.Println("Close connection error:", err)
 		}
 	}(stmt)
 
-	_, err = stmt.Exec(fileInfo.Name(), content, hash)
+	_, err = stmt.Exec(name, content, hash)
 	if err != nil {
 		return err
 	}
