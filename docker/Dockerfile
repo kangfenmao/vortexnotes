@@ -1,7 +1,7 @@
 FROM golang:latest as builder
 WORKDIR /app
-COPY . .
-RUN GOOS=linux GOARCH=amd64 go build -o vortexnotes
+COPY .. .
+RUN GOOS=linux GOARCH=amd64 go build -o indexer
 
 FROM alpine:latest
 COPY --from=builder /app/vortexnotes /app/vortexnotes

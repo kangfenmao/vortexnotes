@@ -17,5 +17,5 @@ services:
 networks:
   vortexnotes-network:
     # noinspection ComposeUnknownKeys
-    name: vortexnotes-network
+    name: indexer-network
     driver: bridge

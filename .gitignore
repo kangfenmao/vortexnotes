@@ -17,9 +17,13 @@
 # Dependency directories (remove the comment below to include it)
 # vendor/
 
+# .idea
+.idea/
+
+
 # Go workspace file
 go.work
 
 # Docker
 
-docker/data/
+data/
