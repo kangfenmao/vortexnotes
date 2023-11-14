@@ -2,6 +2,7 @@ package drivers
 
 import (
 	"fmt"
+	"vortex-notes/indexer/sqlite"
 	"vortex-notes/indexer/utils"
 )
 
@@ -32,10 +33,17 @@ func (local LocalIndexer) ParseNote(path string) string {
 
 func (local LocalIndexer) AddNoteToIndex(path string, note string) bool {
 	hash, err := utils.CalculateFileHash(path)
+
 	if err != nil {
 		return true
 	}
 
+	err = sqlite.InsertFile(path)
+	if err != nil {
+		return false
+	}
+
 	fmt.Println("AddNoteToIndex: ", path, hash)
+
 	return true
 }
