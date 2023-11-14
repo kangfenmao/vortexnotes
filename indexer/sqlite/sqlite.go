@@ -3,7 +3,6 @@ package sqlite
 import (
 	"database/sql"
 	_ "github.com/mattn/go-sqlite3"
-	"os"
 	"vortex-notes/indexer/logger"
 )
 
@@ -20,7 +19,7 @@ func InitializeDatabase() error {
 	}
 
 	_, err = db.Exec(`
-		CREATE TABLE IF NOT EXISTS files (
+		CREATE TABLE IF NOT EXISTS notes (
 			id TEXT PRIMARY KEY unique,
 			name TEXT,
 			content TEXT
@@ -36,21 +35,10 @@ func InitializeDatabase() error {
 	return nil
 }
 
-func InsertFile(filePath string, id string) error {
-	fileInfo, err := os.Stat(filePath)
-	if err != nil {
-		return err
-	}
+func InsertNote(id string, name string, content []byte) error {
+	logger.Logger.Println("Add file to db:", id, name)
 
-	content, err := os.ReadFile(filePath)
-	if err != nil {
-		logger.Logger.Fatal("ReadFile Error:", err)
-		return err
-	}
-
-	logger.Logger.Println("Add file to db:", fileInfo.Name(), id)
-
-	err = InsertOrUpdateFile(id, fileInfo.Name(), content)
+	err := InsertOrUpdateNote(id, name, content)
 	if err != nil {
 		return err
 	}
@@ -58,8 +46,8 @@ func InsertFile(filePath string, id string) error {
 	return err
 }
 
-func InsertOrUpdateFile(id string, name string, content []byte) error {
-	stmt, err := db.Prepare("INSERT OR REPLACE INTO files(id, name, content) VALUES(?, ?, ?)")
+func InsertOrUpdateNote(id string, name string, content []byte) error {
+	stmt, err := db.Prepare("INSERT OR REPLACE INTO notes(id, name, content) VALUES(?, ?, ?)")
 	if err != nil {
 		return err
 	}
