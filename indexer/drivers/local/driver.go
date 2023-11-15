@@ -4,7 +4,7 @@ import (
 	"github.com/goccy/go-json"
 	"io"
 	"os"
-	"vortexnotes/indexer/config"
+	"vortexnotes/config"
 	"vortexnotes/indexer/logger"
 	"vortexnotes/indexer/sqlite"
 )
