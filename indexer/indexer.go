@@ -22,6 +22,6 @@ func Start() {
 func StartIndex(driver drivers.StorageDriver) {
 	notes := driver.ListNotes()
 	for _, note := range notes {
-		driver.AddNote(note)
+		driver.AddIndex(driver.AddNote(note))
 	}
 }

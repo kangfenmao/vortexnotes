@@ -22,24 +22,29 @@ func (local Driver) ListNotes() []string {
 	return notes
 }
 
-func (local Driver) AddNote(path string) bool {
+func (local Driver) AddNote(path string) (string, string, string) {
 	id, _ := CalculateFileHash(path)
 
 	fileInfo, err := os.Stat(path)
 	if err != nil {
-		return false
+		logger.Logger.Fatal("Stat File Error:", err)
 	}
 
 	content, err := os.ReadFile(path)
 	if err != nil {
 		logger.Logger.Fatal("ReadFile Error:", err)
-		return false
 	}
 
 	err = sqlite.InsertNote(id, fileInfo.Name(), content)
 	if err != nil {
-		return false
+		logger.Logger.Fatal("InsertNote Error:", err)
 	}
 
-	return true
+	name := fileInfo.Name()
+
+	return id, name, string(content)
+}
+
+func (local Driver) AddIndex(id string, name string, content string) {
+	//
 }
