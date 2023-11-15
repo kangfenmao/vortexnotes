@@ -3,8 +3,8 @@ package sqlite
 import (
 	"database/sql"
 	_ "github.com/mattn/go-sqlite3"
-	"vortex-notes/indexer/config"
-	"vortex-notes/indexer/logger"
+	"vortexnotes/indexer/config"
+	"vortexnotes/indexer/logger"
 )
 
 var db *sql.DB

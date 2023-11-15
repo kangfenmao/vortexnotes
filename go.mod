@@ -1,4 +1,4 @@
-module vortex-notes
+module vortexnotes
 
 go 1.21
 

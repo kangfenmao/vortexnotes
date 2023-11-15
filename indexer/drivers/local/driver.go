@@ -4,9 +4,9 @@ import (
 	"github.com/goccy/go-json"
 	"io"
 	"os"
-	"vortex-notes/indexer/config"
-	"vortex-notes/indexer/logger"
-	"vortex-notes/indexer/sqlite"
+	"vortexnotes/indexer/config"
+	"vortexnotes/indexer/logger"
+	"vortexnotes/indexer/sqlite"
 )
 
 type Driver struct {

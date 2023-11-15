@@ -1,10 +1,10 @@
 package indexer
 
 import (
-	"vortex-notes/indexer/drivers/local"
-	"vortex-notes/indexer/interfaces"
-	"vortex-notes/indexer/logger"
-	"vortex-notes/indexer/sqlite"
+	"vortexnotes/indexer/drivers/local"
+	"vortexnotes/indexer/interfaces"
+	"vortexnotes/indexer/logger"
+	"vortexnotes/indexer/sqlite"
 )
 
 func Start() {

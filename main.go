@@ -3,7 +3,7 @@ package main
 import (
 	"github.com/gin-gonic/gin"
 	"net/http"
-	"vortex-notes/indexer"
+	"vortexnotes/indexer"
 )
 
 func main() {

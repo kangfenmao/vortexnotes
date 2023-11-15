@@ -6,7 +6,7 @@ import (
 	"os"
 	"path/filepath"
 	"strings"
-	"vortex-notes/indexer/logger"
+	"vortexnotes/indexer/logger"
 )
 
 func CalculateFileHash(filePath string) (string, error) {
