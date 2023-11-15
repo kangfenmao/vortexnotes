@@ -48,7 +48,7 @@ func InsertNote(id string, name string, content []byte) error {
 		return err
 	}
 
-	return err
+	return nil
 }
 
 func InsertOrUpdateNote(id string, name string, content []byte) error {

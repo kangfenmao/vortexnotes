@@ -2,7 +2,6 @@ package local
 
 import (
 	"github.com/goccy/go-json"
-	"github.com/meilisearch/meilisearch-go"
 	"io"
 	"os"
 	"vortex-notes/indexer/config"
@@ -14,14 +13,20 @@ type Driver struct {
 }
 
 func (local Driver) ListNotes() []string {
+	var notes []string
+
 	err := CreateDirectoryIfNotExists(config.LocalNotePath)
 	if err != nil {
-		var list []string
 		logger.Logger.Fatal("Error:", err)
-		return list
+		return notes
 	}
 
-	var notes, _ = ListTextFiles(config.LocalNotePath)
+	err, notes = ListTextFiles(config.LocalNotePath)
+	if err != nil {
+		logger.Logger.Println("List text files error", err)
+		return notes
+	}
+
 	return notes
 }
 
@@ -46,7 +51,7 @@ func (local Driver) AddNoteToDatabase(path string) error {
 		return err
 	}
 
-	return err
+	return nil
 }
 
 func (local Driver) GenerateNotesJsonFile() error {
@@ -77,15 +82,10 @@ func (local Driver) GenerateNotesJsonFile() error {
 
 	logger.Logger.Println("JSON file created successfully.")
 
-	return err
+	return nil
 }
 
 func (local Driver) AddNotesToMeiliSearch() error {
-	client := meilisearch.NewClient(meilisearch.ClientConfig{
-		Host:   "http://localhost:7700",
-		APIKey: "zXEpbeyeGtGi8DQbfOSALKywwr982pQaROL6rBwAK35wCAv6ZsdIBexLzyDVKlm9",
-	})
-
 	jsonFile, _ := os.Open(config.NotesJsonFilePath)
 	defer jsonFile.Close()
 
@@ -97,10 +97,10 @@ func (local Driver) AddNotesToMeiliSearch() error {
 		return err
 	}
 
-	_, err = client.Index("notes").AddDocuments(notes)
+	_, err = config.MeiliSearchClient.Index("notes").AddDocuments(notes)
 	if err != nil {
 		return err
 	}
 
-	return err
+	return nil
 }

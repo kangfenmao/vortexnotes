@@ -23,13 +23,13 @@ func CalculateFileHash(filePath string) (string, error) {
 	return fmt.Sprintf("%x", hashValue), nil
 }
 
-func ListTextFiles(dirPath string) ([]string, error) {
+func ListTextFiles(dirPath string) (error, []string) {
 	var textFiles []string
 
 	// 打开目录
 	dir, err := os.Open(dirPath)
 	if err != nil {
-		return nil, err
+		return err, textFiles
 	}
 
 	defer func(dir *os.File) {
@@ -41,7 +41,7 @@ func ListTextFiles(dirPath string) ([]string, error) {
 
 	fileInfos, err := dir.Readdir(-1)
 	if err != nil {
-		return nil, err
+		return nil, textFiles
 	}
 
 	for _, fileInfo := range fileInfos {
@@ -57,7 +57,7 @@ func ListTextFiles(dirPath string) ([]string, error) {
 		}
 	}
 
-	return textFiles, nil
+	return nil, textFiles
 }
 
 func CreateDirectoryIfNotExists(dirPath string) error {
