@@ -3,7 +3,6 @@ package local
 import (
 	"crypto/md5"
 	"fmt"
-	"io/ioutil"
 	"os"
 	"path/filepath"
 	"strings"
@@ -11,22 +10,17 @@ import (
 )
 
 func CalculateFileHash(filePath string) (string, error) {
-	fileData, err := ioutil.ReadFile(filePath)
+	fileData, err := os.ReadFile(filePath)
 	if err != nil {
 		return "", err
 	}
 
-	hash := md5.Sum(fileData)
-	return fmt.Sprintf("%x", hash), nil
-}
+	hash := md5.New()
+	hash.Write([]byte(filePath))
+	hash.Write(fileData)
+	hashValue := hash.Sum(nil)
 
-func IsFileContentChanged(filePath string, previousHash string) (bool, error) {
-	currentHash, err := CalculateFileHash(filePath)
-	if err != nil {
-		return false, err
-	}
-
-	return currentHash != previousHash, nil
+	return fmt.Sprintf("%x", hashValue), nil
 }
 
 func ListTextFiles(dirPath string) ([]string, error) {

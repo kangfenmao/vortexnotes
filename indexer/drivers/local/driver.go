@@ -2,6 +2,7 @@ package local
 
 import (
 	"os"
+	"vortex-notes/indexer/config"
 	"vortex-notes/indexer/logger"
 	"vortex-notes/indexer/sqlite"
 )
@@ -10,16 +11,14 @@ type Driver struct {
 }
 
 func (local Driver) ListNotes() []string {
-	const path = "./data/vortexnotes"
-
-	err := CreateDirectoryIfNotExists(path)
+	err := CreateDirectoryIfNotExists(config.LocalNotePath)
 	if err != nil {
 		var list []string
 		logger.Logger.Fatal("Error:", err)
 		return list
 	}
 
-	var notes, _ = ListTextFiles(path)
+	var notes, _ = ListTextFiles(config.LocalNotePath)
 	return notes
 }
 

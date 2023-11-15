@@ -36,7 +36,7 @@ func InitializeDatabase() error {
 }
 
 func InsertNote(id string, name string, content []byte) error {
-	logger.Logger.Println("Add file to db:", id, name)
+	logger.Logger.Println("Insert note to db:", id, name)
 
 	err := InsertOrUpdateNote(id, name, content)
 	if err != nil {
