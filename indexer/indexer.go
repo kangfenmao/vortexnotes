@@ -8,8 +8,6 @@ import (
 )
 
 func Start() {
-	logger.Logger.Println("Indexer start")
-
 	err := sqlite.InitializeDatabase()
 	if err != nil {
 		logger.Logger.Fatal("InitializeDatabase Error:", err)
@@ -20,14 +18,12 @@ func Start() {
 }
 
 func StartIndex(driver interfaces.StorageDriver) {
+	logger.Logger.Println("Indexer start")
+
 	notes := driver.ListNotes()
 
 	for _, note := range notes {
-		err := driver.AddNoteToDatabase(note)
-		if err != nil {
-			logger.Logger.Println("Add notes to database error", err)
-			return
-		}
+		driver.AddNoteToDatabase(note)
 	}
 
 	err := driver.GenerateNotesJsonFile()

@@ -30,28 +30,28 @@ func (local Driver) ListNotes() []string {
 	return notes
 }
 
-func (local Driver) AddNoteToDatabase(path string) error {
+func (local Driver) AddNoteToDatabase(path string) {
 	id, _ := CalculateFileHash(path)
 
 	fileInfo, err := os.Stat(path)
 	if err != nil {
 		logger.Logger.Println("Stat File Error:", err)
-		return err
+		return
 	}
 
 	content, err := os.ReadFile(path)
 	if err != nil {
 		logger.Logger.Println("ReadFile Error:", err)
-		return err
+		return
 	}
 
 	err = sqlite.InsertNote(id, fileInfo.Name(), content)
 	if err != nil {
 		logger.Logger.Println("InsertNote Error:", err)
-		return err
+		return
 	}
 
-	return nil
+	return
 }
 
 func (local Driver) GenerateNotesJsonFile() error {
