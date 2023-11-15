@@ -2,6 +2,7 @@ package local
 
 import (
 	"github.com/goccy/go-json"
+	stripmd "github.com/writeas/go-strip-markdown"
 	"io"
 	"os"
 	"vortexnotes/config"
@@ -30,6 +31,10 @@ func (local Driver) ListNotes() []string {
 	return notes
 }
 
+func (local Driver) ParseNote(content []byte) []byte {
+	return []byte(stripmd.Strip(string(content)))
+}
+
 func (local Driver) AddNoteToDatabase(path string) {
 	id, _ := CalculateFileHash(path)
 
@@ -45,7 +50,7 @@ func (local Driver) AddNoteToDatabase(path string) {
 		return
 	}
 
-	err = sqlite.InsertNote(id, fileInfo.Name(), content)
+	err = sqlite.InsertNote(id, fileInfo.Name(), local.ParseNote(content))
 	if err != nil {
 		logger.Logger.Println("InsertNote Error:", err)
 		return
