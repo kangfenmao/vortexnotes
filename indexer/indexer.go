@@ -23,8 +23,24 @@ func StartIndex(driver drivers.StorageDriver) {
 	notes := driver.ListNotes()
 
 	for _, note := range notes {
-		driver.AddNoteToDatabase(note)
+		err := driver.AddNoteToDatabase(note)
+		if err != nil {
+			logger.Logger.Println("Add notes to database error", err)
+			return
+		}
 	}
 
-	driver.SyncNoteToMeiliSearch()
+	err := driver.GenerateNotesJsonFile()
+	if err != nil {
+		logger.Logger.Println("Generate notes json file error", err)
+		return
+	}
+
+	err = driver.AddNotesToMeiliSearch()
+	if err != nil {
+		logger.Logger.Println("Add notes to meilisearch error", err)
+		return
+	}
+
+	logger.Logger.Println("Indexer done.")
 }
