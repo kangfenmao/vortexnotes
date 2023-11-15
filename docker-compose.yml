@@ -4,8 +4,6 @@ services:
   meilisearch:
     container_name: meilisearch
     image: getmeili/meilisearch:v0.25.2
-    environment:
-      - MEILI_MASTER_KEY=zXEpbeyeGtGi8DQbfOSALKywwr982pQaROL6rBwAK35wCAv6ZsdIBexLzyDVKlm9
     ports:
       - "127.0.0.1:7700:7700"
     networks:
