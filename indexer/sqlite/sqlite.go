@@ -40,7 +40,7 @@ func InitializeDatabase() error {
 	return nil
 }
 
-func InsertNote(id string, name string, content []byte) error {
+func InsertNote(id string, name string, content string) error {
 	logger.Logger.Println("Insert note to db:", id, name)
 
 	err := InsertOrUpdateNote(id, name, content)
@@ -51,7 +51,7 @@ func InsertNote(id string, name string, content []byte) error {
 	return nil
 }
 
-func InsertOrUpdateNote(id string, name string, content []byte) error {
+func InsertOrUpdateNote(id string, name string, content string) error {
 	stmt, err := db.Prepare("INSERT OR REPLACE INTO notes(id, name, content) VALUES(?, ?, ?)")
 	if err != nil {
 		return err

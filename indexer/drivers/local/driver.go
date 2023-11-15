@@ -31,8 +31,8 @@ func (local Driver) ListNotes() []string {
 	return notes
 }
 
-func (local Driver) ParseNote(content []byte) []byte {
-	return []byte(stripmd.Strip(string(content)))
+func (local Driver) ParseNote(content string) string {
+	return stripmd.Strip(content)
 }
 
 func (local Driver) AddNoteToDatabase(path string) {
@@ -50,7 +50,7 @@ func (local Driver) AddNoteToDatabase(path string) {
 		return
 	}
 
-	err = sqlite.InsertNote(id, fileInfo.Name(), local.ParseNote(content))
+	err = sqlite.InsertNote(id, fileInfo.Name(), local.ParseNote(string(content)))
 	if err != nil {
 		logger.Logger.Println("InsertNote Error:", err)
 		return
