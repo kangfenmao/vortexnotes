@@ -21,7 +21,10 @@ func Start() {
 
 func StartIndex(driver drivers.StorageDriver) {
 	notes := driver.ListNotes()
+
 	for _, note := range notes {
-		driver.AddIndex(driver.AddNote(note))
+		driver.AddNoteToDatabase(note)
 	}
+
+	driver.SyncNoteToMeiliSearch()
 }
