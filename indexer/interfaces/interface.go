@@ -1,4 +1,4 @@
-package drivers
+package interfaces
 
 type StorageDriver interface {
 	ListNotes() []string

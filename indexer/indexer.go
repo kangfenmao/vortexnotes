@@ -1,8 +1,8 @@
 package indexer
 
 import (
-	"vortex-notes/indexer/drivers"
 	"vortex-notes/indexer/drivers/local"
+	"vortex-notes/indexer/interfaces"
 	"vortex-notes/indexer/logger"
 	"vortex-notes/indexer/sqlite"
 )
@@ -19,7 +19,7 @@ func Start() {
 	StartIndex(local.Driver{})
 }
 
-func StartIndex(driver drivers.StorageDriver) {
+func StartIndex(driver interfaces.StorageDriver) {
 	notes := driver.ListNotes()
 
 	for _, note := range notes {
