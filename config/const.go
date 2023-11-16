@@ -2,6 +2,7 @@ package config
 
 import "github.com/meilisearch/meilisearch-go"
 
+const WebRoot = "web"
 const LocalNotePath = "data/notes/"
 const AppDataPath = "data/vortexnotes/"
 const AppDbPath = AppDataPath + "app.db"

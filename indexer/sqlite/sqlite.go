@@ -48,7 +48,7 @@ func InsertNote(id string, name string, content string) error {
 		return err
 	}
 
-	stmt.Close()
+	defer stmt.Close()
 
 	_, err = stmt.Exec(id, name, content)
 	if err != nil {

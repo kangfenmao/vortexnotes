@@ -12,5 +12,8 @@ export default defineConfig({
       }
     ]
   },
-  plugins: [react()]
+  plugins: [react()],
+  build: {
+    outDir: '../data/web'
+  }
 })
