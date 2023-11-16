@@ -14,3 +14,9 @@ func ListAllNotes(c *gin.Context) {
 
 	c.JSON(http.StatusOK, notes.Hits)
 }
+
+func SearchNotes(c *gin.Context) {
+	keywords := c.Query("keywords")
+	notes, _ := config.MeiliSearchClient.Index("notes").Search(keywords, &meilisearch.SearchRequest{})
+	c.JSON(http.StatusOK, notes.Hits)
+}
