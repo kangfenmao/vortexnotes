@@ -1,22 +1,9 @@
 package main
 
 import (
-	"github.com/gin-gonic/gin"
-	"net/http"
-	"vortexnotes/indexer"
+	"vortexnotes/api"
 )
 
 func main() {
-	indexer.Start()
-}
-
-func startWebServer() {
-	r := gin.Default()
-	r.GET("/", func(c *gin.Context) {
-		c.JSON(http.StatusOK, gin.H{
-			"message": "Indexer working",
-		})
-	})
-
-	r.Run("0.0.0.0:6480")
+	api.Start()
 }
