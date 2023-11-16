@@ -2,7 +2,6 @@ package indexer
 
 import (
 	"vortexnotes/indexer/drivers/local"
-	"vortexnotes/indexer/interfaces"
 	"vortexnotes/indexer/logger"
 	"vortexnotes/indexer/sqlite"
 )
@@ -10,14 +9,14 @@ import (
 func Start() {
 	err := sqlite.InitializeDatabase()
 	if err != nil {
-		logger.Logger.Fatal("InitializeDatabase Error:", err)
+		logger.Logger.Fatal("Initialize Database Error:", err)
 		return
 	}
 
 	StartIndex(local.Driver{})
 }
 
-func StartIndex(driver interfaces.StorageDriver) {
+func StartIndex(driver Driver) {
 	logger.Logger.Println("Indexer start")
 
 	notes := driver.ListNotes()

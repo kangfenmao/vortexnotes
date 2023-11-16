@@ -1,6 +1,6 @@
-package interfaces
+package indexer
 
-type StorageDriver interface {
+type Driver interface {
 	ListNotes() []string
 	ParseNote(content string) string
 	AddNoteToDatabase(path string)

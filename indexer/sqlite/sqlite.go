@@ -43,26 +43,12 @@ func InitializeDatabase() error {
 func InsertNote(id string, name string, content string) error {
 	logger.Logger.Println("Insert note to db:", id, name)
 
-	err := InsertOrUpdateNote(id, name, content)
-	if err != nil {
-		return err
-	}
-
-	return nil
-}
-
-func InsertOrUpdateNote(id string, name string, content string) error {
 	stmt, err := db.Prepare("INSERT OR REPLACE INTO notes(id, name, content) VALUES(?, ?, ?)")
 	if err != nil {
 		return err
 	}
 
-	defer func(stmt *sql.Stmt) {
-		err := stmt.Close()
-		if err != nil {
-			logger.Logger.Println("Close connection error:", err)
-		}
-	}(stmt)
+	stmt.Close()
 
 	_, err = stmt.Exec(id, name, content)
 	if err != nil {
