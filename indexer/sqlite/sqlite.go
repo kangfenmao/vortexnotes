@@ -3,7 +3,7 @@ package sqlite
 import (
 	"database/sql"
 	_ "github.com/mattn/go-sqlite3"
-	"vortexnotes/config"
+	"vortexnotes/app/config"
 	"vortexnotes/indexer/logger"
 )
 

@@ -4,7 +4,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/meilisearch/meilisearch-go"
 	"net/http"
-	"vortexnotes/config"
+	"vortexnotes/app/config"
 )
 
 func ListAllNotes(c *gin.Context) {

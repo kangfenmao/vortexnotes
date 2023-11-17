@@ -5,7 +5,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"vortexnotes/api/indexer"
 	"vortexnotes/api/notes"
-	"vortexnotes/config"
+	"vortexnotes/app/config"
 )
 
 func Start() {
@@ -14,10 +14,10 @@ func Start() {
 
 	api := r.Group("/api")
 	{
-		api.GET("/api/notes", notes.ListAllNotes)
-		api.GET("/api/search", notes.SearchNotes)
-		api.POST("/api/indexes", indexer.StartIndex)
+		api.GET("/notes", notes.ListAllNotes)
+		api.GET("/search", notes.SearchNotes)
+		api.POST("/indexes", indexer.StartIndex)
 	}
 
-	r.Run("0.0.0.0:6480")
+	r.Run("0.0.0.0:7701")
 }

@@ -5,7 +5,7 @@ import (
 	stripmd "github.com/writeas/go-strip-markdown"
 	"io"
 	"os"
-	"vortexnotes/config"
+	"vortexnotes/app/config"
 	"vortexnotes/indexer/logger"
 	"vortexnotes/indexer/sqlite"
 )
