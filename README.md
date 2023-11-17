@@ -25,6 +25,14 @@ To start using VortexNotes, follow these steps:
 5. Paste your content into the submission field and let it disappear into the void.
 6. Use the search interface to retrieve your notes when needed.
 
+## Service Port
+
+| Service     | Port | Public |
+|-------------|------|--------|
+| MeiliSearch | 7700 | false  |
+| API         | 7701 | false  |
+| Web         | 7702 | true   |
+
 ## Contributing
 
 Contributions are welcome! If you have any ideas, suggestions, or bug reports, please open an issue or submit a pull request.
