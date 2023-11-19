@@ -1,6 +1,7 @@
 package api
 
 import (
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/contrib/static"
 	"github.com/gin-gonic/gin"
 	"vortexnotes/api/indexer"
@@ -11,6 +12,7 @@ import (
 func Start() {
 	r := gin.Default()
 	r.Use(static.Serve("/", static.LocalFile(config.WebRoot, true)))
+	r.Use(cors.Default())
 
 	api := r.Group("/api")
 	{
