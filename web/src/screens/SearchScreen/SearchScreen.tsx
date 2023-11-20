@@ -19,7 +19,7 @@ const SearchScreen: React.FC = () => {
   return (
     <main className="w-full">
       <Navbar />
-      <div className="container mx-auto mt-24 max-w-lg sm:max-w-6xl">
+      <div className="container mx-auto mt-24 px-5 max-w-lg sm:max-w-6xl">
         {notes.map((note: any) => (
           <div className="mb-5" key={notes.id}>
             <Link to={`/notes/${note.id}`}>

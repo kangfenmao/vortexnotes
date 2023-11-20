@@ -10,16 +10,16 @@ const HomeScreen: React.FC = () => {
         <span className="text-violet-700">V</span>
         <span className="text-red-500">o</span>rtex
       </h1>
-      <form className="relative mb-40 w-full" method="get" action="search">
+      <form className="relative mb-40 w-full" method="get" action="/search">
         <input
           type="text"
           name="keywords"
           placeholder="Search"
-          className="px-4 py-2 sm:py-3 w-full border border-gray-300 rounded-full focus:outline-none focus:border-blue-500"
+          className="px-4 py-2 sm:py-3 w-full"
         />
         <button
           type="submit"
-          className="absolute top-0 bottom-0 right-4 flex flex-row justify-center items-center rounded-full cursor-pointer">
+          className="absolute top-0 bottom-0 right-0 w-12 flex flex-row justify-center items-center cursor-pointer">
           <img src={SearchIcon} alt="" />
         </button>
       </form>

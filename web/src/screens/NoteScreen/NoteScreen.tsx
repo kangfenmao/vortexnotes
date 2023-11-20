@@ -21,10 +21,10 @@ const NoteScreen: React.FC = () => {
   return (
     <main className="w-full">
       <Navbar />
-      <div className="container mx-auto mt-24 max-w-lg sm:max-w-6xl">
+      <div className="container mx-auto px-5 mt-24 max-w-lg sm:max-w-6xl">
         {note && (
           <>
-            <h1 className="text-3xl mb-5 font-bold">{note.name}</h1>
+            <h1 className="text-2xl sm:text-3xl mb-5 font-bold line-clamp-1">{note.name}</h1>
             <Markdown className="markdown-body">{note.content}</Markdown>
           </>
         )}
