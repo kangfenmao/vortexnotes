@@ -7,9 +7,12 @@ import (
 	"vortexnotes/api/indexer"
 	"vortexnotes/api/notes"
 	"vortexnotes/app/config"
+	"vortexnotes/app/database"
 )
 
 func Start() {
+	database.InitializeDatabase()
+
 	r := gin.Default()
 	r.Use(static.Serve("/", static.LocalFile(config.WebRoot, true)))
 	r.Use(cors.Default())
@@ -17,6 +20,7 @@ func Start() {
 	api := r.Group("/api")
 	{
 		api.GET("/notes", notes.ListAllNotes)
+		api.GET("/notes/:id", notes.GetNote)
 		api.GET("/search", notes.SearchNotes)
 		api.POST("/indexes", indexer.StartIndex)
 	}

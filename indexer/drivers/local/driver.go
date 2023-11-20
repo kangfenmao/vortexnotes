@@ -1,13 +1,14 @@
 package local
 
 import (
-	"github.com/goccy/go-json"
+	"encoding/json"
+	"errors"
 	stripmd "github.com/writeas/go-strip-markdown"
 	"io"
 	"os"
 	"vortexnotes/app/config"
+	"vortexnotes/app/database"
 	"vortexnotes/indexer/logger"
-	"vortexnotes/indexer/sqlite"
 )
 
 type Driver struct {
@@ -50,9 +51,11 @@ func (local Driver) AddNoteToDatabase(path string) {
 		return
 	}
 
-	err = sqlite.InsertNote(id, fileInfo.Name(), local.ParseNote(string(content)))
-	if err != nil {
-		logger.Logger.Println("InsertNote Error:", err)
+	note := database.Note{ID: id, Name: fileInfo.Name(), Content: local.ParseNote(string(content))}
+	result := database.DB.FirstOrCreate(&note)
+
+	if !errors.Is(err, result.Error) {
+		logger.Logger.Println("CreateNote Error:", err)
 		return
 	}
 
@@ -60,15 +63,17 @@ func (local Driver) AddNoteToDatabase(path string) {
 }
 
 func (local Driver) GenerateNotesJsonFile() error {
-	err, notes := sqlite.ListAllNotes()
-	if err != nil {
-		logger.Logger.Println("List all notes error", err)
-		return err
+	var notes []database.Note
+	result := database.DB.Find(&notes)
+
+	if result.Error != nil {
+		logger.Logger.Println("List all notes error", result.Error)
+		return result.Error
 	}
 
 	jsonData, err := json.MarshalIndent(notes, "", "  ")
 	if err != nil {
-		logger.Logger.Println("Error encoding JSON:", err)
+		logger.Logger.Println("Error encoding json:", err)
 		return err
 	}
 

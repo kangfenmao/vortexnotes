@@ -5,6 +5,7 @@ import (
 	"github.com/meilisearch/meilisearch-go"
 	"net/http"
 	"vortexnotes/app/config"
+	"vortexnotes/app/database"
 )
 
 func ListAllNotes(c *gin.Context) {
@@ -13,6 +14,25 @@ func ListAllNotes(c *gin.Context) {
 	})
 
 	c.JSON(http.StatusOK, notes.Hits)
+}
+
+func GetNote(c *gin.Context) {
+	id := c.Param("id")
+
+	var note database.Note
+	var result = database.DB.First(&note, "id = ?", id)
+
+	if result.Error != nil {
+		c.Status(http.StatusNotFound)
+		return
+	}
+
+	if result.RowsAffected == 0 {
+		c.Status(http.StatusNotFound)
+		return
+	}
+
+	c.JSON(http.StatusOK, note)
 }
 
 func SearchNotes(c *gin.Context) {

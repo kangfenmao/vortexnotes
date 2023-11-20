@@ -6,4 +6,5 @@ import (
 
 func main() {
 	api.Start()
+	//indexer.Start()
 }

@@ -1,18 +1,13 @@
 package indexer
 
 import (
+	"vortexnotes/app/database"
 	"vortexnotes/indexer/drivers/local"
 	"vortexnotes/indexer/logger"
-	"vortexnotes/indexer/sqlite"
 )
 
 func Start() {
-	err := sqlite.InitializeDatabase()
-	if err != nil {
-		logger.Logger.Fatal("Initialize Database Error:", err)
-		return
-	}
-
+	database.InitializeDatabase()
 	StartIndex(local.Driver{})
 }
 
