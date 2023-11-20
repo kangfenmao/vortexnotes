@@ -11,8 +11,8 @@ const Navbar: React.FC<Props> = () => {
 
   return (
     <div
-      className="flex flex-row h-20 items-center fixed top-0 left-0 right-0 border-b-2 border-b-violet-600 border-opacity-50"
-      style={{ backgroundColor: '#242424', zIndex: 100 }}>
+      className="flex flex-row h-20 items-center fixed top-0 left-0 right-0 border-b-white border-opacity-10"
+      style={{ backgroundColor: '#242424', zIndex: 100, borderBottomWidth: '1px' }}>
       <div className="flex flex-row items-center m-auto w-full px-5 max-w-lg sm:max-w-6xl">
         <Link to="/">
           <h1
