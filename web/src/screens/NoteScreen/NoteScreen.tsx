@@ -1,18 +1,34 @@
-import React from 'react'
-import { Link } from 'react-router-dom'
+import React, { useEffect, useState } from 'react'
+import { useParams } from 'react-router-dom'
+import { runAsyncFunction } from '@/utils'
+import Markdown from 'react-markdown'
+import './index.css'
+import Navbar from '@/components/Navbar.tsx'
 
 const NoteScreen: React.FC = () => {
+  const [note, setNote] = useState<any>()
+  const params = useParams()
+  const id = params.id
+
+  useEffect(() => {
+    runAsyncFunction(async () => {
+      const res = await window.$http.get(`notes/${id}`)
+      setNote(res.data)
+      console.log(res.data)
+    })
+  }, [])
+
   return (
-    <main className="container mx-auto max-w-3xl px-4">
-      <div className="flex flex-row h-20 items-center">
-        <Link to="/">
-          <h1
-            className="text-4xl font-bold text-white"
-            style={{ fontFamily: 'Major Mono Display' }}>
-            <span className="text-violet-700">V</span>
-            <span className="text-red-500">o</span>rtex
-          </h1>
-        </Link>
+    <main className="w-full">
+      <Navbar />
+      <div className="container mx-auto mt-24 max-w-lg sm:max-w-6xl">
+        {note && (
+          <>
+            <h1 className="text-3xl mb-5 font-bold">{note.name}</h1>
+            <Markdown className="markdown-body">{note.content}</Markdown>
+          </>
+        )}
+        <footer className="h-10"></footer>
       </div>
     </main>
   )

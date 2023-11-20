@@ -1,0 +1,6 @@
+@import url(https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/5.4.0/github-markdown.min.css);
+
+.markdown-body {
+    background-color: #333;
+    padding: 16px;
+}

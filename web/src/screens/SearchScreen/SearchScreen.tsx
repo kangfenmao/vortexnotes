@@ -1,16 +1,13 @@
-import SearchIcon from '@/assets/images/search_icon.svg'
 import { Link, useSearchParams } from 'react-router-dom'
 import React, { useEffect, useState } from 'react'
 import { runAsyncFunction } from '@/utils'
 import HighlightText from '@/screens/SearchScreen/HighlightText.tsx'
+import Navbar from '@/components/Navbar.tsx'
 
 const SearchScreen: React.FC = () => {
   const [searchParams] = useSearchParams()
   const [notes, setNotes] = useState<any>([])
   const keywords = searchParams.get('keywords') || ''
-  const [input, setInput] = useState(keywords)
-
-  console.log(notes)
 
   useEffect(() => {
     runAsyncFunction(async () => {
@@ -20,43 +17,21 @@ const SearchScreen: React.FC = () => {
   }, [])
 
   return (
-    <main className="container mx-auto max-w-3xl px-4">
-      <div className="flex flex-row h-20 items-center">
-        <Link to="/">
-          <h1
-            className="text-4xl font-bold text-white"
-            style={{ fontFamily: 'Major Mono Display' }}>
-            <span className="text-violet-700">V</span>
-            <span className="text-red-500">o</span>rtex
-          </h1>
-        </Link>
+    <main className="w-full">
+      <Navbar />
+      <div className="container mx-auto mt-24 max-w-lg sm:max-w-6xl">
+        {notes.map((note: any) => (
+          <div className="mb-5" key={notes.id}>
+            <Link to={`/notes/${note.id}`}>
+              <h6 className="mb-2 text-blue-400 font-bold">{note.name}</h6>
+            </Link>
+            <p className="text-md line-clamp-5 opacity-90">
+              <HighlightText text={note.content} highlight={keywords} />
+            </p>
+          </div>
+        ))}
+        <div className="h-10"></div>
       </div>
-      <form className="relative mb-8" method="get" action="search">
-        <input
-          type="text"
-          name="keywords"
-          value={input}
-          onChange={e => setInput(e.target.value)}
-          placeholder="Search"
-          className="w-full px-6 py-2 border border-gray-300 rounded-full focus:outline-none focus:border-blue-500"
-        />
-        <button
-          type="submit"
-          className="absolute top-0 bottom-0 right-0 w-16 flex flex-row justify-center items-center rounded-full cursor-pointer">
-          <img src={SearchIcon} alt="" />
-        </button>
-      </form>
-      {notes.map((note: any) => (
-        <div className="mb-5" key={notes.id}>
-          <Link to={`/notes/${note.id}`}>
-            <h6 className="mb-2 text-blue-400">{note.name}</h6>
-          </Link>
-          <p className="text-xs">
-            <HighlightText text={note.content} highlight={keywords} />
-          </p>
-        </div>
-      ))}
-      <div className="h-10"></div>
     </main>
   )
 }

@@ -4,6 +4,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/meilisearch/meilisearch-go"
 	"net/http"
+	"os"
 	"vortexnotes/app/config"
 	"vortexnotes/app/database"
 )
@@ -31,6 +32,14 @@ func GetNote(c *gin.Context) {
 		c.Status(http.StatusNotFound)
 		return
 	}
+
+	fileData, err := os.ReadFile(config.LocalNotePath + note.Name)
+	if err != nil {
+		c.Status(http.StatusNotFound)
+		return
+	}
+
+	note.Content = string(fileData)
 
 	c.JSON(http.StatusOK, note)
 }
