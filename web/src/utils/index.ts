@@ -1,3 +1,7 @@
 export const runAsyncFunction = async (fn: () => void) => {
-  await fn()
+  fn()
+}
+
+export function displayName(name: string) {
+  return name.replace('.md', '')
 }

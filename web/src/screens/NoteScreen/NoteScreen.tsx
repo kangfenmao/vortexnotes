@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
-import { runAsyncFunction } from '@/utils'
+import { displayName, runAsyncFunction } from '@/utils'
 import Markdown from 'react-markdown'
 import './index.css'
 import Navbar from '@/components/Navbar.tsx'
@@ -24,7 +24,9 @@ const NoteScreen: React.FC = () => {
       <div className="container mx-auto px-5 mt-24 max-w-lg sm:max-w-6xl">
         {note && (
           <>
-            <h1 className="text-2xl sm:text-3xl mb-5 font-bold line-clamp-1">{note.name}</h1>
+            <h1 className="text-2xl sm:text-3xl mb-5 font-bold line-clamp-1">
+              {displayName(note.name)}
+            </h1>
             <Markdown className="markdown-body">{note.content}</Markdown>
           </>
         )}

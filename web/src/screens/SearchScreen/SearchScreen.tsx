@@ -1,6 +1,6 @@
 import { Link, useSearchParams } from 'react-router-dom'
 import React, { useEffect, useState } from 'react'
-import { runAsyncFunction } from '@/utils'
+import { displayName, runAsyncFunction } from '@/utils'
 import HighlightText from '@/screens/SearchScreen/HighlightText.tsx'
 import Navbar from '@/components/Navbar.tsx'
 
@@ -23,7 +23,7 @@ const SearchScreen: React.FC = () => {
         {notes.map((note: any) => (
           <div className="mb-5" key={notes.id}>
             <Link to={`/notes/${note.id}`}>
-              <h6 className="mb-2 text-blue-400 font-bold">{note.name}</h6>
+              <h4 className="mb-2 text-blue-400 font-bold text-xl">{displayName(note.name)}</h4>
             </Link>
             <p className="text-md line-clamp-5 opacity-90">
               <HighlightText text={note.content} highlight={keywords} />
