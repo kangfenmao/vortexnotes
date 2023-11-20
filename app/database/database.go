@@ -4,7 +4,7 @@ import (
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
 	"vortexnotes/app/config"
-	"vortexnotes/indexer/logger"
+	"vortexnotes/app/indexer/logger"
 )
 
 var DB *gorm.DB

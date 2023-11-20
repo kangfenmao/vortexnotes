@@ -8,7 +8,7 @@ import (
 	"os"
 	"vortexnotes/app/config"
 	"vortexnotes/app/database"
-	"vortexnotes/indexer/logger"
+	"vortexnotes/app/indexer/logger"
 )
 
 type Driver struct {

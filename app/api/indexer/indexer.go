@@ -3,7 +3,7 @@ package indexer
 import (
 	"github.com/gin-gonic/gin"
 	"net/http"
-	"vortexnotes/indexer"
+	"vortexnotes/app/indexer"
 )
 
 func StartIndex(c *gin.Context) {

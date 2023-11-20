@@ -2,8 +2,8 @@ package indexer
 
 import (
 	"vortexnotes/app/database"
-	"vortexnotes/indexer/drivers/local"
-	"vortexnotes/indexer/logger"
+	"vortexnotes/app/indexer/drivers/local"
+	"vortexnotes/app/indexer/logger"
 )
 
 func Start() {

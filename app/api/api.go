@@ -4,8 +4,8 @@ import (
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/contrib/static"
 	"github.com/gin-gonic/gin"
-	"vortexnotes/api/indexer"
-	"vortexnotes/api/notes"
+	"vortexnotes/app/api/indexer"
+	"vortexnotes/app/api/notes"
 	"vortexnotes/app/config"
 	"vortexnotes/app/database"
 )

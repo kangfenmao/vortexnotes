@@ -18,8 +18,8 @@ const Navbar: React.FC<Props> = () => {
           <h1
             className="text-2xl md:text-4xl font-bold text-white mr-5"
             style={{ fontFamily: 'Major Mono Display' }}>
-            <span className="text-violet-700">V</span>
-            <span className="text-red-500">o</span>rtex
+            <span className="text-red-500">V</span>
+            <span className="text-violet-700">o</span>rtex
           </h1>
         </Link>
         <form className="relative flex-1" method="get" action="/search">

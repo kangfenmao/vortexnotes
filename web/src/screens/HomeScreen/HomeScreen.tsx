@@ -7,8 +7,8 @@ const HomeScreen: React.FC = () => {
       <h1
         className="text-5xl font-bold align-middle mb-10 sm:text-6xl"
         style={{ fontFamily: 'Major Mono Display' }}>
-        <span className="text-violet-700">V</span>
-        <span className="text-red-500">o</span>rtex
+        <span className="text-red-500">V</span>
+        <span className="text-violet-700">o</span>rtex
       </h1>
       <form className="relative mb-40 w-full" method="get" action="/search">
         <input
@@ -16,6 +16,7 @@ const HomeScreen: React.FC = () => {
           name="keywords"
           placeholder="Search"
           className="px-4 py-2 sm:py-3 w-full"
+          autoFocus
         />
         <button
           type="submit"

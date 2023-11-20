@@ -1,10 +1,11 @@
 package main
 
 import (
-	"vortexnotes/api"
+	"vortexnotes/app/api"
+	"vortexnotes/app/indexer"
 )
 
 func main() {
+	indexer.Start()
 	api.Start()
-	//indexer.Start()
 }
