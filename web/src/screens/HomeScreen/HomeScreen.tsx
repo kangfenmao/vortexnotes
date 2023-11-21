@@ -15,7 +15,8 @@ const HomeScreen: React.FC = () => {
           type="text"
           name="keywords"
           placeholder="Search"
-          className="px-4 py-2 sm:py-3 w-full"
+          className="px-4 py-2 sm:py-3 w-full outline-none"
+          style={{ backgroundColor: '#3b3b3b' }}
           autoFocus
         />
         <button

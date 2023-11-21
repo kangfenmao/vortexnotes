@@ -30,6 +30,7 @@ const Navbar: React.FC<Props> = () => {
             onChange={e => setInput(e.target.value)}
             placeholder="Search"
             className="w-full px-4 py-2 outline-none"
+            style={{ backgroundColor: '#3b3b3b' }}
           />
           <button
             type="submit"
