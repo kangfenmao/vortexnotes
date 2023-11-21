@@ -7,13 +7,10 @@ import (
 	"vortexnotes/app/api/notes"
 	"vortexnotes/app/api/website"
 	"vortexnotes/app/config"
-	"vortexnotes/app/database"
 	"vortexnotes/app/web"
 )
 
 func Start() {
-	database.InitializeDatabase()
-
 	server := gin.Default()
 	server.Use(cors.Default())
 

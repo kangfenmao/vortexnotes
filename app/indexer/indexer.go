@@ -1,14 +1,12 @@
 package indexer
 
 import (
-	"vortexnotes/app/database"
 	"vortexnotes/app/drivers"
 	"vortexnotes/app/logger"
 	"vortexnotes/app/types"
 )
 
 func Start() {
-	database.InitializeDatabase()
 	StartIndex(drivers.LocalDriver{})
 }
 

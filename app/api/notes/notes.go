@@ -21,7 +21,7 @@ func ListAllNotes(c *gin.Context) {
 func GetNote(c *gin.Context) {
 	id := c.Param("id")
 
-	var note database.NoteModel
+	var note database.Note
 	var result = database.DB.First(&note, "id = ?", id)
 
 	if result.Error != nil {

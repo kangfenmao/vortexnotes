@@ -88,9 +88,9 @@ func (local LocalDriver) CreateNote(title string, content string) (err error, no
 	return nil, note
 }
 
-func (local LocalDriver) AddNoteToDatabase(path string) (err error, note database.NoteModel) {
+func (local LocalDriver) AddNoteToDatabase(path string) (err error, note database.Note) {
 	id, _ := CalculateFileHash(path)
-	note = database.NoteModel{ID: "", Name: "", Content: ""}
+	note = database.Note{ID: "", Name: "", Content: ""}
 
 	fileInfo, err := os.Stat(path)
 	if err != nil {
@@ -104,7 +104,7 @@ func (local LocalDriver) AddNoteToDatabase(path string) (err error, note databas
 		return err, note
 	}
 
-	note = database.NoteModel{ID: id, Name: fileInfo.Name(), Content: local.ParseNote(string(content))}
+	note = database.Note{ID: id, Name: fileInfo.Name(), Content: local.ParseNote(string(content))}
 	result := database.DB.FirstOrCreate(&note)
 	if !errors.Is(err, result.Error) {
 		logger.Logger.Println("CreateNote Error:", err)
@@ -115,7 +115,7 @@ func (local LocalDriver) AddNoteToDatabase(path string) (err error, note databas
 }
 
 func (local LocalDriver) GenerateNotesJsonFile() error {
-	var notes []database.NoteModel
+	var notes []database.Note
 	result := database.DB.Find(&notes)
 
 	if result.Error != nil {
