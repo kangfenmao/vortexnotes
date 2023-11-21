@@ -1,5 +1,6 @@
 import SearchIcon from '@/assets/images/search_icon.svg'
 import React from 'react'
+import RecentlyNotes from '@/screens/HomeScreen/RecentlyNotes.tsx'
 
 const HomeScreen: React.FC = () => {
   return (
@@ -10,7 +11,7 @@ const HomeScreen: React.FC = () => {
         <span className="text-red-500">V</span>
         <span className="text-violet-700">o</span>rtex
       </h1>
-      <form className="relative mb-40 w-full" method="get" action="/search">
+      <form className="relative mb-10 w-full" method="get" action="/search">
         <input
           type="text"
           name="keywords"
@@ -25,6 +26,7 @@ const HomeScreen: React.FC = () => {
           <img src={SearchIcon} alt="" />
         </button>
       </form>
+      <RecentlyNotes />
     </div>
   )
 }
