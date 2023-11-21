@@ -11,11 +11,9 @@ import (
 )
 
 func ListAllNotes(c *gin.Context) {
-	notes, _ := config.MeiliSearchClient.Index("notes").Search("", &meilisearch.SearchRequest{
-		Limit: 10,
-	})
-
-	c.JSON(http.StatusOK, notes.Hits)
+	var notes []database.Note
+	database.DB.Select("id", "name", "content").Order("created_at desc").Limit(5).Find(&notes)
+	c.JSON(http.StatusOK, notes)
 }
 
 func GetNote(c *gin.Context) {
