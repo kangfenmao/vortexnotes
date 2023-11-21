@@ -7,7 +7,7 @@ import (
 )
 
 func main() {
-	database.InitializeDatabase()
-	indexer.Start()
+	database.Init()
+	go indexer.Start()
 	api.Start()
 }
