@@ -4,7 +4,7 @@ import (
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
 	"vortexnotes/app/config"
-	"vortexnotes/app/indexer/logger"
+	"vortexnotes/app/logger"
 )
 
 var DB *gorm.DB
@@ -18,7 +18,7 @@ func InitializeDatabase() {
 		return
 	}
 
-	err = DB.AutoMigrate(&Note{})
+	err = DB.AutoMigrate(&NoteModel{})
 	if err != nil {
 		logger.Logger.Fatal("Migrate Database Error:", err)
 		return

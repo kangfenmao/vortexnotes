@@ -15,7 +15,6 @@ const NoteScreen: React.FC = () => {
     runAsyncFunction(async () => {
       const res = await window.$http.get(`notes/${id}`)
       setNote(res.data)
-      console.log(res.data)
     })
   }, [])
 

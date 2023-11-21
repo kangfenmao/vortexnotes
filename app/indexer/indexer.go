@@ -2,22 +2,26 @@ package indexer
 
 import (
 	"vortexnotes/app/database"
-	"vortexnotes/app/indexer/drivers/local"
-	"vortexnotes/app/indexer/logger"
+	"vortexnotes/app/drivers"
+	"vortexnotes/app/logger"
+	"vortexnotes/app/types"
 )
 
 func Start() {
 	database.InitializeDatabase()
-	StartIndex(local.Driver{})
+	StartIndex(drivers.LocalDriver{})
 }
 
-func StartIndex(driver Driver) {
+func StartIndex(driver types.Driver) {
 	logger.Logger.Println("Indexer start")
 
 	notes := driver.ListNotes()
 
 	for _, note := range notes {
-		driver.AddNoteToDatabase(note)
+		err, _ := driver.AddNoteToDatabase(note)
+		if err != nil {
+			return
+		}
 	}
 
 	err := driver.GenerateNotesJsonFile()

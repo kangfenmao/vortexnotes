@@ -7,6 +7,7 @@ import (
 	"os"
 	"vortexnotes/app/config"
 	"vortexnotes/app/database"
+	"vortexnotes/app/drivers"
 )
 
 func ListAllNotes(c *gin.Context) {
@@ -20,7 +21,7 @@ func ListAllNotes(c *gin.Context) {
 func GetNote(c *gin.Context) {
 	id := c.Param("id")
 
-	var note database.Note
+	var note database.NoteModel
 	var result = database.DB.First(&note, "id = ?", id)
 
 	if result.Error != nil {
@@ -42,6 +43,38 @@ func GetNote(c *gin.Context) {
 	note.Content = string(fileData)
 
 	c.JSON(http.StatusOK, note)
+}
+
+func CreateNote(c *gin.Context) {
+	type RequestData struct {
+		Name    string `json:"name"`
+		Content string `json:"content"`
+	}
+
+	var requestData RequestData
+
+	if err := c.BindJSON(&requestData); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	name := requestData.Name
+	content := requestData.Content
+
+	driver := drivers.LocalDriver{}
+	err, note := driver.CreateNote(name, content)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"message": err.Error(),
+		})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"id":      note.ID,
+		"name":    note.Name,
+		"content": note.Content,
+	})
 }
 
 func SearchNotes(c *gin.Context) {

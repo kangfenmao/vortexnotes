@@ -1,4 +1,4 @@
-package local
+package drivers
 
 import (
 	"crypto/md5"
@@ -6,7 +6,7 @@ import (
 	"os"
 	"path/filepath"
 	"strings"
-	"vortexnotes/app/indexer/logger"
+	"vortexnotes/app/logger"
 )
 
 func CalculateFileHash(filePath string) (string, error) {
