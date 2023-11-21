@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { displayName, runAsyncFunction } from '@/utils'
 import Markdown from 'react-markdown'
+import remarkGfm from 'remark-gfm'
 import './index.css'
 import Navbar from '@/components/Navbar.tsx'
 
@@ -27,7 +28,9 @@ const NoteScreen: React.FC = () => {
             <h1 className="text-2xl sm:text-3xl mb-5 font-bold line-clamp-1">
               {displayName(note.name)}
             </h1>
-            <Markdown className="markdown-body">{note.content}</Markdown>
+            <Markdown className="markdown-body" remarkPlugins={[remarkGfm]}>
+              {note.content}
+            </Markdown>
           </>
         )}
         <footer className="h-10"></footer>
