@@ -47,5 +47,16 @@ func GetNote(c *gin.Context) {
 func SearchNotes(c *gin.Context) {
 	keywords := c.Query("keywords")
 	notes, _ := config.MeiliSearchClient.Index("notes").Search(keywords, &meilisearch.SearchRequest{})
-	c.JSON(http.StatusOK, notes.Hits)
+
+	type Result struct {
+		Data     []interface{} `json:"data"`
+		Duration float64       `json:"duration"`
+	}
+
+	result := Result{
+		Data:     notes.Hits,
+		Duration: float64(notes.ProcessingTimeMs) / 1000,
+	}
+
+	c.JSON(http.StatusOK, result)
 }

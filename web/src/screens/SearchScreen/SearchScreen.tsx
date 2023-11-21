@@ -7,12 +7,14 @@ import Navbar from '@/components/Navbar.tsx'
 const SearchScreen: React.FC = () => {
   const [searchParams] = useSearchParams()
   const [notes, setNotes] = useState<any>([])
+  const [time, setTime] = useState(0)
   const keywords = searchParams.get('keywords') || ''
 
   useEffect(() => {
     runAsyncFunction(async () => {
       const res = await window.$http.get(`search?keywords=${keywords}`)
-      setNotes(res.data)
+      setNotes(res.data.data)
+      setTime(res.data.duration)
     })
   }, [])
 
@@ -20,6 +22,9 @@ const SearchScreen: React.FC = () => {
     <main className="w-full">
       <Navbar />
       <div className="container mx-auto mt-24 px-5 max-w-lg sm:max-w-6xl">
+        <div className="mb-5 text-sm" style={{ color: '#9aa0a6' }}>
+          找到约 {notes.length} 条结果 (用时{time}秒)
+        </div>
         {notes.map((note: any) => (
           <div className="mb-5" key={notes.id}>
             <Link to={`/notes/${note.id}`}>
