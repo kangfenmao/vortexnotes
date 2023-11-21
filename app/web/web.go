@@ -11,5 +11,5 @@ var Assets embed.FS
 //go:embed index.html
 var IndexByte []byte
 
-//go:embed favicon.svg
+//go:embed public/favicon.svg
 var Favicon embed.FS

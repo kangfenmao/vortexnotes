@@ -2,21 +2,28 @@ package api
 
 import (
 	"github.com/gin-contrib/cors"
-	"github.com/gin-gonic/contrib/static"
 	"github.com/gin-gonic/gin"
+	"net/http"
 	"vortexnotes/app/api/notes"
+	"vortexnotes/app/api/website"
 	"vortexnotes/app/config"
 	"vortexnotes/app/database"
+	"vortexnotes/app/web"
 )
 
 func Start() {
 	database.InitializeDatabase()
 
-	r := gin.Default()
-	r.Use(static.Serve("/", static.LocalFile(config.WebRoot, true)))
-	r.Use(cors.Default())
+	server := gin.Default()
+	server.Use(cors.Default())
 
-	api := r.Group("/api")
+	server.GET("/", website.ServeRoot)
+	server.GET("/assets/*filepath", website.ServeAssets)
+	server.Static("/notes/attachments", config.LocalNotePath+"attachments")
+	server.StaticFS("/public", http.FS(web.Favicon))
+	server.NoRoute(website.NoRoot)
+
+	api := server.Group("/api")
 	{
 		api.GET("/notes", notes.ListAllNotes)
 		api.GET("/notes/:id", notes.GetNote)
@@ -24,5 +31,6 @@ func Start() {
 		api.GET("/search", notes.SearchNotes)
 	}
 
-	r.Run("0.0.0.0:7701")
+	server.SetTrustedProxies(nil)
+	server.Run("127.0.0.1:7701")
 }
