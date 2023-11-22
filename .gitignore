@@ -27,8 +27,8 @@
 go.work
 
 # Docker
-data
+app/
 
 # Web
-app/web
-!app/web/web.go
+backend/web
+!backend/web/web.go

@@ -1,13 +1,18 @@
 package config
 
-import "github.com/meilisearch/meilisearch-go"
+import (
+	"github.com/meilisearch/meilisearch-go"
+	"vortexnotes/backend/utils"
+)
 
 const LocalNotePath = "data/notes/"
 const AppDataPath = "data/vortexnotes/"
 const AppDbPath = AppDataPath + "app.db"
 const NotesJsonFilePath = AppDataPath + "notes.json"
-const MeiliSearchHost = "http://localhost:7700"
+const ApiHost = "0.0.0.0"
+const ApiPort = "7701"
 
+var MeiliSearchHost = utils.MeiliSearchHost()
 var MeiliSearchClient = meilisearch.NewClient(meilisearch.ClientConfig{
 	Host: MeiliSearchHost,
 })

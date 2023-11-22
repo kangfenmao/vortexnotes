@@ -5,9 +5,9 @@ import (
 	"github.com/meilisearch/meilisearch-go"
 	"net/http"
 	"os"
-	"vortexnotes/app/config"
-	"vortexnotes/app/database"
-	"vortexnotes/app/drivers"
+	"vortexnotes/backend/config"
+	"vortexnotes/backend/database"
+	"vortexnotes/backend/drivers"
 )
 
 func ListAllNotes(c *gin.Context) {

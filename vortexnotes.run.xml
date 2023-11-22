@@ -1,12 +1,12 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="vortexnotes" type="GoApplicationRunConfiguration" factoryName="Go Application">
     <module name="vortexnotes" />
-    <working_directory value="$PROJECT_DIR$/data" />
+    <working_directory value="$PROJECT_DIR$/app" />
     <kind value="PACKAGE" />
     <package value="vortexnotes" />
     <directory value="$PROJECT_DIR$" />
     <filePath value="$PROJECT_DIR$" />
-    <output_directory value="$PROJECT_DIR$/data" />
+    <output_directory value="$PROJECT_DIR$/app" />
     <method v="2" />
   </configuration>
 </component>

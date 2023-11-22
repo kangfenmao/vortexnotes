@@ -3,7 +3,7 @@ package website
 import (
 	"github.com/gin-gonic/gin"
 	"net/http"
-	"vortexnotes/app/web"
+	"vortexnotes/backend/web"
 )
 
 func ServeRoot(c *gin.Context) {

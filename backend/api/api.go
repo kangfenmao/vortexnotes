@@ -4,10 +4,10 @@ import (
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"net/http"
-	"vortexnotes/app/api/notes"
-	"vortexnotes/app/api/website"
-	"vortexnotes/app/config"
-	"vortexnotes/app/web"
+	"vortexnotes/backend/api/notes"
+	"vortexnotes/backend/api/website"
+	"vortexnotes/backend/config"
+	"vortexnotes/backend/web"
 )
 
 func Start() {
@@ -29,5 +29,5 @@ func Start() {
 	}
 
 	server.SetTrustedProxies(nil)
-	server.Run("127.0.0.1:7701")
+	server.Run(config.ApiHost + ":" + config.ApiPort)
 }

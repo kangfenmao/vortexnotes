@@ -1,9 +1,9 @@
 package indexer
 
 import (
-	"vortexnotes/app/drivers"
-	"vortexnotes/app/logger"
-	"vortexnotes/app/types"
+	"vortexnotes/backend/drivers"
+	"vortexnotes/backend/logger"
+	"vortexnotes/backend/types"
 )
 
 func Start() {

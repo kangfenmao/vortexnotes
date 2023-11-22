@@ -1,6 +1,6 @@
 package types
 
-import "vortexnotes/app/database"
+import "vortexnotes/backend/database"
 
 type Driver interface {
 	ListNotes() []string

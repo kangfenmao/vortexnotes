@@ -6,10 +6,10 @@ import (
 	stripmd "github.com/writeas/go-strip-markdown"
 	"io"
 	"os"
-	"vortexnotes/app/config"
-	"vortexnotes/app/database"
-	"vortexnotes/app/logger"
-	"vortexnotes/app/types"
+	"vortexnotes/backend/config"
+	"vortexnotes/backend/database"
+	"vortexnotes/backend/logger"
+	"vortexnotes/backend/types"
 )
 
 type LocalDriver struct {

@@ -1,7 +1,7 @@
 DOCKER_IMAGE_TAG=v$(shell date +%Y%m%d%H%M)
 
 docker-build:
-	docker build . -t vortexnotes:$(DOCKER_IMAGE_TAG)
+	docker buildx build --load --platform=linux/arm64 --tag vortexnotes:latest .
 
 compose-up:
 	docker-compose up -d

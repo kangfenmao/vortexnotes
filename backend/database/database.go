@@ -1,10 +1,10 @@
 package database
 
 import (
-	"gorm.io/driver/sqlite"
+	"github.com/glebarez/sqlite"
 	"gorm.io/gorm"
-	"vortexnotes/app/config"
-	"vortexnotes/app/logger"
+	"vortexnotes/backend/config"
+	"vortexnotes/backend/logger"
 )
 
 var DB *gorm.DB

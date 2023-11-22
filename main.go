@@ -1,9 +1,9 @@
 package main
 
 import (
-	"vortexnotes/app/api"
-	"vortexnotes/app/database"
-	"vortexnotes/app/indexer"
+	"vortexnotes/backend/api"
+	"vortexnotes/backend/database"
+	"vortexnotes/backend/indexer"
 )
 
 func main() {

@@ -1,6 +1,6 @@
-import {defineConfig} from 'vite'
+import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
-import {fileURLToPath} from 'node:url'
+import { fileURLToPath } from 'node:url'
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -17,6 +17,6 @@ export default defineConfig({
   },
   plugins: [react()],
   build: {
-    outDir: '../app/web'
+    outDir: process.env.BUILD_GO ? '../app/web' : 'dist'
   }
 })

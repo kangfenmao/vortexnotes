@@ -9,11 +9,20 @@ services:
     networks:
       - vortexnotes-network
     volumes:
-      - ./data/data/meilisearch:/data.ms
+      - ./app/data/meilisearch:/data.ms
     restart: unless-stopped
+  vortexnotes:
+    container_name: vortexnotes
+    image: vortexnotes:latest
+    ports:
+      - "0.0.0.0:7701:7701"
+    networks:
+      - vortexnotes-network
+    volumes:
+      - ./app/data/notes:/app/data/notes
+      - ./app/data/vortexnotes:/app/data/vortexnotes
 
 networks:
   vortexnotes-network:
-    # noinspection ComposeUnknownKeys
-    name: indexer-network
+    name: vortexnotes-network
     driver: bridge
