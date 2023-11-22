@@ -14,7 +14,7 @@ const RecentlyNotes: React.FC = () => {
   }, [])
 
   return (
-    <div className="flex flex-col items-center" style={{ minHeight: '350px' }}>
+    <div className="flex flex-col items-center" style={{ minHeight: '200px' }}>
       <h6 className="text-xs opacity-60 mb-2">RECENTLY MODIFIED</h6>
       <ul>
         {notes.map(note => (
