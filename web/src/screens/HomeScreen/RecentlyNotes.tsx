@@ -1,17 +1,16 @@
 import React, { useEffect, useState } from 'react'
-import { displayName, runAsyncFunction } from '@/utils'
+import { displayName } from '@/utils'
 import { Link } from 'react-router-dom'
 import { NoteType } from '@/types'
+import useRequest from '@/hooks/useRequest.ts'
 
 const RecentlyNotes: React.FC = () => {
   const [notes, setNotes] = useState<NoteType[]>([])
+  const { data } = useRequest<NoteType[]>({ method: 'GET', url: 'notes' })
 
   useEffect(() => {
-    runAsyncFunction(async () => {
-      const res = await window.$http.get('notes')
-      setNotes(res.data)
-    })
-  }, [])
+    data && setNotes(data)
+  }, [data])
 
   return (
     <div className="flex flex-col items-center" style={{ minHeight: '200px' }}>
