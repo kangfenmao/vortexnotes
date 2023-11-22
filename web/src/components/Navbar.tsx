@@ -1,4 +1,4 @@
-import { Link, useLocation, useSearchParams } from 'react-router-dom'
+import { Link, useLocation, useNavigate, useSearchParams } from 'react-router-dom'
 import SearchIcon from '@/assets/images/search_icon.svg'
 import React, { useState } from 'react'
 import AddIcon from '@/assets/images/add_icon.svg'
@@ -7,13 +7,14 @@ interface Props {}
 
 const Navbar: React.FC<Props> = () => {
   const location = useLocation()
+  const navigate = useNavigate()
   const [searchParams] = useSearchParams()
   const keywords = searchParams.get('keywords') || ''
   const [input, setInput] = useState(keywords)
 
   const isHome = location.pathname === '/'
 
-  const onGoBack = () => history.back()
+  const onGoBack = () => navigate('/')
 
   return (
     <div
