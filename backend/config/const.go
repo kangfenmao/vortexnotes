@@ -12,7 +12,6 @@ const NotesJsonFilePath = AppDataPath + "notes.json"
 const ApiHost = "0.0.0.0"
 const ApiPort = "7701"
 
-var MeiliSearchHost = utils.MeiliSearchHost()
 var MeiliSearchClient = meilisearch.NewClient(meilisearch.ClientConfig{
-	Host: MeiliSearchHost,
+	Host: utils.MeiliSearchHost(),
 })
