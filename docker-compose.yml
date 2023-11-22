@@ -19,8 +19,8 @@ services:
     networks:
       - vortexnotes-network
     volumes:
-      - ./app/data/notes:/app/data/notes
-      - ./app/data/vortexnotes:/app/data/vortexnotes
+      - ./app/data/notes:/data/notes
+      - ./app/data/vortexnotes:/data/vortexnotes
 
 networks:
   vortexnotes-network:

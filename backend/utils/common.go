@@ -6,16 +6,14 @@ import (
 )
 
 func isRunningInContainer() bool {
-	cgroupFile := "/proc/1/cgroup"
+	osReleaseFile := "/etc/os-release"
 
-	data, err := os.ReadFile(cgroupFile)
+	data, err := os.ReadFile(osReleaseFile)
 	if err != nil {
 		return false
 	}
 
-	content := string(data)
-
-	return strings.Contains(content, "/docker/") || strings.Contains(content, "/containerd/")
+	return strings.Contains(string(data), "Alpine")
 }
 
 func MeiliSearchHost() string {
