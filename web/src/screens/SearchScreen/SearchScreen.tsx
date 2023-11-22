@@ -30,7 +30,7 @@ const SearchScreen: React.FC = () => {
             <Link to={`/notes/${note.id}`}>
               <h4 className="mb-2 text-blue-400 font-bold text-xl">{displayName(note.name)}</h4>
             </Link>
-            <p className="text-md line-clamp-5 opacity-90">
+            <p className="text-sm font-medium text-white opacity-80 line-clamp-5">
               <HighlightText text={note.content} highlight={keywords} />
             </p>
           </div>
