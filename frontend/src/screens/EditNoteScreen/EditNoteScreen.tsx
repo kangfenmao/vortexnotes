@@ -1,12 +1,25 @@
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import Navbar from '@/components/Navbar.tsx'
-import { isValidFileName } from '@/utils'
+import { displayName, isValidFileName } from '@/utils'
 import { isAxiosError } from 'axios'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
+import useRequest from '@/hooks/useRequest.ts'
+import { NoteType } from '@/types'
 
-const NewNoteScreen: React.FC = () => {
+const EditNoteScreen: React.FC = () => {
   const [title, setTitle] = useState('')
   const [content, setContent] = useState('')
+  const params = useParams()
+  const id = params.id
+
+  const { data } = useRequest<NoteType>({ method: 'GET', url: `notes/${id}` })
+
+  useEffect(() => {
+    if (data) {
+      setTitle(displayName(data.name))
+      setContent(data.content)
+    }
+  }, [data])
 
   const titleInputRef = useRef<HTMLInputElement>(null)
   const contentInputRef = useRef<HTMLTextAreaElement>(null)
@@ -31,8 +44,8 @@ const NewNoteScreen: React.FC = () => {
     }
 
     try {
-      const res = await window.$http.post('notes/new', {
-        name: title.trim(),
+      const res = await window.$http.patch(`notes/${id}`, {
+        name: displayName(title.trim()),
         content: content.trim()
       })
 
@@ -58,7 +71,6 @@ const NewNoteScreen: React.FC = () => {
           <input
             className="text-2xl sm:text-3xl w-full font-bold line-clamp-1 bg-transparent outline-none"
             placeholder="Title"
-            autoFocus
             name="title"
             value={title}
             ref={titleInputRef}
@@ -83,6 +95,7 @@ const NewNoteScreen: React.FC = () => {
           rows={25}
           placeholder="Note..."
           name="content"
+          autoFocus
           value={content}
           ref={contentInputRef}
           tabIndex={2}
@@ -93,4 +106,4 @@ const NewNoteScreen: React.FC = () => {
   )
 }
 
-export default NewNoteScreen
+export default EditNoteScreen

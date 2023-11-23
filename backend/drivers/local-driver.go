@@ -88,6 +88,36 @@ func (local LocalDriver) CreateNote(title string, content string) (err error, no
 	return nil, note
 }
 
+func (local LocalDriver) DeleteNote(id string) error {
+	var note database.Note
+	var result = database.DB.First(&note, "id = ?", id)
+
+	if result.RowsAffected == 0 {
+		return nil
+	}
+
+	// Delete file
+	filePath := config.LocalNotePath + note.Name
+	err := os.Remove(filePath)
+	if err != nil {
+		logger.Logger.Println("Error deleting file:", err)
+		return err
+	}
+
+	// Delete Index
+	index := config.MeiliSearchClient.Index("notes")
+	_, err = index.DeleteDocument(note.ID)
+	if err != nil {
+		logger.Logger.Println("Error deleting index:", err)
+		return err
+	}
+
+	// Delete db record
+	database.DB.Delete(&note)
+
+	return nil
+}
+
 func (local LocalDriver) AddNoteToDatabase(path string) (err error, note database.Note) {
 	id, _ := CalculateFileHash(path)
 	note = database.Note{ID: "", Name: "", Content: ""}

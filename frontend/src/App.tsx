@@ -4,6 +4,7 @@ import React from 'react'
 import SearchScreen from '@/screens/SearchScreen'
 import NoteScreen from '@/screens/NoteScreen'
 import NewNoteScreen from '@/screens/NewNoteScreen'
+import EditNoteScreen from '@/screens/EditNoteScreen'
 
 const router = createBrowserRouter([
   {
@@ -17,6 +18,10 @@ const router = createBrowserRouter([
   {
     path: '/notes/:id',
     element: <NoteScreen />
+  },
+  {
+    path: '/notes/:id/edit',
+    element: <EditNoteScreen />
   },
   {
     path: '/new',

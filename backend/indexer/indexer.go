@@ -3,14 +3,13 @@ package indexer
 import (
 	"vortexnotes/backend/drivers"
 	"vortexnotes/backend/logger"
-	"vortexnotes/backend/types"
 )
 
 func Start() {
 	StartIndex(drivers.LocalDriver{})
 }
 
-func StartIndex(driver types.Driver) {
+func StartIndex(driver drivers.Driver) {
 	logger.Logger.Println("Indexer start")
 
 	notes := driver.ListNotes()

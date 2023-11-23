@@ -1,25 +1,26 @@
 import React, { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
-import { displayName, runAsyncFunction } from '@/utils'
+import { displayName } from '@/utils'
 import Markdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 import './index.css'
 import Navbar from '@/components/Navbar.tsx'
 import { isAxiosError } from 'axios'
 import { NoteType } from '@/types'
+import useRequest from '@/hooks/useRequest.ts'
 
 const NoteScreen: React.FC = () => {
   const [note, setNote] = useState<NoteType>()
   const params = useParams()
   const id = params.id
   const navigate = useNavigate()
+  const { data } = useRequest<NoteType>({ method: 'GET', url: `notes/${id}` })
 
   useEffect(() => {
-    runAsyncFunction(async () => {
-      const res = await window.$http.get(`notes/${id}`)
-      setNote(res.data)
-    })
-  }, [id])
+    data && setNote(data)
+  }, [data])
+
+  const onEdit = () => navigate(`/notes/${id}/edit`)
 
   const onDelete = async () => {
     if (!confirm(`Delete note ${note?.name}?`)) {
@@ -38,8 +39,6 @@ const NoteScreen: React.FC = () => {
       return alert('Delete note error')
     }
   }
-
-  const onEdit = () => {}
 
   return (
     <main className="w-full">
