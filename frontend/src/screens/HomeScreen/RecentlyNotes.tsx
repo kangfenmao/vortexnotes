@@ -17,7 +17,7 @@ const RecentlyNotes: React.FC = () => {
       <h6 className="text-xs opacity-60 mb-2">RECENTLY MODIFIED</h6>
       <ul>
         {notes.map(note => (
-          <li className="flex flex-col items-center">
+          <li className="flex flex-col items-center" key={note.id}>
             <Link
               to={`/notes/${note.id}`}
               className="py-1 px-3 text-white text-md opacity-50 hover:text-white hover:opacity-80 hover:bg-zinc-700 rounded-sm">

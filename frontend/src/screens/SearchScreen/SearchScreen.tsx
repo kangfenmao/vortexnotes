@@ -30,7 +30,7 @@ const SearchScreen: React.FC = () => {
         </div>
         {notes.map(note => (
           <div className="mb-5" key={note.id}>
-            <Link to={`/notes/${note.id}`} target="_blank">
+            <Link to={`/notes/${note.id}`}>
               <h4 className="mb-2 text-blue-400 font-bold text-xl">{displayName(note.name)}</h4>
             </Link>
             <p className="text-sm font-medium text-white opacity-80 line-clamp-5">
