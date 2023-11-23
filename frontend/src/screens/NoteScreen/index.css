@@ -3,4 +3,10 @@
 .markdown-body {
     background-color: #333;
     padding: 16px;
+    overflow: hidden;
+}
+
+.markdown-body pre code {
+    max-width: 100px;
+    display: block;
 }
