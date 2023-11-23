@@ -24,6 +24,7 @@ func Start() {
 	{
 		api.GET("/notes", notes.ListAllNotes)
 		api.GET("/notes/:id", notes.GetNote)
+		api.DELETE("/notes/:id", notes.DeleteNote)
 		api.POST("/notes/new", notes.CreateNote)
 		api.GET("/search", notes.SearchNotes)
 	}

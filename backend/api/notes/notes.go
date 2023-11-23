@@ -8,6 +8,7 @@ import (
 	"vortexnotes/backend/config"
 	"vortexnotes/backend/database"
 	"vortexnotes/backend/drivers"
+	"vortexnotes/backend/logger"
 )
 
 func ListAllNotes(c *gin.Context) {
@@ -90,4 +91,43 @@ func SearchNotes(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, result)
+}
+
+func DeleteNote(c *gin.Context) {
+	id := c.Param("id")
+
+	var note database.Note
+	var result = database.DB.First(&note, "id = ?", id)
+
+	if result.RowsAffected == 0 {
+		c.Status(http.StatusOK)
+		return
+	}
+
+	// Delete file
+	filePath := config.LocalNotePath + note.Name
+	err := os.Remove(filePath)
+	if err != nil {
+		logger.Logger.Println("Error deleting file:", err)
+		c.JSON(http.StatusNotFound, gin.H{
+			"message": err.Error(),
+		})
+		return
+	}
+
+	// Delete Index
+	index := config.MeiliSearchClient.Index("notes")
+	_, err = index.DeleteDocument(note.ID)
+	if err != nil {
+		logger.Logger.Println(err)
+		c.JSON(http.StatusNotFound, gin.H{
+			"message": err.Error(),
+		})
+		return
+	}
+
+	// Delete db record
+	database.DB.Delete(&note)
+
+	c.Status(http.StatusOK)
 }
