@@ -9,10 +9,10 @@ const Navbar: React.FC<Props> = () => {
   const [searchParams] = useSearchParams()
   const keywords = searchParams.get('keywords') || ''
   const [input, setInput] = useState(keywords)
-
   const isHome = location.pathname === '/'
 
   const onGoBack = () => navigate('/')
+  const onSearch = () => navigate(`/search?keywords=${input}`)
 
   return (
     <div
@@ -37,7 +37,7 @@ const Navbar: React.FC<Props> = () => {
         )}
         {!isHome && (
           <div className="flex flex-1">
-            <form className="relative w-full md:w-1/2" method="get" action="/search">
+            <section className="relative w-full md:w-1/2">
               <input
                 type="text"
                 name="keywords"
@@ -46,14 +46,16 @@ const Navbar: React.FC<Props> = () => {
                 placeholder="Search"
                 className="w-full px-4 py-2 outline-none rounded-md bg-transparent border-white border-opacity-30"
                 style={{ borderWidth: 0.5 }}
+                onKeyDown={e => e.key === 'Enter' && onSearch()}
                 required
               />
               <button
-                type="submit"
+                type="button"
+                onClick={onSearch}
                 className="absolute top-0 bottom-0 right-0 w-12 flex flex-row justify-center items-center cursor-pointer opacity-70">
                 <i className="iconfont icon-search text-white text-1xl mr-1"></i>
               </button>
-            </form>
+            </section>
           </div>
         )}
         <Link to="/new">

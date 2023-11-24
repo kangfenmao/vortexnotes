@@ -1,5 +1,5 @@
 import { Link, useSearchParams } from 'react-router-dom'
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { displayName } from '@/utils'
 import Navbar from '@/components/Navbar.tsx'
 import { NoteType } from '@/types'
@@ -17,11 +17,10 @@ interface SearchResponse {
 const SearchScreen: React.FC = () => {
   const [searchParams] = useSearchParams()
   const [time, setTime] = useState(0)
-  const keywords = searchParams.get('keywords') || ''
+  const [keywords, setKeywords] = useState(searchParams.get('keywords' || ''))
   const [page, setPage] = useState(1)
   const [end, setEnd] = useState(false)
-  const notesRef = useRef<NoteType[]>([])
-  const notes = notesRef.current
+  const [notes, setNotes] = useState<NoteType[]>([])
   const limit = 20
 
   const { data } = useRequest<SearchResponse>({
@@ -39,11 +38,16 @@ const SearchScreen: React.FC = () => {
   useEffect(() => {
     if (data) {
       const notesCount = data.data.length
-      notesRef.current = [...notesRef.current, ...data.data]
+      setNotes([...notes, ...data.data])
       notesCount < limit && setEnd(true)
       setTime(data.duration)
     }
   }, [data])
+
+  useEffect(() => {
+    setNotes([])
+    setKeywords(searchParams.get('keywords') || '')
+  }, [searchParams])
 
   return (
     <main className="w-full">
