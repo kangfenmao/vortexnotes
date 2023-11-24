@@ -18,6 +18,6 @@ export default defineConfig({
   },
   plugins: [react()],
   build: {
-    outDir: process.env.BUILD_GO ? '../app/web' : 'dist'
+    outDir: process.env.BUILD_GO ? '../backend/web' : 'dist'
   }
 })
