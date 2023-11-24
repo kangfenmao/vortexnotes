@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react'
 import Navbar from '@/components/Navbar.tsx'
 import { displayName, isValidFileName } from '@/utils'
 import { isAxiosError } from 'axios'
-import { useNavigate, useParams } from 'react-router-dom'
+import { useBlocker, useNavigate, useParams } from 'react-router-dom'
 import useRequest from '@/hooks/useRequest.ts'
 import { NoteType } from '@/types'
 import MDEditor from '@uiw/react-md-editor'
@@ -13,6 +13,7 @@ const EditNoteScreen: React.FC = () => {
   const sessionNote = JSON.parse(sessionStorage.getItem(`EDIT_NOTE:${id}`)!)
   const [title, setTitle] = useState(sessionNote?.name || '')
   const [content, setContent] = useState(sessionNote?.content || '')
+  const [edited, setEdited] = useState(false)
   const { data } = useRequest<NoteType>({ method: 'GET', url: `notes/${id}` })
 
   useEffect(() => {
@@ -26,6 +27,24 @@ const EditNoteScreen: React.FC = () => {
   const contentInputRef = useRef<HTMLTextAreaElement>(null)
 
   const navigate = useNavigate()
+
+  const blocker = useBlocker(
+    ({ currentLocation, nextLocation }) =>
+      edited && currentLocation.pathname !== nextLocation.pathname
+  )
+
+  useEffect(() => {
+    if (blocker.state === 'blocked') {
+      if (confirm('You have unsaved edits. Are you sure you want to leave?')) {
+        blocker.proceed()
+        navigate(location.pathname)
+        return
+      }
+      blocker.reset()
+    }
+  }, [blocker, navigate])
+
+  const onEdit = () => !edited && setEdited(true)
 
   const onCancel = () => {
     history.back()
@@ -77,6 +96,7 @@ const EditNoteScreen: React.FC = () => {
             ref={titleInputRef}
             tabIndex={1}
             onChange={e => setTitle(e.target.value)}
+            onKeyDown={onEdit}
           />
           <button
             tabIndex={4}
@@ -101,6 +121,7 @@ const EditNoteScreen: React.FC = () => {
           autoFocus
           ref={contentInputRef}
           height={700}
+          onKeyDown={onEdit}
         />
         <footer className="h-5"></footer>
       </div>

@@ -1,8 +1,8 @@
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import Navbar from '@/components/Navbar.tsx'
 import { isValidFileName } from '@/utils'
 import { isAxiosError } from 'axios'
-import { useNavigate } from 'react-router-dom'
+import { useBlocker, useNavigate } from 'react-router-dom'
 import MDEditor from '@uiw/react-md-editor'
 
 const NewNoteScreen: React.FC = () => {
@@ -13,6 +13,22 @@ const NewNoteScreen: React.FC = () => {
   const contentInputRef = useRef<HTMLTextAreaElement>(null)
 
   const navigate = useNavigate()
+
+  const blocker = useBlocker(
+    ({ currentLocation, nextLocation }) =>
+      (title !== '' || content !== '') && currentLocation.pathname !== nextLocation.pathname
+  )
+
+  useEffect(() => {
+    if (blocker.state === 'blocked') {
+      if (confirm('You have unsaved edits. Are you sure you want to leave?')) {
+        blocker.proceed()
+        navigate(location.pathname)
+        return
+      }
+      blocker.reset()
+    }
+  }, [blocker, navigate])
 
   const onCancel = () => {
     history.back()
