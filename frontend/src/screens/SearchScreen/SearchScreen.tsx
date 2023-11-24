@@ -8,6 +8,8 @@ import { useBottomScrollListener } from 'react-bottom-scroll-listener'
 import './SearchScreen.css'
 import LoadingView from '@/components/LoadingView.tsx'
 import useDebouncedValue from '@/hooks/useDebouncedValue.ts'
+import EmptyView from '@/components/EmptyView.tsx'
+import { isEmpty } from 'lodash'
 
 interface SearchResponse {
   data: NoteType[]
@@ -23,6 +25,7 @@ const SearchScreen: React.FC = () => {
   const [page, setPage] = useState(1)
   const [end, setEnd] = useState(false)
   const [notes, setNotes] = useState<NoteType[]>([])
+  const [fetched, setFetched] = useState(false)
   const limit = 20
 
   const { data, isLoading } = useRequest<SearchResponse>({
@@ -45,6 +48,7 @@ const SearchScreen: React.FC = () => {
       setNotes([...notes, ...data.data])
       notesCount < limit && setEnd(true)
       setTime(data.duration)
+      !fetched && setFetched(true)
     }
   }, [data])
 
@@ -54,13 +58,20 @@ const SearchScreen: React.FC = () => {
   }, [searchParams])
 
   return (
-    <main className="w-full">
+    <main className="w-full flex">
       <Navbar />
-      <div className="container mx-auto mt-20 px-5 max-w-lg sm:max-w-6xl">
+      <div className="container mx-auto mt-20 px-5 max-w-lg sm:max-w-6xl flex flex-col flex-1">
         <div className="mb-4 pt-2 text-sm" style={{ color: '#9aa0a6' }}>
           找到约 {notes.length} 条结果 (用时{time}秒)
         </div>
         {loading && !notes.length && <LoadingView />}
+        {fetched && isEmpty(notes) && (
+          <EmptyView
+            title={'No Search Results'}
+            className="flex-1 font-thin"
+            style={{ marginTop: '-10%' }}
+          />
+        )}
         {notes.map((note, index) => (
           <div className="mb-5" key={note.id + '_' + index}>
             <Link to={`/notes/${note.id}`}>
