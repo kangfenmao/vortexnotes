@@ -121,6 +121,7 @@ const EditNoteScreen: React.FC = () => {
           autoFocus
           ref={contentInputRef}
           height={700}
+          preview={window.innerWidth < 500 ? 'edit' : 'live'}
           onKeyDown={onEdit}
         />
         <footer className="h-5"></footer>
