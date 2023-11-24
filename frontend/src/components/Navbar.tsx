@@ -28,29 +28,32 @@ const Navbar: React.FC<Props> = () => {
             style={{ fontFamily: 'Major Mono Display' }}
             onClick={onGoBack}>
             <span className="text-red-500">V</span>
-            <span className="text-violet-700">o</span>rtex
+            <span className="text-violet-700">N</span>
+            <span>OTE</span>
           </h1>
         )}
         {!isHome && (
-          <form className="relative flex-1" method="get" action="/search">
-            <input
-              type="text"
-              name="keywords"
-              value={input}
-              onChange={e => setInput(e.target.value)}
-              placeholder="Search"
-              className="w-full px-4 py-2 outline-none"
-              style={{ backgroundColor: '#3b3b3b' }}
-            />
-            <button
-              type="submit"
-              className="absolute top-0 bottom-0 right-0 w-12 flex flex-row justify-center items-center cursor-pointer">
-              <img src={SearchIcon} alt="" />
-            </button>
-          </form>
+          <div className="flex flex-1">
+            <form className="relative w-2/3" method="get" action="/search">
+              <input
+                type="text"
+                name="keywords"
+                value={input}
+                onChange={e => setInput(e.target.value)}
+                placeholder="Search"
+                className="w-full px-4 py-2 outline-none rounded-md"
+                style={{ backgroundColor: '#3b3b3b' }}
+              />
+              <button
+                type="submit"
+                className="absolute top-0 bottom-0 right-0 w-12 flex flex-row justify-center items-center cursor-pointer">
+                <img src={SearchIcon} alt="" />
+              </button>
+            </form>
+          </div>
         )}
         <Link to="/new">
-          <div className="flex flex-row items-center ml-5">
+          <div className="flex flex-row items-center ml-5 opacity-70">
             <img src={AddIcon} alt="" className="mr-2" />
             <button className="text-white">New Note</button>
           </div>

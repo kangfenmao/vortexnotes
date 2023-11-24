@@ -9,17 +9,18 @@ const HomeScreen: React.FC = () => {
       <Navbar />
       <div className="flex flex-col m-auto items-center w-full px-5 transition-all duration-150 max-w-xl">
         <h1
-          className="text-5xl font-bold align-middle mb-10 sm:text-6xl"
+          className="font-bold align-middle mb-8 text-4xl sm:text-5xl"
           style={{ fontFamily: 'Major Mono Display' }}>
           <span className="text-red-500">V</span>
-          <span className="text-violet-700">o</span>rtex
+          <span className="text-violet-700">N</span>
+          <span>OTE</span>
         </h1>
         <form className="relative mb-10 w-full" method="get" action="/search">
           <input
             type="text"
             name="keywords"
             placeholder="Search"
-            className="px-4 py-2 sm:py-3 w-full outline-none"
+            className="px-4 py-2 sm:py-3 w-full outline-none rounded-sm"
             style={{ backgroundColor: '#3b3b3b' }}
             autoFocus
           />
