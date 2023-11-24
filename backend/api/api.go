@@ -3,11 +3,9 @@ package api
 import (
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
-	"net/http"
 	"vortexnotes/backend/api/notes"
 	"vortexnotes/backend/api/website"
 	"vortexnotes/backend/config"
-	"vortexnotes/backend/web"
 )
 
 func Start() {
@@ -16,8 +14,8 @@ func Start() {
 
 	server.GET("/", website.ServeRoot)
 	server.GET("/assets/*filepath", website.ServeAssets)
+	server.GET("/public/*filepath", website.ServePublic)
 	server.Static("/notes/attachments", config.LocalNotePath+"attachments")
-	server.StaticFS("/public", http.FS(web.Favicon))
 	server.NoRoute(website.NoRoot)
 
 	api := server.Group("/api")
