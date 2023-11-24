@@ -1,7 +1,5 @@
 import { Link, useLocation, useNavigate, useSearchParams } from 'react-router-dom'
-import SearchIcon from '@/assets/images/search_icon.svg'
 import React, { useState } from 'react'
-import AddIcon from '@/assets/images/add_icon.svg'
 
 interface Props {}
 
@@ -53,14 +51,14 @@ const Navbar: React.FC<Props> = () => {
               <button
                 type="submit"
                 className="absolute top-0 bottom-0 right-0 w-12 flex flex-row justify-center items-center cursor-pointer opacity-70">
-                <img src={SearchIcon} alt="" />
+                <i className="iconfont icon-search text-white text-1xl mr-1"></i>
               </button>
             </form>
           </div>
         )}
         <Link to="/new">
           <div className="flex flex-row items-center ml-5 opacity-60 hover:opacity-80 transition-opacity">
-            <img src={AddIcon} alt="" className="mr-2" />
+            <i className="iconfont icon-add-circle text-white text-2xl mr-1"></i>
             <button className="text-white">New Note</button>
           </div>
         </Link>

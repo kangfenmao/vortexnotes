@@ -52,14 +52,16 @@ const NoteScreen: React.FC = () => {
               </h1>
               <button
                 tabIndex={4}
-                className="p-2 px-4 hover:bg-zinc-900 transition-all rounded-sm"
+                className="p-1 px-3 hover:bg-zinc-900 transition-all rounded-md flex flex-row items-center opacity-70 hover:opacity-100"
                 onClick={onEdit}>
+                <i className="iconfont icon-edit1 text-2xl mr-1"></i>
                 Edit
               </button>
               <button
-                className="p-2 px-4 text-red-400 hover:bg-red-500 hover:text-white transition-all rounded-sm"
+                className="p-1 px-2 text-red-400 hover:bg-red-500 hover:text-white transition-all rounded-md flex flex-row items-center"
                 onClick={onDelete}
                 tabIndex={3}>
+                <i className="iconfont icon-delete text-2xl mr-1"></i>
                 Delete
               </button>
             </div>
