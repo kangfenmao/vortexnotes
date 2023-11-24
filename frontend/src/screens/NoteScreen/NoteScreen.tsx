@@ -1,13 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { displayName } from '@/utils'
-import Markdown from 'react-markdown'
-import remarkGfm from 'remark-gfm'
-import './index.css'
 import Navbar from '@/components/Navbar.tsx'
 import { isAxiosError } from 'axios'
 import { NoteType } from '@/types'
 import useRequest from '@/hooks/useRequest.ts'
+import MDEditor from '@uiw/react-md-editor'
 
 const NoteScreen: React.FC = () => {
   const [note, setNote] = useState<NoteType>()
@@ -20,8 +18,10 @@ const NoteScreen: React.FC = () => {
     data && setNote(data)
   }, [data])
 
-  const onEdit = () => navigate(`/notes/${id}/edit`)
-
+  const onEdit = () => {
+    sessionStorage.setItem(`EDIT_NOTE:${id}`, JSON.stringify(note))
+    navigate(`/notes/${id}/edit`)
+  }
   const onDelete = async () => {
     if (!confirm(`Delete note ${note?.name}?`)) {
       return
@@ -63,9 +63,11 @@ const NoteScreen: React.FC = () => {
                 Delete
               </button>
             </div>
-            <Markdown className="markdown-body" remarkPlugins={[remarkGfm]}>
-              {note.content}
-            </Markdown>
+            <MDEditor.Markdown
+              source={note.content}
+              className="p-4 border-white border-opacity-20"
+              style={{ borderWidth: 0.5, borderRadius: 3 }}
+            />
           </>
         )}
         <footer className="h-10"></footer>

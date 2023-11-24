@@ -5,6 +5,8 @@ import SearchScreen from '@/screens/SearchScreen'
 import NoteScreen from '@/screens/NoteScreen'
 import NewNoteScreen from '@/screens/NewNoteScreen'
 import EditNoteScreen from '@/screens/EditNoteScreen'
+import '@uiw/react-md-editor/markdown-editor.css'
+import '@uiw/react-markdown-preview/markdown.css'
 
 const router = createBrowserRouter([
   {

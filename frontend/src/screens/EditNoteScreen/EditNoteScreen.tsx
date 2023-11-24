@@ -5,13 +5,14 @@ import { isAxiosError } from 'axios'
 import { useNavigate, useParams } from 'react-router-dom'
 import useRequest from '@/hooks/useRequest.ts'
 import { NoteType } from '@/types'
+import MDEditor from '@uiw/react-md-editor'
 
 const EditNoteScreen: React.FC = () => {
-  const [title, setTitle] = useState('')
-  const [content, setContent] = useState('')
   const params = useParams()
   const id = params.id
-
+  const sessionNote = JSON.parse(sessionStorage.getItem(`EDIT_NOTE:${id}`)!)
+  const [title, setTitle] = useState(sessionNote?.name || '')
+  const [content, setContent] = useState(sessionNote?.content || '')
   const { data } = useRequest<NoteType>({ method: 'GET', url: `notes/${id}` })
 
   useEffect(() => {
@@ -66,13 +67,13 @@ const EditNoteScreen: React.FC = () => {
   return (
     <main className="w-full">
       <Navbar />
-      <div className="container mx-auto px-5 mt-24 max-w-lg sm:max-w-6xl">
+      <div className="container mx-auto px-5 mt-24 max-w-lg sm:max-w-6xl flex flex-col flex-1">
         <div className="flex flex-row items-center mb-5">
           <input
             className="text-2xl sm:text-3xl w-full font-bold line-clamp-1 bg-transparent outline-none"
             placeholder="Title"
             name="title"
-            value={title}
+            value={displayName(title)}
             ref={titleInputRef}
             tabIndex={1}
             onChange={e => setTitle(e.target.value)}
@@ -90,17 +91,16 @@ const EditNoteScreen: React.FC = () => {
             Save
           </button>
         </div>
-        <textarea
-          className="w-full p-5"
-          rows={25}
-          placeholder="Note..."
-          name="content"
-          autoFocus
+        <MDEditor
           value={content}
-          ref={contentInputRef}
+          onChange={v => setContent(v!)}
           tabIndex={2}
-          onChange={e => setContent(e.target.value)}></textarea>
-        <footer className="h-10"></footer>
+          placeholder="Note..."
+          autoFocus
+          ref={contentInputRef}
+          height={700}
+        />
+        <footer className="h-5"></footer>
       </div>
     </main>
   )

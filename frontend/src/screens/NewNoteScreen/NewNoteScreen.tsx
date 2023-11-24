@@ -3,6 +3,7 @@ import Navbar from '@/components/Navbar.tsx'
 import { isValidFileName } from '@/utils'
 import { isAxiosError } from 'axios'
 import { useNavigate } from 'react-router-dom'
+import MDEditor from '@uiw/react-md-editor'
 
 const NewNoteScreen: React.FC = () => {
   const [title, setTitle] = useState('')
@@ -78,16 +79,16 @@ const NewNoteScreen: React.FC = () => {
             Save
           </button>
         </div>
-        <textarea
-          className="w-full p-5"
-          rows={25}
-          placeholder="Note..."
-          name="content"
+        <MDEditor
           value={content}
-          ref={contentInputRef}
+          onChange={v => setContent(v!)}
           tabIndex={2}
-          onChange={e => setContent(e.target.value)}></textarea>
-        <footer className="h-10"></footer>
+          placeholder="Note..."
+          autoFocus
+          ref={contentInputRef}
+          height={700}
+        />
+        <footer className="h-5"></footer>
       </div>
     </main>
   )
