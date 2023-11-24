@@ -1,7 +1,7 @@
 import { Link, useSearchParams } from 'react-router-dom'
 import React, { useEffect, useState } from 'react'
 import { displayName } from '@/utils'
-import HighlightText from '@/screens/SearchScreen/HighlightText.tsx'
+import HighlightText from '@/components/HighlightText.tsx'
 import Navbar from '@/components/Navbar.tsx'
 import { NoteType } from '@/types'
 import useRequest from '@/hooks/useRequest.ts'
