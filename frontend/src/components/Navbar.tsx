@@ -18,8 +18,8 @@ const Navbar: React.FC<Props> = () => {
 
   return (
     <div
-      className="flex flex-row h-20 items-center fixed top-0 left-0 right-0 border-b-white border-opacity-10"
-      style={{ backgroundColor: '#242424', zIndex: 100, borderBottomWidth: isHome ? 0 : '1px' }}>
+      className="flex flex-row py-4 items-center fixed top-0 left-0 right-0 border-b-white border-opacity-10"
+      style={{ backgroundColor: '#0e1116', zIndex: 100, borderBottomWidth: isHome ? 0 : '1px' }}>
       <div className="flex flex-row items-center m-auto w-full px-5 max-w-lg sm:max-w-6xl">
         {isHome && <div className="flex-1"></div>}
         {!isHome && (
