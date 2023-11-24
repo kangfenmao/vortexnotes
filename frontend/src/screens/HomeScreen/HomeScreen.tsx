@@ -29,6 +29,7 @@ const HomeScreen: React.FC = () => {
             className="px-4 py-2 sm:py-3 w-full outline-none"
             style={{ backgroundColor: '#1f2227' }}
             onKeyDown={e => e.key === 'Enter' && onSearch()}
+            autoComplete="off"
             autoFocus
             required
           />

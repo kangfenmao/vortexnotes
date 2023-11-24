@@ -47,6 +47,7 @@ const Navbar: React.FC<Props> = () => {
                 className="w-full px-4 py-2 outline-none rounded-md bg-transparent border-white border-opacity-30"
                 style={{ borderWidth: 0.5 }}
                 onKeyDown={e => e.key === 'Enter' && onSearch()}
+                autoComplete="off"
                 required
               />
               <button

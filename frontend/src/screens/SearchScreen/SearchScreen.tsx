@@ -6,6 +6,8 @@ import { NoteType } from '@/types'
 import useRequest from '@/hooks/useRequest.ts'
 import { useBottomScrollListener } from 'react-bottom-scroll-listener'
 import './SearchScreen.css'
+import LoadingView from '@/components/LoadingView.tsx'
+import useDebouncedValue from '@/hooks/useDebouncedValue.ts'
 
 interface SearchResponse {
   data: NoteType[]
@@ -27,6 +29,8 @@ const SearchScreen: React.FC = () => {
     method: 'GET',
     url: `search?keywords=${keywords}&page=${page}&limit=${limit}`
   })
+
+  const loading = useDebouncedValue(false, isLoading, 1000)
 
   const nextPage = () => !end && setPage(page + 1)
 
@@ -52,15 +56,11 @@ const SearchScreen: React.FC = () => {
   return (
     <main className="w-full">
       <Navbar />
-      <div className="container mx-auto mt-24 px-5 max-w-lg sm:max-w-6xl">
-        <div className="mb-5 text-sm" style={{ color: '#9aa0a6' }}>
+      <div className="container mx-auto mt-20 px-5 max-w-lg sm:max-w-6xl">
+        <div className="mb-4 pt-2 text-sm" style={{ color: '#9aa0a6' }}>
           找到约 {notes.length} 条结果 (用时{time}秒)
         </div>
-        {isLoading && !notes.length && (
-          <div className="flex flex-row justify-center py-10">
-            <i className="iconfont icon-loading text-3xl animate-spin opacity-70"></i>
-          </div>
-        )}
+        {loading && !notes.length && <LoadingView />}
         {notes.map((note, index) => (
           <div className="mb-5" key={note.id + '_' + index}>
             <Link to={`/notes/${note.id}`}>

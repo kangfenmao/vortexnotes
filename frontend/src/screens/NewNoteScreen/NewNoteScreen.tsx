@@ -54,8 +54,8 @@ const NewNoteScreen: React.FC = () => {
   return (
     <main className="w-full">
       <Navbar />
-      <div className="container mx-auto px-5 mt-24 max-w-lg sm:max-w-6xl">
-        <div className="flex flex-row items-center mb-5">
+      <div className="container mx-auto px-5 mt-20 max-w-lg sm:max-w-6xl">
+        <div className="flex flex-row items-center mb-4">
           <input
             className="text-2xl sm:text-3xl w-full font-bold line-clamp-1 bg-transparent outline-none"
             placeholder="Title"
