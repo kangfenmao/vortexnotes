@@ -22,6 +22,7 @@ const NoteScreen: React.FC = () => {
     sessionStorage.setItem(`EDIT_NOTE:${id}`, JSON.stringify(note))
     navigate(`/notes/${id}/edit`)
   }
+
   const onDelete = async () => {
     if (!confirm(`Delete note ${note?.name}?`)) {
       return
