@@ -18,8 +18,13 @@ const Navbar: React.FC<Props> = () => {
 
   return (
     <div
-      className="flex flex-row py-4 items-center fixed top-0 left-0 right-0 border-b-white border-opacity-10"
-      style={{ backgroundColor: '#0e1116', zIndex: 100, borderBottomWidth: isHome ? 0 : '1px' }}>
+      className="flex flex-row h-16 items-center fixed top-0 left-0 right-0"
+      style={{
+        backgroundColor: isHome ? 'transparent' : '#020409',
+        borderBottomColor: isHome ? 'transparent' : 'rgba(255,255,255,0.2)',
+        borderBottomWidth: '0.5px',
+        zIndex: 100
+      }}>
       <div className="flex flex-row items-center m-auto w-full px-5 max-w-lg sm:max-w-6xl">
         {isHome && <div className="flex-1"></div>}
         {!isHome && (
@@ -54,7 +59,7 @@ const Navbar: React.FC<Props> = () => {
           </div>
         )}
         <Link to="/new">
-          <div className="flex flex-row items-center ml-5 opacity-70">
+          <div className="flex flex-row items-center ml-5 opacity-60 hover:opacity-80 transition-opacity">
             <img src={AddIcon} alt="" className="mr-2" />
             <button className="text-white">New Note</button>
           </div>
