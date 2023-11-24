@@ -23,7 +23,7 @@ const SearchScreen: React.FC = () => {
   const [notes, setNotes] = useState<NoteType[]>([])
   const limit = 20
 
-  const { data } = useRequest<SearchResponse>({
+  const { data, isLoading } = useRequest<SearchResponse>({
     method: 'GET',
     url: `search?keywords=${keywords}&page=${page}&limit=${limit}`
   })
@@ -56,6 +56,11 @@ const SearchScreen: React.FC = () => {
         <div className="mb-5 text-sm" style={{ color: '#9aa0a6' }}>
           找到约 {notes.length} 条结果 (用时{time}秒)
         </div>
+        {isLoading && !notes.length && (
+          <div className="flex flex-row justify-center py-10">
+            <i className="iconfont icon-loading text-3xl animate-spin opacity-70"></i>
+          </div>
+        )}
         {notes.map((note, index) => (
           <div className="mb-5" key={note.id + '_' + index}>
             <Link to={`/notes/${note.id}`}>
