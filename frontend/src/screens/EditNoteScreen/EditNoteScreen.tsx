@@ -83,7 +83,7 @@ const EditNoteScreen: React.FC = () => {
             className="p-1 px-3 hover:bg-zinc-900 transition-all rounded-md flex flex-row items-center opacity-70 hover:opacity-100"
             onClick={onCancel}>
             <i className="iconfont icon-return text-2xl mr-1"></i>
-            Edit
+            Cancel
           </button>
           <button
             className="p-1 px-3 hover:bg-green-800 transition-all rounded-md flex flex-row items-center opacity-70 hover:opacity-100"

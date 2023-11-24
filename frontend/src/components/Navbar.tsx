@@ -27,7 +27,7 @@ const Navbar: React.FC<Props> = () => {
         {isHome && <div className="flex-1"></div>}
         {!isHome && (
           <h1
-            className="text-2xl md:text-4xl font-bold text-white mr-5 cursor-pointer"
+            className="text-2xl md:text-4xl font-bold text-white mr-5 cursor-pointer select-none"
             style={{ fontFamily: 'Major Mono Display' }}
             onClick={onGoBack}>
             <span className="text-red-500">V</span>

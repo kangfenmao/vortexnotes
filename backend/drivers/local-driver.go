@@ -206,7 +206,14 @@ func (local LocalDriver) AddNotesToMeiliSearch() error {
 		return err
 	}
 
-	_, err = config.MeiliSearchClient.Index("notes").AddDocuments(notes)
+	notesIndex := config.MeiliSearchClient.Index("notes")
+
+	_, err = notesIndex.AddDocuments(notes)
+	if err != nil {
+		return err
+	}
+
+	_, err = notesIndex.UpdateDistinctAttribute("ID")
 	if err != nil {
 		return err
 	}

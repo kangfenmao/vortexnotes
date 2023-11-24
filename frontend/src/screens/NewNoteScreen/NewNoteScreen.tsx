@@ -68,14 +68,16 @@ const NewNoteScreen: React.FC = () => {
           />
           <button
             tabIndex={4}
-            className="p-2 px-4 hover:bg-zinc-900 transition-all rounded-sm"
+            className="p-1 px-3 hover:bg-zinc-900 transition-all rounded-md flex flex-row items-center opacity-70 hover:opacity-100"
             onClick={onCancel}>
+            <i className="iconfont icon-return text-2xl mr-1"></i>
             Cancel
           </button>
           <button
-            className="p-2 px-4 hover:bg-zinc-900 transition-all rounded-sm"
+            className="p-1 px-3 hover:bg-green-800 transition-all rounded-md flex flex-row items-center opacity-70 hover:opacity-100"
             onClick={onSave}
             tabIndex={3}>
+            <i className="iconfont icon-editsaved text-2xl mr-1"></i>
             Save
           </button>
         </div>

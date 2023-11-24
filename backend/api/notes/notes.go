@@ -5,6 +5,7 @@ import (
 	"github.com/meilisearch/meilisearch-go"
 	"net/http"
 	"os"
+	"strconv"
 	"vortexnotes/backend/config"
 	"vortexnotes/backend/database"
 	"vortexnotes/backend/drivers"
@@ -76,16 +77,38 @@ func CreateNote(c *gin.Context) {
 
 func SearchNotes(c *gin.Context) {
 	keywords := c.Query("keywords")
-	notes, _ := config.MeiliSearchClient.Index("notes").Search(keywords, &meilisearch.SearchRequest{})
+	pageQuery := c.Query("page")
+	limitQuery := c.Query("limit")
+
+	page, err := strconv.Atoi(pageQuery)
+	if err != nil {
+		page = 1
+	}
+
+	limit, err := strconv.Atoi(limitQuery)
+	if err != nil {
+		limit = 20
+	}
+
+	offset := int64((page - 1) * limit)
+	searchResults, _ := config.MeiliSearchClient.Index("notes").Search(keywords, &meilisearch.SearchRequest{
+		Offset:                offset,
+		Limit:                 int64(limit),
+		AttributesToHighlight: []string{"content"},
+	})
 
 	type Result struct {
-		Data     []interface{} `json:"data"`
-		Duration float64       `json:"duration"`
+		Data      []interface{} `json:"data"`
+		Duration  float64       `json:"duration"`
+		Page      int64         `json:"page"`
+		TotalPage int64         `json:"total_page"`
 	}
 
 	result := Result{
-		Data:     notes.Hits,
-		Duration: float64(notes.ProcessingTimeMs) / 1000,
+		Data:      searchResults.Hits,
+		Duration:  float64(searchResults.ProcessingTimeMs) / 1000,
+		Page:      offset,
+		TotalPage: searchResults.EstimatedTotalHits,
 	}
 
 	c.JSON(http.StatusOK, result)
