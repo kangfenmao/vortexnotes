@@ -1,6 +1,6 @@
 import SearchIcon from '@/assets/images/search_icon.svg'
 import React from 'react'
-import RecentlyNotes from '@/screens/HomeScreen/RecentlyNotes.tsx'
+import RecentlyNotes from '@/components/RecentlyNotes.tsx'
 import Navbar from '@/components/Navbar.tsx'
 
 const HomeScreen: React.FC = () => {
@@ -23,6 +23,7 @@ const HomeScreen: React.FC = () => {
             className="px-4 py-2 sm:py-3 w-full outline-none rounded-sm"
             style={{ backgroundColor: '#3b3b3b' }}
             autoFocus
+            required
           />
           <button
             type="submit"

@@ -34,19 +34,20 @@ const Navbar: React.FC<Props> = () => {
         )}
         {!isHome && (
           <div className="flex flex-1">
-            <form className="relative w-2/3" method="get" action="/search">
+            <form className="relative w-full md:w-1/2" method="get" action="/search">
               <input
                 type="text"
                 name="keywords"
                 value={input}
                 onChange={e => setInput(e.target.value)}
                 placeholder="Search"
-                className="w-full px-4 py-2 outline-none rounded-md"
-                style={{ backgroundColor: '#3b3b3b' }}
+                className="w-full px-4 py-2 outline-none rounded-md bg-transparent border-white border-opacity-30"
+                style={{ borderWidth: 0.5 }}
+                required
               />
               <button
                 type="submit"
-                className="absolute top-0 bottom-0 right-0 w-12 flex flex-row justify-center items-center cursor-pointer">
+                className="absolute top-0 bottom-0 right-0 w-12 flex flex-row justify-center items-center cursor-pointer opacity-70">
                 <img src={SearchIcon} alt="" />
               </button>
             </form>
