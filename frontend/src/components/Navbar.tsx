@@ -12,7 +12,7 @@ const Navbar: React.FC<Props> = () => {
   const isHome = location.pathname === '/'
 
   const onGoBack = () => navigate('/')
-  const onSearch = () => navigate(`/search?keywords=${input}`)
+  const onSearch = () => input.trim() && navigate(`/search?keywords=${input}`)
 
   return (
     <div

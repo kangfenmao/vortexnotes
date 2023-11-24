@@ -6,7 +6,7 @@ const HomeScreen: React.FC = () => {
   const [keywords, setKeywords] = useState('')
   const navigate = useNavigate()
 
-  const onSearch = () => navigate(`/search?keywords=${keywords}`)
+  const onSearch = () => keywords.trim() && navigate(`/search?keywords=${keywords}`)
 
   return (
     <main className="flex flex-1">
