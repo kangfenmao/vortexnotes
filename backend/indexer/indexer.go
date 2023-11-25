@@ -8,9 +8,16 @@ func Start() {
 	StartIndex(LocalIndexer{})
 }
 
-func StartIndex(driver IndexerDriver) {
+func StartIndex(driver Driver) {
 	logger.Logger.Println("Indexer start")
 
+	err := driver.BeforeStart()
+	if err != nil {
+		logger.Logger.Fatal("BeforeStart index error:", err)
+		return
+	}
+
+	logger.Logger.Println("Indexer ListNotes")
 	notes := driver.ListNotes()
 
 	for _, note := range notes {
@@ -20,9 +27,10 @@ func StartIndex(driver IndexerDriver) {
 		}
 	}
 
-	err := driver.AddNotesToMeiliSearch()
+	logger.Logger.Println("Indexer AddNotesToMeiliSearch")
+	err = driver.AddNotesToMeiliSearch()
 	if err != nil {
-		logger.Logger.Println("Add notes to meilisearch error", err)
+		logger.Logger.Fatal("Add notes to meilisearch error", err)
 		return
 	}
 

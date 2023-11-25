@@ -14,6 +14,17 @@ import (
 type LocalIndexer struct {
 }
 
+func (localIndexer LocalIndexer) BeforeStart() error {
+	database.DB.Where("1 = 1").Delete(&database.Note{})
+
+	_, err := config.MeiliSearchClient.DeleteIndex("notes")
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
 func (localIndexer LocalIndexer) ListNotes() []string {
 	var notes []string
 
@@ -134,7 +145,7 @@ func (localIndexer LocalIndexer) AddNoteToDatabase(path string) (err error, note
 	}
 
 	note = database.Note{ID: id, Name: fileInfo.Name(), Content: localIndexer.ParseNote(string(content))}
-	result := database.DB.FirstOrCreate(&note)
+	result := database.DB.CreateInBatches(&note, 100)
 	if !errors.Is(err, result.Error) {
 		logger.Logger.Println("CreateNote Error:", err)
 		return err, note
@@ -172,11 +183,6 @@ func (localIndexer LocalIndexer) AddNotesToMeiliSearch() error {
 	notesIndex := config.MeiliSearchClient.Index("notes")
 
 	_, err = notesIndex.AddDocuments(notes)
-	if err != nil {
-		return err
-	}
-
-	_, err = notesIndex.UpdateDistinctAttribute("id")
 	if err != nil {
 		return err
 	}

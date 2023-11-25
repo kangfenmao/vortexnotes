@@ -5,7 +5,8 @@ import (
 	"vortexnotes/backend/types"
 )
 
-type IndexerDriver interface {
+type Driver interface {
+	BeforeStart() error
 	ListNotes() []string
 	ParseNote(content string) string
 	NoteExist(path string) bool
