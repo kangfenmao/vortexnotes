@@ -77,22 +77,14 @@ func CreateNote(c *gin.Context) {
 
 func SearchNotes(c *gin.Context) {
 	keywords := c.Query("keywords")
-	pageQuery := c.Query("page")
 	limitQuery := c.Query("limit")
-
-	page, err := strconv.Atoi(pageQuery)
-	if err != nil {
-		page = 1
-	}
 
 	limit, err := strconv.Atoi(limitQuery)
 	if err != nil {
-		limit = 20
+		limit = 50
 	}
 
-	offset := int64((page - 1) * limit)
 	searchResults, _ := config.MeiliSearchClient.Index("notes").Search(keywords, &meilisearch.SearchRequest{
-		Offset:                offset,
 		Limit:                 int64(limit),
 		AttributesToHighlight: []string{"content"},
 	})
@@ -105,10 +97,8 @@ func SearchNotes(c *gin.Context) {
 	}
 
 	result := Result{
-		Data:      searchResults.Hits,
-		Duration:  float64(searchResults.ProcessingTimeMs) / 1000,
-		Page:      offset,
-		TotalPage: searchResults.EstimatedTotalHits,
+		Data:     searchResults.Hits,
+		Duration: float64(searchResults.ProcessingTimeMs) / 1000,
 	}
 
 	c.JSON(http.StatusOK, result)

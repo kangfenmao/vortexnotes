@@ -4,7 +4,6 @@ import { displayName } from '@/utils'
 import Navbar from '@/components/Navbar.tsx'
 import { NoteType } from '@/types'
 import useRequest from '@/hooks/useRequest.ts'
-import { useBottomScrollListener } from 'react-bottom-scroll-listener'
 import './SearchScreen.css'
 import LoadingView from '@/components/LoadingView.tsx'
 import useDebouncedValue from '@/hooks/useDebouncedValue.ts'
@@ -22,33 +21,21 @@ const SearchScreen: React.FC = () => {
   const [searchParams] = useSearchParams()
   const [time, setTime] = useState(0)
   const [keywords, setKeywords] = useState(searchParams.get('keywords' || ''))
-  const [page, setPage] = useState(1)
-  const [end, setEnd] = useState(false)
   const [notes, setNotes] = useState<NoteType[]>([])
   const [empty, setEmpty] = useState(false)
-  const limit = 20
 
   const { data, isLoading } = useRequest<SearchResponse>({
     method: 'GET',
-    url: `search?keywords=${keywords}&page=${page}&limit=${limit}`
+    url: `search?keywords=${keywords}`
   })
 
   const loading = useDebouncedValue(false, isLoading && !notes.length, 1000)
 
-  const nextPage = () => !end && setPage(page + 1)
-
-  useBottomScrollListener(nextPage, {
-    debounce: 1000,
-    offset: 0
-  })
-
   useEffect(() => {
     if (data) {
-      const notesCount = data.data.length
       const _notes = [...notes, ...data.data]
       setNotes(_notes)
       setTime(data.duration)
-      notesCount < limit && setEnd(true)
       isEmpty(_notes) && setEmpty(true)
     }
   }, [data])
