@@ -1,4 +1,4 @@
-package drivers
+package storage
 
 import (
 	"crypto/md5"

@@ -1,30 +1,29 @@
-package drivers
+package indexer
 
 import (
-	"encoding/json"
 	"errors"
 	stripmd "github.com/writeas/go-strip-markdown"
-	"io"
 	"os"
 	"vortexnotes/backend/config"
 	"vortexnotes/backend/database"
 	"vortexnotes/backend/logger"
+	"vortexnotes/backend/storage"
 	"vortexnotes/backend/types"
 )
 
-type LocalDriver struct {
+type LocalIndexer struct {
 }
 
-func (local LocalDriver) ListNotes() []string {
+func (localIndexer LocalIndexer) ListNotes() []string {
 	var notes []string
 
-	err := CreateDirectoryIfNotExists(config.LocalNotePath)
+	err := storage.CreateDirectoryIfNotExists(config.LocalNotePath)
 	if err != nil {
 		logger.Logger.Fatal("Error:", err)
 		return notes
 	}
 
-	err, notes = ListTextFiles(config.LocalNotePath)
+	err, notes = storage.ListTextFiles(config.LocalNotePath)
 	if err != nil {
 		logger.Logger.Println("List text files error", err)
 		return notes
@@ -33,11 +32,11 @@ func (local LocalDriver) ListNotes() []string {
 	return notes
 }
 
-func (local LocalDriver) ParseNote(content string) string {
+func (localIndexer LocalIndexer) ParseNote(content string) string {
 	return stripmd.Strip(content)
 }
 
-func (local LocalDriver) NoteExist(path string) bool {
+func (localIndexer LocalIndexer) NoteExist(path string) bool {
 	fileInfo, err := os.Stat(path)
 	if err != nil {
 		return false
@@ -46,7 +45,7 @@ func (local LocalDriver) NoteExist(path string) bool {
 	return fileInfo != nil
 }
 
-func (local LocalDriver) CreateNote(title string, content string) (err error, note types.NoteDocument) {
+func (localIndexer LocalIndexer) CreateNote(title string, content string) (err error, note types.NoteDocument) {
 	filePath := config.LocalNotePath + title + ".md"
 	note = types.NoteDocument{
 		ID:      "",
@@ -54,7 +53,7 @@ func (local LocalDriver) CreateNote(title string, content string) (err error, no
 		Content: content,
 	}
 
-	if local.NoteExist(filePath) {
+	if localIndexer.NoteExist(filePath) {
 		return errors.New("note file already exists"), note
 	}
 
@@ -71,7 +70,7 @@ func (local LocalDriver) CreateNote(title string, content string) (err error, no
 	}
 	defer file.Close()
 
-	dbErr, noteModal := local.AddNoteToDatabase(filePath)
+	dbErr, noteModal := localIndexer.AddNoteToDatabase(filePath)
 	if dbErr != nil {
 		logger.Logger.Println("Add note to database: ", err)
 		return dbErr, note
@@ -79,7 +78,7 @@ func (local LocalDriver) CreateNote(title string, content string) (err error, no
 
 	note.ID = noteModal.ID
 
-	err = local.AddNoteToMeiliSearch(note)
+	err = localIndexer.AddNoteToMeiliSearch(note)
 	if err != nil {
 		logger.Logger.Println("Add note to MeiliSearch error: ", err)
 		return err, note
@@ -88,7 +87,7 @@ func (local LocalDriver) CreateNote(title string, content string) (err error, no
 	return nil, note
 }
 
-func (local LocalDriver) DeleteNote(id string) error {
+func (localIndexer LocalIndexer) DeleteNote(id string) error {
 	var note database.Note
 	var result = database.DB.First(&note, "id = ?", id)
 
@@ -118,8 +117,8 @@ func (local LocalDriver) DeleteNote(id string) error {
 	return nil
 }
 
-func (local LocalDriver) AddNoteToDatabase(path string) (err error, note database.Note) {
-	id, _ := CalculateFileHash(path)
+func (localIndexer LocalIndexer) AddNoteToDatabase(path string) (err error, note database.Note) {
+	id, _ := storage.CalculateFileHash(path)
 	note = database.Note{ID: "", Name: "", Content: ""}
 
 	fileInfo, err := os.Stat(path)
@@ -134,7 +133,7 @@ func (local LocalDriver) AddNoteToDatabase(path string) (err error, note databas
 		return err, note
 	}
 
-	note = database.Note{ID: id, Name: fileInfo.Name(), Content: local.ParseNote(string(content))}
+	note = database.Note{ID: id, Name: fileInfo.Name(), Content: localIndexer.ParseNote(string(content))}
 	result := database.DB.FirstOrCreate(&note)
 	if !errors.Is(err, result.Error) {
 		logger.Logger.Println("CreateNote Error:", err)
@@ -144,40 +143,7 @@ func (local LocalDriver) AddNoteToDatabase(path string) (err error, note databas
 	return nil, note
 }
 
-func (local LocalDriver) GenerateNotesJsonFile() error {
-	var notes []database.Note
-	result := database.DB.Find(&notes)
-
-	if result.Error != nil {
-		logger.Logger.Println("List all notes error", result.Error)
-		return result.Error
-	}
-
-	jsonData, err := json.MarshalIndent(notes, "", "  ")
-	if err != nil {
-		logger.Logger.Println("Error encoding json:", err)
-		return err
-	}
-
-	file, err := os.Create(config.NotesJsonFilePath)
-	if err != nil {
-		logger.Logger.Println("Error creating file:", err)
-		return err
-	}
-	defer file.Close()
-
-	_, err = file.Write(jsonData)
-	if err != nil {
-		logger.Logger.Println("Error writing to file:", err)
-		return err
-	}
-
-	logger.Logger.Println("JSON file created successfully.")
-
-	return nil
-}
-
-func (local LocalDriver) AddNoteToMeiliSearch(note types.NoteDocument) error {
+func (localIndexer LocalIndexer) AddNoteToMeiliSearch(note types.NoteDocument) error {
 	documents := []map[string]interface{}{
 		{
 			"id":      note.ID,
@@ -194,14 +160,11 @@ func (local LocalDriver) AddNoteToMeiliSearch(note types.NoteDocument) error {
 	return nil
 }
 
-func (local LocalDriver) AddNotesToMeiliSearch() error {
-	jsonFile, _ := os.Open(config.NotesJsonFilePath)
-	defer jsonFile.Close()
+func (localIndexer LocalIndexer) AddNotesToMeiliSearch() error {
+	var notes []database.Note
+	database.DB.Find(&notes)
 
-	byteValue, _ := io.ReadAll(jsonFile)
-	var notes []map[string]interface{}
-
-	err := json.Unmarshal(byteValue, &notes)
+	_, err := config.MeiliSearchClient.DeleteIndex("notes")
 	if err != nil {
 		return err
 	}
@@ -213,7 +176,7 @@ func (local LocalDriver) AddNotesToMeiliSearch() error {
 		return err
 	}
 
-	_, err = notesIndex.UpdateDistinctAttribute("ID")
+	_, err = notesIndex.UpdateDistinctAttribute("id")
 	if err != nil {
 		return err
 	}

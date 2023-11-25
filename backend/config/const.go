@@ -8,7 +8,6 @@ import (
 const LocalNotePath = "data/notes/"
 const AppDataPath = "data/vortexnotes/"
 const AppDbPath = AppDataPath + "app.db"
-const NotesJsonFilePath = AppDataPath + "notes.json"
 const ApiHost = "0.0.0.0"
 const ApiPort = "7701"
 

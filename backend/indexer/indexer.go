@@ -1,15 +1,14 @@
 package indexer
 
 import (
-	"vortexnotes/backend/drivers"
 	"vortexnotes/backend/logger"
 )
 
 func Start() {
-	StartIndex(drivers.LocalDriver{})
+	StartIndex(LocalIndexer{})
 }
 
-func StartIndex(driver drivers.Driver) {
+func StartIndex(driver IndexerDriver) {
 	logger.Logger.Println("Indexer start")
 
 	notes := driver.ListNotes()
@@ -21,13 +20,7 @@ func StartIndex(driver drivers.Driver) {
 		}
 	}
 
-	err := driver.GenerateNotesJsonFile()
-	if err != nil {
-		logger.Logger.Println("Generate notes json file error", err)
-		return
-	}
-
-	err = driver.AddNotesToMeiliSearch()
+	err := driver.AddNotesToMeiliSearch()
 	if err != nil {
 		logger.Logger.Println("Add notes to meilisearch error", err)
 		return
