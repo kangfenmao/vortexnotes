@@ -14,6 +14,8 @@ services:
   vortexnotes:
     container_name: vortexnotes
     image: vortexnotes:latest
+    depends_on:
+      - meilisearch
     ports:
       - "0.0.0.0:7701:7701"
     networks:
