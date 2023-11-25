@@ -60,14 +60,14 @@ const NoteScreen: React.FC = () => {
                 className="p-1 px-3 hover:bg-zinc-900 transition-all rounded-md flex flex-row items-center opacity-70 hover:opacity-100"
                 onClick={onEdit}>
                 <i className="iconfont icon-edit1 text-2xl mr-1"></i>
-                Edit
+                <span className="hidden sm:inline">Edit</span>
               </button>
               <button
                 className="p-1 px-2 text-red-400 hover:bg-red-500 hover:text-white transition-all rounded-md flex flex-row items-center"
                 onClick={onDelete}
                 tabIndex={3}>
                 <i className="iconfont icon-delete text-2xl mr-1"></i>
-                Delete
+                <span className="hidden sm:inline">Delete</span>
               </button>
             </div>
             <MDEditor.Markdown
