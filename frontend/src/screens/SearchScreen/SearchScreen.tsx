@@ -25,7 +25,7 @@ const SearchScreen: React.FC = () => {
   const [page, setPage] = useState(1)
   const [end, setEnd] = useState(false)
   const [notes, setNotes] = useState<NoteType[]>([])
-  const [fetched, setFetched] = useState(false)
+  const [empty, setEmpty] = useState(false)
   const limit = 20
 
   const { data, isLoading } = useRequest<SearchResponse>({
@@ -33,7 +33,7 @@ const SearchScreen: React.FC = () => {
     url: `search?keywords=${keywords}&page=${page}&limit=${limit}`
   })
 
-  const loading = useDebouncedValue(false, isLoading, 1000)
+  const loading = useDebouncedValue(false, isLoading && !notes.length, 1000)
 
   const nextPage = () => !end && setPage(page + 1)
 
@@ -45,10 +45,11 @@ const SearchScreen: React.FC = () => {
   useEffect(() => {
     if (data) {
       const notesCount = data.data.length
-      setNotes([...notes, ...data.data])
-      notesCount < limit && setEnd(true)
+      const _notes = [...notes, ...data.data]
+      setNotes(_notes)
       setTime(data.duration)
-      !fetched && setFetched(true)
+      notesCount < limit && setEnd(true)
+      isEmpty(_notes) && setEmpty(true)
     }
   }, [data])
 
@@ -64,8 +65,8 @@ const SearchScreen: React.FC = () => {
         <div className="mb-4 pt-2 text-sm" style={{ color: '#9aa0a6' }}>
           找到约 {notes.length} 条结果 (用时{time}秒)
         </div>
-        {loading && !notes.length && <LoadingView />}
-        {fetched && isEmpty(notes) && (
+        {loading && <LoadingView />}
+        {empty && (
           <EmptyView
             title={'No Search Results'}
             className="flex-1 font-thin"
