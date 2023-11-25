@@ -7,6 +7,7 @@ FROM golang:latest as builder
 WORKDIR /app
 COPY . .
 COPY --from=web /app/dist /app/backend/web
+ENV GOPROXY=https://goproxy.cn,direct
 ENV GOOS=linux
 ENV CGO_ENABLED=0
 RUN go build -tags netgo -o vortexnotes
