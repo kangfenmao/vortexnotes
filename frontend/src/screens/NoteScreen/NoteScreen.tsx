@@ -51,7 +51,7 @@ const NoteScreen: React.FC = () => {
         {loading && <LoadingView />}
         {note && (
           <>
-            <div className="flex flex-row items-center mb-4">
+            <div className="flex flex-row items-center mb-2" style={{ marginTop: -5 }}>
               <h1 className="flex-1 text-2xl font-bold line-clamp-1">{displayName(note.name)}</h1>
               <button
                 tabIndex={4}

@@ -75,7 +75,7 @@ const NewNoteScreen: React.FC = () => {
     <main className="w-full">
       <Navbar />
       <div className="container mx-auto px-5 mt-20 max-w-lg sm:max-w-6xl">
-        <div className="flex flex-row items-center mb-4">
+        <div className="flex flex-row items-center mb-2" style={{ marginTop: -5 }}>
           <input
             className="text-2xl sm:text-2xl w-full font-bold line-clamp-1 bg-transparent outline-none"
             placeholder="Title"
@@ -108,7 +108,7 @@ const NewNoteScreen: React.FC = () => {
           placeholder="Note..."
           autoFocus
           ref={contentInputRef}
-          height={window.innerHeight - 200}
+          height={window.innerHeight - 180}
           preview={window.innerWidth < 500 ? 'edit' : 'live'}
         />
         <footer className="h-5"></footer>
