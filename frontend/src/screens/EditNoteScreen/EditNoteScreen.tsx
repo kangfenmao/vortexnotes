@@ -93,7 +93,7 @@ const EditNoteScreen: React.FC = () => {
       <div className="container mx-auto px-5 mt-20 max-w-lg sm:max-w-6xl flex flex-col flex-1">
         <div className="flex flex-row items-center mb-4">
           <input
-            className="text-2xl sm:text-3xl w-full font-bold line-clamp-1 bg-transparent outline-none"
+            className="text-2xl sm:text-2xl w-full font-bold line-clamp-1 bg-transparent outline-none"
             placeholder="Title"
             name="title"
             value={displayName(title)}
@@ -124,7 +124,7 @@ const EditNoteScreen: React.FC = () => {
           placeholder="Note..."
           autoFocus
           ref={contentInputRef}
-          height={700}
+          height={window.innerHeight - 200}
           preview={window.innerWidth < 500 ? 'edit' : 'live'}
           onKeyDown={onEdit}
         />

@@ -23,7 +23,7 @@ const NoteScreen: React.FC = () => {
 
   const onEdit = () => {
     sessionStorage.setItem(`EDIT_NOTE:${id}`, JSON.stringify(note))
-    navigate(`/notes/${id}/edit`, { replace: true })
+    navigate(`/notes/${id}/edit`)
   }
 
   const onDelete = async () => {
@@ -52,9 +52,7 @@ const NoteScreen: React.FC = () => {
         {note && (
           <>
             <div className="flex flex-row items-center mb-4">
-              <h1 className="flex-1 text-2xl sm:text-3xl font-bold line-clamp-1">
-                {displayName(note.name)}
-              </h1>
+              <h1 className="flex-1 text-2xl font-bold line-clamp-1">{displayName(note.name)}</h1>
               <button
                 tabIndex={4}
                 className="p-1 px-2 hover:bg-zinc-900 transition-all rounded-md flex flex-row items-center opacity-70 hover:opacity-100"
