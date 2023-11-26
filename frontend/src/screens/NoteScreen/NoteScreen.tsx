@@ -70,7 +70,7 @@ const NoteScreen: React.FC = () => {
             </div>
             <MDEditor.Markdown
               source={note.content}
-              className="p-4 border-white border-opacity-20"
+              className="py-0 sm:py-4 px-0 sm:px-4 border-transparent sm:border-white sm:border-opacity-20"
               style={{ borderWidth: 0.5, borderRadius: 3 }}
             />
           </>

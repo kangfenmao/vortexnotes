@@ -62,7 +62,7 @@ const Navbar: React.FC<Props> = () => {
         <Link to="/new">
           <div className="flex flex-row items-center ml-5 opacity-60 hover:opacity-80 transition-opacity">
             <i className="iconfont icon-add-circle text-white text-2xl"></i>
-            <button className="text-white ml-1 hidden sm:inline">New Note</button>
+            <button className="text-white ml-1">New Note</button>
           </div>
         </Link>
       </div>
