@@ -29,7 +29,6 @@ To start using VortexNotes, follow these steps:
 
 | Service     | Port | Public |
 |-------------|------|--------|
-| MeiliSearch | 7700 | false  |
 | API         | 7701 | false  |
 | Web         | 7702 | true   |
 

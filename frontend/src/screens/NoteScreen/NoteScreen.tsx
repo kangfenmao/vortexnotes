@@ -57,7 +57,7 @@ const NoteScreen: React.FC = () => {
               </h1>
               <button
                 tabIndex={4}
-                className="p-1 px-3 hover:bg-zinc-900 transition-all rounded-md flex flex-row items-center opacity-70 hover:opacity-100"
+                className="p-1 px-2 hover:bg-zinc-900 transition-all rounded-md flex flex-row items-center opacity-70 hover:opacity-100"
                 onClick={onEdit}>
                 <i className="iconfont icon-edit1 text-2xl mr-1"></i>
                 <span className="hidden sm:inline">Edit</span>

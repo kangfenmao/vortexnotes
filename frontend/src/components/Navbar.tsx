@@ -23,7 +23,7 @@ const Navbar: React.FC<Props> = () => {
         borderBottomWidth: '0.5px',
         zIndex: 100
       }}>
-      <div className="flex flex-row items-center m-auto w-full px-5 max-w-lg sm:max-w-6xl">
+      <div className="flex flex-row items-center justify-between m-auto w-full px-5 max-w-lg sm:max-w-6xl">
         {isHome && <div className="flex-1"></div>}
         {!isHome && (
           <h1
@@ -36,7 +36,7 @@ const Navbar: React.FC<Props> = () => {
           </h1>
         )}
         {!isHome && (
-          <div className="flex flex-1">
+          <div className="flex-1 hidden sm:flex">
             <section className="relative w-full md:w-1/2">
               <input
                 type="text"
@@ -61,8 +61,8 @@ const Navbar: React.FC<Props> = () => {
         )}
         <Link to="/new">
           <div className="flex flex-row items-center ml-5 opacity-60 hover:opacity-80 transition-opacity">
-            <i className="iconfont icon-add-circle text-white text-2xl mr-1"></i>
-            <button className="text-white">New Note</button>
+            <i className="iconfont icon-add-circle text-white text-2xl"></i>
+            <button className="text-white ml-1 hidden sm:inline">New Note</button>
           </div>
         </Link>
       </div>

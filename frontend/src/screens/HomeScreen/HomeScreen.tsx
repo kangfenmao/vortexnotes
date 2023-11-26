@@ -11,7 +11,7 @@ const HomeScreen: React.FC = () => {
   return (
     <main className="flex flex-1">
       <Navbar />
-      <div className="flex flex-col m-auto items-center w-full px-5 transition-all duration-150 max-w-xl">
+      <div className="flex flex-col mt-28 sm:m-auto items-center w-full px-5 transition-all duration-150 max-w-xl">
         <h1
           className="font-bold align-middle mb-8 text-4xl sm:text-5xl select-none"
           style={{ fontFamily: 'Major Mono Display' }}>

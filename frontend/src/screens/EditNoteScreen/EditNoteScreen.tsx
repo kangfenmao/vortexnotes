@@ -14,6 +14,7 @@ const EditNoteScreen: React.FC = () => {
   const [title, setTitle] = useState(sessionNote?.name || '')
   const [content, setContent] = useState(sessionNote?.content || '')
   const [edited, setEdited] = useState(false)
+  const [saving, setSaving] = useState(false)
   const { data } = useRequest<NoteType>({ method: 'GET', url: `notes/${id}` })
 
   useEffect(() => {
@@ -30,7 +31,7 @@ const EditNoteScreen: React.FC = () => {
 
   const blocker = useBlocker(
     ({ currentLocation, nextLocation }) =>
-      edited && currentLocation.pathname !== nextLocation.pathname
+      !saving && edited && currentLocation.pathname !== nextLocation.pathname
   )
 
   useEffect(() => {
@@ -64,6 +65,8 @@ const EditNoteScreen: React.FC = () => {
     }
 
     try {
+      setSaving(true)
+
       const res = await window.$http.patch(`notes/${id}`, {
         name: displayName(title.trim()),
         content: content.trim()
@@ -75,9 +78,10 @@ const EditNoteScreen: React.FC = () => {
 
       history.back()
     } catch (error) {
+      setSaving(false)
       if (isAxiosError(error)) {
         if (error.response) {
-          alert('Save failed: ' + error.response.data.message)
+          alert('Save failed: ' + error.response.data.error)
         }
       }
     }
@@ -100,13 +104,13 @@ const EditNoteScreen: React.FC = () => {
           />
           <button
             tabIndex={4}
-            className="p-1 px-3 hover:bg-zinc-900 transition-all rounded-md flex flex-row items-center opacity-70 hover:opacity-100"
+            className="p-1 px-2 hover:bg-zinc-900 transition-all rounded-md flex flex-row items-center opacity-70 hover:opacity-100"
             onClick={onCancel}>
             <i className="iconfont icon-return text-2xl mr-1"></i>
             <span className="hidden sm:inline">Cancel</span>
           </button>
           <button
-            className="p-1 px-3 hover:bg-green-800 transition-all rounded-md flex flex-row items-center opacity-70 hover:opacity-100"
+            className="p-1 px-2 hover:bg-green-800 transition-all rounded-md flex flex-row items-center opacity-70 hover:opacity-100"
             onClick={onSave}
             tabIndex={3}>
             <i className="iconfont icon-editsaved text-2xl mr-1"></i>

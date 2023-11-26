@@ -10,8 +10,8 @@ type Driver interface {
 	ListNotes() []string
 	ParseNote(content string) string
 	NoteExist(path string) bool
-	CreateNote(title string, content string) (err error, note types.NoteDocument)
+	CreateNote(title string, content string) (note types.NoteDocument, err error)
 	DeleteNote(id string) error
-	AddNoteToDatabase(path string) (err error, note database.Note)
+	AddNoteToDatabase(path string) (note database.Note, err error)
 	AddNotesToIndex() error
 }

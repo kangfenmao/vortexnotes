@@ -50,7 +50,7 @@ func (localDriver Driver) NoteExist(path string) bool {
 	return fileInfo != nil
 }
 
-func (localDriver Driver) CreateNote(title string, content string) (err error, note types.NoteDocument) {
+func (localDriver Driver) CreateNote(title string, content string) (note types.NoteDocument, err error) {
 	filePath := config.LocalNotePath + title + ".md"
 	note = types.NoteDocument{
 		ID:      "",
@@ -59,37 +59,37 @@ func (localDriver Driver) CreateNote(title string, content string) (err error, n
 	}
 
 	if localDriver.NoteExist(filePath) {
-		return errors.New("note file already exists"), note
+		return note, errors.New("note file already exists")
 	}
 
 	file, err := os.Create(filePath)
 	if err != nil {
 		logger.Logger.Println("Create file error: ", err)
-		return err, note
+		return note, err
 	}
 
 	_, err = file.WriteString(content)
 	if err != nil {
 		logger.Logger.Println("Write file error: ", err)
-		return err, note
+		return note, err
 	}
 	defer file.Close()
 
-	dbErr, noteModal := localDriver.AddNoteToDatabase(filePath)
+	noteModal, dbErr := localDriver.AddNoteToDatabase(filePath)
 	if dbErr != nil {
 		logger.Logger.Println("Add note to database: ", err)
-		return dbErr, note
+		return note, dbErr
 	}
 
 	note.ID = noteModal.ID
 
 	err = localDriver.AddNoteToIndex(note)
 	if err != nil {
-		logger.Logger.Println("Add note to MeiliSearch error: ", err)
-		return err, note
+		logger.Logger.Println("Add note to index error: ", err)
+		return note, err
 	}
 
-	return nil, note
+	return note, nil
 }
 
 func (localDriver Driver) DeleteNote(id string) error {
@@ -121,30 +121,30 @@ func (localDriver Driver) DeleteNote(id string) error {
 	return nil
 }
 
-func (localDriver Driver) AddNoteToDatabase(path string) (err error, note database.Note) {
+func (localDriver Driver) AddNoteToDatabase(path string) (note database.Note, err error) {
 	id, _ := CalculateFileHash(path)
 	note = database.Note{ID: "", Name: "", Content: ""}
 
 	fileInfo, err := os.Stat(path)
 	if err != nil {
 		logger.Logger.Println("Stat File Error:", err)
-		return err, note
+		return note, err
 	}
 
 	content, err := os.ReadFile(path)
 	if err != nil {
 		logger.Logger.Println("ReadFile Error:", err)
-		return err, note
+		return note, err
 	}
 
 	note = database.Note{ID: id, Name: fileInfo.Name(), Content: localDriver.ParseNote(string(content))}
 	result := database.DB.CreateInBatches(&note, 100)
 	if !errors.Is(err, result.Error) {
 		logger.Logger.Println("CreateNote Error:", err)
-		return err, note
+		return note, err
 	}
 
-	return nil, note
+	return note, nil
 }
 
 func (localDriver Driver) AddNoteToIndex(note types.NoteDocument) error {

@@ -23,7 +23,7 @@ func StartIndex(driver Driver) {
 
 	logger.Logger.Println("Indexer AddNotesToDatabase")
 	for _, note := range notes {
-		err, _ := driver.AddNoteToDatabase(note)
+		_, err := driver.AddNoteToDatabase(note)
 		if err != nil {
 			return
 		}
@@ -32,7 +32,7 @@ func StartIndex(driver Driver) {
 	logger.Logger.Println("Indexer AddNotesToIndex")
 	err = driver.AddNotesToIndex()
 	if err != nil {
-		logger.Logger.Fatal("Add notes to meilisearch error ", err)
+		logger.Logger.Fatal("Add notes to index error ", err)
 		return
 	}
 

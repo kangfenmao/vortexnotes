@@ -33,7 +33,7 @@ const SearchScreen: React.FC = () => {
       const res = await window.$http.get<SearchResponse>(`search?keywords=${keywords}`)
       const _notes = res.data.data
       setTime(res.data.duration)
-      isEmpty(_notes) && setEmpty(true)
+      setEmpty(isEmpty(_notes))
       setNotes(_notes)
       setLoading(false)
     })

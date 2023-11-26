@@ -62,7 +62,7 @@ func CreateNote(c *gin.Context) {
 	name := requestData.Name
 	content := requestData.Content
 
-	err, note := local.Driver{}.CreateNote(name, content)
+	note, err := local.Driver{}.CreateNote(name, content)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"message": err.Error(),
@@ -112,16 +112,15 @@ func SearchNotes(c *gin.Context) {
 		notes = append(notes, note)
 	}
 
-	//for _, hit := range searchResult.Hits {
-	//	database.DB.Find(hit.ID)
-	//	fmt.Println(hit.ID, hit.Score, hit.Fragments["name"], hit.Fragments["content"])
-	//}
-
 	type Result struct {
 		Data      []database.Note `json:"data"`
 		Duration  float64         `json:"duration"`
 		Page      int64           `json:"page"`
 		TotalPage uint64          `json:"total_page"`
+	}
+
+	if notes == nil {
+		notes = []database.Note{}
 	}
 
 	c.JSON(http.StatusOK, Result{
@@ -148,7 +147,9 @@ func UpdateNote(c *gin.Context) {
 
 	err := local.Driver{}.DeleteNote(id)
 	if err != nil {
-		c.Status(http.StatusNotFound)
+		c.JSON(http.StatusNotFound, gin.H{
+			"error": err,
+		})
 		return
 	}
 

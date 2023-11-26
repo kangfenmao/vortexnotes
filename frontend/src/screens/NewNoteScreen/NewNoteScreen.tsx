@@ -1,22 +1,23 @@
 import React, { useEffect, useRef, useState } from 'react'
 import Navbar from '@/components/Navbar.tsx'
 import { isValidFileName } from '@/utils'
-import { isAxiosError } from 'axios'
 import { useBlocker, useNavigate } from 'react-router-dom'
 import MDEditor from '@uiw/react-md-editor'
+import { isAxiosError } from 'axios'
 
 const NewNoteScreen: React.FC = () => {
   const [title, setTitle] = useState('')
   const [content, setContent] = useState('')
+  const [saving, setSaving] = useState(false)
+  const navigate = useNavigate()
 
   const titleInputRef = useRef<HTMLInputElement>(null)
   const contentInputRef = useRef<HTMLTextAreaElement>(null)
 
-  const navigate = useNavigate()
-
+  const isEdited = title !== '' || content !== ''
   const blocker = useBlocker(
     ({ currentLocation, nextLocation }) =>
-      (title !== '' || content !== '') && currentLocation.pathname !== nextLocation.pathname
+      !saving && isEdited && currentLocation.pathname !== nextLocation.pathname
   )
 
   useEffect(() => {
@@ -48,6 +49,8 @@ const NewNoteScreen: React.FC = () => {
     }
 
     try {
+      setSaving(true)
+
       const res = await window.$http.post('notes/new', {
         name: title.trim(),
         content: content.trim()
@@ -59,6 +62,7 @@ const NewNoteScreen: React.FC = () => {
 
       history.back()
     } catch (error) {
+      setSaving(false)
       if (isAxiosError(error)) {
         if (error.response) {
           alert('Save failed: ' + error.response.data.message)
@@ -84,13 +88,13 @@ const NewNoteScreen: React.FC = () => {
           />
           <button
             tabIndex={4}
-            className="p-1 px-3 hover:bg-zinc-900 transition-all rounded-md flex flex-row items-center opacity-70 hover:opacity-100"
+            className="p-1 px-2 hover:bg-zinc-900 transition-all rounded-md flex flex-row items-center opacity-70 hover:opacity-100"
             onClick={onCancel}>
             <i className="iconfont icon-return text-2xl mr-1"></i>
             <span className="hidden sm:inline">Cancel</span>
           </button>
           <button
-            className="p-1 px-3 hover:bg-green-800 transition-all rounded-md flex flex-row items-center opacity-70 hover:opacity-100"
+            className="p-1 px-2 hover:bg-green-800 transition-all rounded-md flex flex-row items-center opacity-70 hover:opacity-100"
             onClick={onSave}
             tabIndex={3}>
             <i className="iconfont icon-editsaved text-2xl mr-1"></i>
