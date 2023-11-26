@@ -137,7 +137,14 @@ func (localDriver Driver) AddNoteToDatabase(path string) (note database.Note, er
 		return note, err
 	}
 
-	note = database.Note{ID: id, Name: fileInfo.Name(), Content: localDriver.ParseNote(string(content))}
+	note = database.Note{
+		ID:        id,
+		Name:      fileInfo.Name(),
+		Content:   localDriver.ParseNote(string(content)),
+		CreatedAt: fileInfo.ModTime(),
+		UpdatedAt: fileInfo.ModTime(),
+	}
+
 	result := database.DB.CreateInBatches(&note, 100)
 	if !errors.Is(err, result.Error) {
 		logger.Logger.Println("CreateNote Error:", err)

@@ -15,7 +15,7 @@ import (
 
 func ListAllNotes(c *gin.Context) {
 	var notes []database.Note
-	database.DB.Select("id", "name", "content").Order("created_at desc").Limit(5).Find(&notes)
+	database.DB.Select("id", "name", "content").Order("updated_at desc").Limit(5).Find(&notes)
 	c.JSON(http.StatusOK, notes)
 }
 
