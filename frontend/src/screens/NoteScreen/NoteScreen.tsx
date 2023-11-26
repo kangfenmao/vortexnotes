@@ -23,7 +23,7 @@ const NoteScreen: React.FC = () => {
 
   const onEdit = () => {
     sessionStorage.setItem(`EDIT_NOTE:${id}`, JSON.stringify(note))
-    navigate(`/notes/${id}/edit`)
+    navigate(`/notes/${id}/edit`, { replace: true })
   }
 
   const onDelete = async () => {
@@ -33,7 +33,7 @@ const NoteScreen: React.FC = () => {
 
     try {
       await window.$http.delete(`notes/${id}`)
-      navigate('/')
+      navigate('/', { replace: true })
     } catch (error) {
       if (isAxiosError(error)) {
         if (error.response) {

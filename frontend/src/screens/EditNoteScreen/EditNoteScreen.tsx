@@ -73,7 +73,7 @@ const EditNoteScreen: React.FC = () => {
       })
 
       if (res.data?.id) {
-        return navigate(`/notes/${res.data.id}`)
+        return navigate(`/notes/${res.data.id}`, { replace: true })
       }
 
       history.back()
