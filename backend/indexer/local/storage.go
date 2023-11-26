@@ -1,4 +1,4 @@
-package storage
+package local
 
 import (
 	"crypto/md5"

@@ -1,30 +1,11 @@
 version: '3'
 
 services:
-  meilisearch:
-    container_name: meilisearch
-    image: getmeili/meilisearch:v0.25.2
-    ports:
-      - "127.0.0.1:7700:7700"
-    networks:
-      - vortexnotes-network
-    volumes:
-      - ./app/data/meilisearch:/data.ms
-    restart: unless-stopped
   vortexnotes:
     container_name: vortexnotes
     image: vortexnotes:latest
-    depends_on:
-      - meilisearch
     ports:
       - "0.0.0.0:7701:7701"
-    networks:
-      - vortexnotes-network
     volumes:
       - ./app/data/notes:/data/notes
       - ./app/data/vortexnotes:/data/vortexnotes
-
-networks:
-  vortexnotes-network:
-    name: vortexnotes-network
-    driver: bridge

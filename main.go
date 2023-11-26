@@ -8,6 +8,6 @@ import (
 
 func main() {
 	database.Init()
-	go indexer.Start()
+	indexer.Start()
 	api.Start()
 }

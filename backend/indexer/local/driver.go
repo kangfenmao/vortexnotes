@@ -1,40 +1,34 @@
-package indexer
+package local
 
 import (
 	"errors"
 	stripmd "github.com/writeas/go-strip-markdown"
 	"os"
+	"vortexnotes/backend/blevesearch"
 	"vortexnotes/backend/config"
 	"vortexnotes/backend/database"
 	"vortexnotes/backend/logger"
-	"vortexnotes/backend/storage"
 	"vortexnotes/backend/types"
 )
 
-type LocalIndexer struct {
-}
+type Driver struct{}
 
-func (localIndexer LocalIndexer) BeforeStart() error {
+func (localDriver Driver) BeforeStart() error {
 	database.DB.Where("1 = 1").Delete(&database.Note{})
-
-	_, err := config.MeiliSearchClient.DeleteIndex("notes")
-	if err != nil {
-		return err
-	}
-
+	blevesearch.ResetIndex()
 	return nil
 }
 
-func (localIndexer LocalIndexer) ListNotes() []string {
+func (localDriver Driver) ListNotes() []string {
 	var notes []string
 
-	err := storage.CreateDirectoryIfNotExists(config.LocalNotePath)
+	err := CreateDirectoryIfNotExists(config.LocalNotePath)
 	if err != nil {
 		logger.Logger.Fatal("Error:", err)
 		return notes
 	}
 
-	err, notes = storage.ListTextFiles(config.LocalNotePath)
+	err, notes = ListTextFiles(config.LocalNotePath)
 	if err != nil {
 		logger.Logger.Println("List text files error", err)
 		return notes
@@ -43,11 +37,11 @@ func (localIndexer LocalIndexer) ListNotes() []string {
 	return notes
 }
 
-func (localIndexer LocalIndexer) ParseNote(content string) string {
+func (localDriver Driver) ParseNote(content string) string {
 	return stripmd.Strip(content)
 }
 
-func (localIndexer LocalIndexer) NoteExist(path string) bool {
+func (localDriver Driver) NoteExist(path string) bool {
 	fileInfo, err := os.Stat(path)
 	if err != nil {
 		return false
@@ -56,7 +50,7 @@ func (localIndexer LocalIndexer) NoteExist(path string) bool {
 	return fileInfo != nil
 }
 
-func (localIndexer LocalIndexer) CreateNote(title string, content string) (err error, note types.NoteDocument) {
+func (localDriver Driver) CreateNote(title string, content string) (err error, note types.NoteDocument) {
 	filePath := config.LocalNotePath + title + ".md"
 	note = types.NoteDocument{
 		ID:      "",
@@ -64,7 +58,7 @@ func (localIndexer LocalIndexer) CreateNote(title string, content string) (err e
 		Content: content,
 	}
 
-	if localIndexer.NoteExist(filePath) {
+	if localDriver.NoteExist(filePath) {
 		return errors.New("note file already exists"), note
 	}
 
@@ -81,7 +75,7 @@ func (localIndexer LocalIndexer) CreateNote(title string, content string) (err e
 	}
 	defer file.Close()
 
-	dbErr, noteModal := localIndexer.AddNoteToDatabase(filePath)
+	dbErr, noteModal := localDriver.AddNoteToDatabase(filePath)
 	if dbErr != nil {
 		logger.Logger.Println("Add note to database: ", err)
 		return dbErr, note
@@ -89,7 +83,7 @@ func (localIndexer LocalIndexer) CreateNote(title string, content string) (err e
 
 	note.ID = noteModal.ID
 
-	err = localIndexer.AddNoteToMeiliSearch(note)
+	err = localDriver.AddNoteToIndex(note)
 	if err != nil {
 		logger.Logger.Println("Add note to MeiliSearch error: ", err)
 		return err, note
@@ -98,7 +92,7 @@ func (localIndexer LocalIndexer) CreateNote(title string, content string) (err e
 	return nil, note
 }
 
-func (localIndexer LocalIndexer) DeleteNote(id string) error {
+func (localDriver Driver) DeleteNote(id string) error {
 	var note database.Note
 	var result = database.DB.First(&note, "id = ?", id)
 
@@ -115,8 +109,7 @@ func (localIndexer LocalIndexer) DeleteNote(id string) error {
 	}
 
 	// Delete Index
-	index := config.MeiliSearchClient.Index("notes")
-	_, err = index.DeleteDocument(note.ID)
+	err = blevesearch.NotesIndex.Delete(note.ID)
 	if err != nil {
 		logger.Logger.Println("Error deleting index:", err)
 		return err
@@ -128,8 +121,8 @@ func (localIndexer LocalIndexer) DeleteNote(id string) error {
 	return nil
 }
 
-func (localIndexer LocalIndexer) AddNoteToDatabase(path string) (err error, note database.Note) {
-	id, _ := storage.CalculateFileHash(path)
+func (localDriver Driver) AddNoteToDatabase(path string) (err error, note database.Note) {
+	id, _ := CalculateFileHash(path)
 	note = database.Note{ID: "", Name: "", Content: ""}
 
 	fileInfo, err := os.Stat(path)
@@ -144,7 +137,7 @@ func (localIndexer LocalIndexer) AddNoteToDatabase(path string) (err error, note
 		return err, note
 	}
 
-	note = database.Note{ID: id, Name: fileInfo.Name(), Content: localIndexer.ParseNote(string(content))}
+	note = database.Note{ID: id, Name: fileInfo.Name(), Content: localDriver.ParseNote(string(content))}
 	result := database.DB.CreateInBatches(&note, 100)
 	if !errors.Is(err, result.Error) {
 		logger.Logger.Println("CreateNote Error:", err)
@@ -154,16 +147,8 @@ func (localIndexer LocalIndexer) AddNoteToDatabase(path string) (err error, note
 	return nil, note
 }
 
-func (localIndexer LocalIndexer) AddNoteToMeiliSearch(note types.NoteDocument) error {
-	documents := []map[string]interface{}{
-		{
-			"id":      note.ID,
-			"name":    note.Name,
-			"content": note.Content,
-		},
-	}
-
-	_, err := config.MeiliSearchClient.Index("notes").UpdateDocuments(documents)
+func (localDriver Driver) AddNoteToIndex(note types.NoteDocument) error {
+	err := blevesearch.NotesIndex.Index(note.ID, note)
 	if err != nil {
 		return err
 	}
@@ -171,19 +156,18 @@ func (localIndexer LocalIndexer) AddNoteToMeiliSearch(note types.NoteDocument) e
 	return nil
 }
 
-func (localIndexer LocalIndexer) AddNotesToMeiliSearch() error {
+func (localDriver Driver) AddNotesToIndex() error {
 	var notes []database.Note
 	database.DB.Find(&notes)
 
-	_, err := config.MeiliSearchClient.DeleteIndex("notes")
-	if err != nil {
-		return err
+	batch := blevesearch.NotesIndex.NewBatch()
+	for _, note := range notes {
+		batch.Index(note.ID, note)
 	}
 
-	notesIndex := config.MeiliSearchClient.Index("notes")
-
-	_, err = notesIndex.AddDocuments(notes)
+	err := blevesearch.NotesIndex.Batch(batch)
 	if err != nil {
+		logger.Logger.Println("Failed to perform batch index operation:", err)
 		return err
 	}
 

@@ -1,10 +1,9 @@
 import { Link, useSearchParams } from 'react-router-dom'
 import React, { useEffect, useState } from 'react'
-import { displayName } from '@/utils'
+import { displayName, runAsyncFunction } from '@/utils'
 import Navbar from '@/components/Navbar.tsx'
 import { NoteType } from '@/types'
-import useRequest from '@/hooks/useRequest.ts'
-import './SearchScreen.css'
+import './index.css'
 import LoadingView from '@/components/LoadingView.tsx'
 import useDebouncedValue from '@/hooks/useDebouncedValue.ts'
 import EmptyView from '@/components/EmptyView.tsx'
@@ -17,33 +16,43 @@ interface SearchResponse {
   total_page: number
 }
 
+const cachedSearchResult = new Map<string, NoteType[]>()
+let prevSearchKeywords = ''
+
 const SearchScreen: React.FC = () => {
   const [searchParams] = useSearchParams()
+  const keywords = searchParams.get('keywords') || ''
   const [time, setTime] = useState(0)
-  const [keywords, setKeywords] = useState(searchParams.get('keywords' || ''))
-  const [notes, setNotes] = useState<NoteType[]>([])
+  const [notes, setNotes] = useState<NoteType[]>(cachedSearchResult.get(keywords) || [])
   const [empty, setEmpty] = useState(false)
-
-  const { data, isLoading } = useRequest<SearchResponse>({
-    method: 'GET',
-    url: `search?keywords=${keywords}`
-  })
-
-  const loading = useDebouncedValue(false, isLoading && !notes.length, 1000)
+  const [loading, setLoading] = useState(false)
 
   useEffect(() => {
-    if (data) {
-      const _notes = [...notes, ...data.data]
-      setNotes(_notes)
-      setTime(data.duration)
+    runAsyncFunction(async () => {
+      setLoading(true)
+      const res = await window.$http.get<SearchResponse>(`search?keywords=${keywords}`)
+      const _notes = res.data.data
+      setTime(res.data.duration)
       isEmpty(_notes) && setEmpty(true)
-    }
-  }, [data])
+      setNotes(_notes)
+      setLoading(false)
+    })
+  }, [keywords])
 
   useEffect(() => {
-    setNotes([])
-    setKeywords(searchParams.get('keywords') || '')
-  }, [searchParams])
+    if (keywords !== prevSearchKeywords) {
+      window.scrollTo({ top: 0 })
+    }
+    prevSearchKeywords = keywords
+  }, [keywords])
+
+  const isLoading = useDebouncedValue(false, loading && !notes.length, 1000)
+
+  useEffect(() => {
+    return () => {
+      keywords && cachedSearchResult.set(keywords, notes)
+    }
+  }, [keywords, notes])
 
   return (
     <main className="w-full flex">
@@ -52,7 +61,7 @@ const SearchScreen: React.FC = () => {
         <div className="mb-4 pt-2 text-sm" style={{ color: '#9aa0a6' }}>
           找到约 {notes.length} 条结果 (用时{time}秒)
         </div>
-        {loading && <LoadingView />}
+        {isLoading && <LoadingView />}
         {empty && (
           <EmptyView
             title={'No Search Results'}
@@ -63,11 +72,13 @@ const SearchScreen: React.FC = () => {
         {notes.map((note, index) => (
           <div className="mb-5" key={note.id + '_' + index}>
             <Link to={`/notes/${note.id}`}>
-              <h4 className="mb-2 text-blue-400 font-bold text-xl">{displayName(note.name)}</h4>
+              <h4
+                className="mb-2 text-blue-400 font-bold text-xl"
+                dangerouslySetInnerHTML={{ __html: displayName(note.name) }}></h4>
             </Link>
             <p
               className="text-sm font-medium text-white opacity-80 line-clamp-5 search-content"
-              dangerouslySetInnerHTML={{ __html: note._formatted!.content }}></p>
+              dangerouslySetInnerHTML={{ __html: note.content }}></p>
           </div>
         ))}
         <div className="h-10"></div>

@@ -1,14 +1,16 @@
 package notes
 
 import (
+	"fmt"
+	"github.com/blevesearch/bleve/v2"
 	"github.com/gin-gonic/gin"
-	"github.com/meilisearch/meilisearch-go"
 	"net/http"
 	"os"
 	"strconv"
+	"vortexnotes/backend/blevesearch"
 	"vortexnotes/backend/config"
 	"vortexnotes/backend/database"
-	"vortexnotes/backend/indexer"
+	"vortexnotes/backend/indexer/local"
 )
 
 func ListAllNotes(c *gin.Context) {
@@ -60,7 +62,7 @@ func CreateNote(c *gin.Context) {
 	name := requestData.Name
 	content := requestData.Content
 
-	err, note := indexer.LocalIndexer{}.CreateNote(name, content)
+	err, note := local.Driver{}.CreateNote(name, content)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"message": err.Error(),
@@ -84,30 +86,55 @@ func SearchNotes(c *gin.Context) {
 		limit = 50
 	}
 
-	searchResults, _ := config.MeiliSearchClient.Index("notes").Search(keywords, &meilisearch.SearchRequest{
-		Limit:                 int64(limit),
-		AttributesToHighlight: []string{"content"},
-	})
+	query := bleve.NewQueryStringQuery(keywords)
+	searchRequest := bleve.NewSearchRequestOptions(query, limit, 0, false)
+	searchRequest.Highlight = bleve.NewHighlight()
+	searchResult, err := blevesearch.NotesIndex.Search(searchRequest)
+	if err != nil {
+		fmt.Println("Search failed:", err)
+		return
+	}
+
+	var notes []database.Note
+	for _, hit := range searchResult.Hits {
+		id := hit.ID
+		var note database.Note
+		database.DB.First(&note, "id = ?", id)
+
+		if hit.Fragments["name"] != nil {
+			note.Name = hit.Fragments["name"][0]
+		}
+
+		if hit.Fragments["content"] != nil {
+			note.Content = hit.Fragments["content"][0]
+		}
+
+		notes = append(notes, note)
+	}
+
+	//for _, hit := range searchResult.Hits {
+	//	database.DB.Find(hit.ID)
+	//	fmt.Println(hit.ID, hit.Score, hit.Fragments["name"], hit.Fragments["content"])
+	//}
 
 	type Result struct {
-		Data      []interface{} `json:"data"`
-		Duration  float64       `json:"duration"`
-		Page      int64         `json:"page"`
-		TotalPage int64         `json:"total_page"`
+		Data      []database.Note `json:"data"`
+		Duration  float64         `json:"duration"`
+		Page      int64           `json:"page"`
+		TotalPage uint64          `json:"total_page"`
 	}
 
-	result := Result{
-		Data:     searchResults.Hits,
-		Duration: float64(searchResults.ProcessingTimeMs) / 1000,
-	}
-
-	c.JSON(http.StatusOK, result)
+	c.JSON(http.StatusOK, Result{
+		Data:      notes,
+		Duration:  searchResult.Took.Seconds(),
+		TotalPage: searchResult.Total,
+	})
 }
 
 func DeleteNote(c *gin.Context) {
 	id := c.Param("id")
 
-	err := indexer.LocalIndexer{}.DeleteNote(id)
+	err := local.Driver{}.DeleteNote(id)
 	if err != nil {
 		c.Status(http.StatusNotFound)
 		return
@@ -119,7 +146,7 @@ func DeleteNote(c *gin.Context) {
 func UpdateNote(c *gin.Context) {
 	id := c.Param("id")
 
-	err := indexer.LocalIndexer{}.DeleteNote(id)
+	err := local.Driver{}.DeleteNote(id)
 	if err != nil {
 		c.Status(http.StatusNotFound)
 		return

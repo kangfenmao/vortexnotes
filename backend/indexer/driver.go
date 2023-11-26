@@ -13,5 +13,5 @@ type Driver interface {
 	CreateNote(title string, content string) (err error, note types.NoteDocument)
 	DeleteNote(id string) error
 	AddNoteToDatabase(path string) (err error, note database.Note)
-	AddNotesToMeiliSearch() error
+	AddNotesToIndex() error
 }

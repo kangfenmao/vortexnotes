@@ -16,10 +16,7 @@ func isRunningInContainer() bool {
 	return strings.Contains(string(data), "Alpine")
 }
 
-func MeiliSearchHost() string {
-	if isRunningInContainer() {
-		return "http://meilisearch:7700"
-	}
-
-	return "http://127.0.0.1:7700"
+func FileExists(filePath string) bool {
+	_, err := os.Stat(filePath)
+	return !os.IsNotExist(err)
 }

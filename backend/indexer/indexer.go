@@ -1,11 +1,12 @@
 package indexer
 
 import (
+	"vortexnotes/backend/indexer/local"
 	"vortexnotes/backend/logger"
 )
 
 func Start() {
-	StartIndex(LocalIndexer{})
+	StartIndex(local.Driver{})
 }
 
 func StartIndex(driver Driver) {
@@ -20,6 +21,7 @@ func StartIndex(driver Driver) {
 	logger.Logger.Println("Indexer ListNotes")
 	notes := driver.ListNotes()
 
+	logger.Logger.Println("Indexer AddNotesToDatabase")
 	for _, note := range notes {
 		err, _ := driver.AddNoteToDatabase(note)
 		if err != nil {
@@ -27,10 +29,10 @@ func StartIndex(driver Driver) {
 		}
 	}
 
-	logger.Logger.Println("Indexer AddNotesToMeiliSearch")
-	err = driver.AddNotesToMeiliSearch()
+	logger.Logger.Println("Indexer AddNotesToIndex")
+	err = driver.AddNotesToIndex()
 	if err != nil {
-		logger.Logger.Fatal("Add notes to meilisearch error", err)
+		logger.Logger.Fatal("Add notes to meilisearch error ", err)
 		return
 	}
 
