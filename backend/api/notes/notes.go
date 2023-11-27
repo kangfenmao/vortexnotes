@@ -11,7 +11,7 @@ import (
 	"vortexnotes/backend/blevesearch"
 	"vortexnotes/backend/config"
 	"vortexnotes/backend/database"
-	"vortexnotes/backend/indexer/local"
+	"vortexnotes/backend/indexer"
 )
 
 func ListAllNotes(c *gin.Context) {
@@ -70,7 +70,7 @@ func CreateNote(c *gin.Context) {
 	name := requestData.Name
 	content := requestData.Content
 
-	note, err := local.Driver{}.CreateNote(name, content)
+	note, err := indexer.CreateNote(name, content)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"message": err.Error(),
@@ -141,7 +141,7 @@ func SearchNotes(c *gin.Context) {
 func DeleteNote(c *gin.Context) {
 	id := c.Param("id")
 
-	err := local.Driver{}.DeleteNote(id)
+	err := indexer.DeleteNote(id)
 	if err != nil {
 		c.Status(http.StatusNotFound)
 		return
@@ -153,7 +153,7 @@ func DeleteNote(c *gin.Context) {
 func UpdateNote(c *gin.Context) {
 	id := c.Param("id")
 
-	err := local.Driver{}.DeleteNote(id)
+	err := indexer.DeleteNote(id)
 	if err != nil {
 		c.JSON(http.StatusNotFound, gin.H{
 			"error": err,
