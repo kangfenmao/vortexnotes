@@ -1,7 +1,12 @@
 FROM node:20-alpine as web
 WORKDIR /app
+
+COPY frontend/package.json /app/package.json
+COPY frontend/yarn.lock /app/yarn.lock
+RUN yarn install
+
 COPY frontend /app
-RUN yarn install && yarn build
+RUN yarn build
 
 FROM golang:latest as builder
 WORKDIR /app
