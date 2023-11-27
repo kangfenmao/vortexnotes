@@ -15,7 +15,7 @@ const NoteScreen: React.FC = () => {
   const id = params.id
   const navigate = useNavigate()
   const { data, isLoading } = useRequest<NoteType>({ method: 'GET', url: `notes/${id}` })
-  const loading = useDebouncedValue(false, isLoading, 1000)
+  const loading = useDebouncedValue(false, isLoading, 500)
 
   useEffect(() => {
     data && setNote(data)
@@ -48,7 +48,7 @@ const NoteScreen: React.FC = () => {
     <main className="w-full">
       <Navbar />
       <div className="container mx-auto px-5 mt-20 max-w-lg sm:max-w-6xl">
-        {loading && <LoadingView />}
+        {loading && !note && <LoadingView />}
         {note && (
           <>
             <div className="flex flex-row items-center mb-2" style={{ marginTop: -5 }}>
