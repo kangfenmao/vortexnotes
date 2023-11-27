@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react'
-import { Link } from 'react-router-dom'
 import Navbar from '@/components/Navbar.tsx'
 import { NoteType } from '@/types'
 import useRequest from '@/hooks/useRequest.ts'
 import useDebouncedValue from '@/hooks/useDebouncedValue.ts'
 import LoadingView from '@/components/LoadingView.tsx'
-import { displayName } from '@/utils'
+import GroupedNotes from '@/screens/NotesScreen/GroupedNotes.tsx'
+import { isEmpty } from 'lodash'
 
 let cachedNotes: NoteType[] = []
 
@@ -36,16 +36,8 @@ const NotesScreen: React.FC = () => {
     <main className="w-full">
       <Navbar />
       <div className="container mx-auto px-5 mt-20 max-w-lg sm:max-w-6xl">
-        {loading && <LoadingView />}
-        {notes.map(note => (
-          <div className="py-1">
-            <Link
-              to={`/notes/${note.id}`}
-              className="text-white hover:text-white opacity-60 hover:opacity-80">
-              {displayName(note.name)}
-            </Link>
-          </div>
-        ))}
+        {loading && isEmpty(notes) && <LoadingView />}
+        <GroupedNotes data={notes} />
         <footer className="h-10"></footer>
       </div>
     </main>
