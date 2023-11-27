@@ -39,7 +39,11 @@ const NotesScreen: React.FC = () => {
         {loading && <LoadingView />}
         {notes.map(note => (
           <div className="py-1">
-            <Link to={`/notes/${note.id}`}>{displayName(note.name)}</Link>
+            <Link
+              to={`/notes/${note.id}`}
+              className="text-white hover:text-white opacity-60 hover:opacity-80">
+              {displayName(note.name)}
+            </Link>
           </div>
         ))}
         <footer className="h-10"></footer>
