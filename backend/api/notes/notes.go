@@ -7,6 +7,7 @@ import (
 	"net/http"
 	"os"
 	"strconv"
+	"strings"
 	"vortexnotes/backend/blevesearch"
 	"vortexnotes/backend/config"
 	"vortexnotes/backend/database"
@@ -14,8 +15,15 @@ import (
 )
 
 func ListAllNotes(c *gin.Context) {
+	page, _ := strconv.Atoi(c.DefaultQuery("page", "1"))
+	limit, _ := strconv.Atoi(c.DefaultQuery("limit", "20"))
+	Order := c.DefaultQuery("sort", "name asc")
+	Order = strings.Replace(Order, ":", " ", 1)
+	offset := (page - 1) * limit
+
 	var notes []database.Note
-	database.DB.Select("id", "name", "content").Order("updated_at desc").Limit(5).Find(&notes)
+	database.DB.Select("id", "name", "content").Order(Order).Limit(limit).Offset(offset).Find(&notes)
+
 	c.JSON(http.StatusOK, notes)
 }
 

@@ -7,6 +7,7 @@ import NewNoteScreen from '@/screens/NewNoteScreen'
 import EditNoteScreen from '@/screens/EditNoteScreen'
 import '@uiw/react-md-editor/markdown-editor.css'
 import '@uiw/react-markdown-preview/markdown.css'
+import NotesScreen from '@/screens/NotesScreen'
 
 const router = createBrowserRouter([
   {
@@ -16,6 +17,10 @@ const router = createBrowserRouter([
   {
     path: '/search',
     element: <SearchScreen />
+  },
+  {
+    path: '/notes',
+    element: <NotesScreen />
   },
   {
     path: '/notes/:id',

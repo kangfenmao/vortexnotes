@@ -6,7 +6,10 @@ import useRequest from '@/hooks/useRequest.ts'
 
 const RecentlyNotes: React.FC = () => {
   const [notes, setNotes] = useState<NoteType[]>([])
-  const { data } = useRequest<NoteType[]>({ method: 'GET', url: 'notes' })
+  const { data } = useRequest<NoteType[]>({
+    method: 'GET',
+    url: 'notes?page=1&limit=5&sort=updated_at:desc'
+  })
 
   useEffect(() => {
     data && setNotes(data)
@@ -26,6 +29,9 @@ const RecentlyNotes: React.FC = () => {
           </li>
         ))}
       </ul>
+      <Link to="/notes" className="py-1 px-3 text-md opacity-50">
+        All Notes
+      </Link>
     </div>
   )
 }

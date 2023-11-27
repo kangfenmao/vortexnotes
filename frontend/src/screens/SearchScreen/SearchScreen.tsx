@@ -59,7 +59,7 @@ const SearchScreen: React.FC = () => {
       <Navbar />
       <div className="container mx-auto mt-20 px-5 max-w-lg sm:max-w-6xl flex flex-col flex-1">
         <div className="mb-4 pt-2 text-sm" style={{ color: '#9aa0a6' }}>
-          找到约 {notes.length} 条结果 (用时{time}秒)
+          About {notes.length} results ({time.toFixed(6)} seconds)
         </div>
         {isLoading && <LoadingView />}
         {empty && (
