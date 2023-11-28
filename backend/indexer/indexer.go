@@ -2,7 +2,6 @@ package indexer
 
 import (
 	"errors"
-	stripmd "github.com/writeas/go-strip-markdown"
 	"os"
 	"vortexnotes/backend/blevesearch"
 	"vortexnotes/backend/config"
@@ -67,10 +66,6 @@ func ListNotes() []string {
 	}
 
 	return notes
-}
-
-func ParseNote(content string) string {
-	return stripmd.Strip(content)
 }
 
 func NoteExist(path string) bool {
@@ -172,7 +167,7 @@ func AddNoteToDatabase(path string) (note database.Note, err error) {
 	note = database.Note{
 		ID:        id,
 		Name:      fileInfo.Name(),
-		Content:   ParseNote(string(content)),
+		Content:   string(content),
 		CreatedAt: fileInfo.ModTime(),
 		UpdatedAt: fileInfo.ModTime(),
 	}
