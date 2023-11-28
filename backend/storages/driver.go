@@ -1,4 +1,4 @@
-package indexer
+package storages
 
 import (
 	"vortexnotes/backend/database"

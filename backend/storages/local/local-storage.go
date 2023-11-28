@@ -1,4 +1,4 @@
-package indexer
+package local
 
 import (
 	"crypto/md5"

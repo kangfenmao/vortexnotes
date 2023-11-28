@@ -34,7 +34,7 @@ const GroupedNotes: React.FC<Props> = ({ data }) => {
               <div className="py-1" key={note.id}>
                 <Link
                   to={`/notes/${note.id}`}
-                  className="text-white hover:text-white opacity-70 hover:opacity-90">
+                  className="text-white hover:text-white opacity-70 hover:opacity-90 line-clamp-1">
                   {displayName(note.name)}
                 </Link>
               </div>

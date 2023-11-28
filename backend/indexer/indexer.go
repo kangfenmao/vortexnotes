@@ -7,6 +7,7 @@ import (
 	"vortexnotes/backend/config"
 	"vortexnotes/backend/database"
 	"vortexnotes/backend/logger"
+	"vortexnotes/backend/storages/local"
 	"vortexnotes/backend/types"
 )
 
@@ -53,13 +54,13 @@ func BeforeStart() error {
 func ListNotes() []string {
 	var notes []string
 
-	err := CreateDirectoryIfNotExists(config.LocalNotePath)
+	err := local.CreateDirectoryIfNotExists(config.LocalNotePath)
 	if err != nil {
 		logger.Logger.Fatal("Error:", err)
 		return notes
 	}
 
-	err, notes = ListTextFiles(config.LocalNotePath)
+	err, notes = local.ListTextFiles(config.LocalNotePath)
 	if err != nil {
 		logger.Logger.Println("List text files error", err)
 		return notes
@@ -149,7 +150,7 @@ func DeleteNote(id string) error {
 }
 
 func AddNoteToDatabase(path string) (note database.Note, err error) {
-	id, _ := CalculateFileHash(path)
+	id, _ := local.CalculateFileHash(path)
 	note = database.Note{ID: "", Name: "", Content: ""}
 
 	fileInfo, err := os.Stat(path)
