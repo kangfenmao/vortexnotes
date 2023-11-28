@@ -6,6 +6,7 @@ import { useBlocker, useNavigate, useParams } from 'react-router-dom'
 import useRequest from '@/hooks/useRequest.ts'
 import { NoteType } from '@/types'
 import MDEditor from '@uiw/react-md-editor'
+import AlertPopup from '@/components/popups/AlertPopup.tsx'
 
 const EditNoteScreen: React.FC = () => {
   const params = useParams()
@@ -61,7 +62,10 @@ const EditNoteScreen: React.FC = () => {
     }
 
     if (!isValidFileName(title)) {
-      return alert('The title cannot contain special characters.')
+      return AlertPopup.show({
+        title: 'Message',
+        content: 'The title cannot contain special characters.'
+      })
     }
 
     try {
@@ -81,7 +85,10 @@ const EditNoteScreen: React.FC = () => {
       setSaving(false)
       if (isAxiosError(error)) {
         if (error.response) {
-          alert('Save failed: ' + error.response.data.error)
+          return AlertPopup.show({
+            title: 'Save failed',
+            content: error.response.data.message
+          })
         }
       }
     }
@@ -104,13 +111,13 @@ const EditNoteScreen: React.FC = () => {
           />
           <button
             tabIndex={4}
-            className="p-1 px-2 hover:bg-zinc-900 transition-all rounded-md flex flex-row items-center opacity-70 hover:opacity-100"
+            className="p-1 px-2 transition-all rounded-md flex flex-row items-center opacity-70 hover:bg-gray-200 dark:hover:bg-zinc-900 hover:opacity-90"
             onClick={onCancel}>
             <i className="iconfont icon-return text-2xl mr-1"></i>
             <span className="hidden sm:inline">Cancel</span>
           </button>
           <button
-            className="p-1 px-2 hover:bg-green-800 transition-all rounded-md flex flex-row items-center opacity-70 hover:opacity-100"
+            className="p-1 px-2 transition-all rounded-md flex flex-row items-center opacity-70 hover:opacity-100 hover:bg-green-800 hover:text-white"
             onClick={onSave}
             tabIndex={3}>
             <i className="iconfont icon-editsaved text-2xl mr-1"></i>

@@ -22,19 +22,13 @@ const GroupedNotes: React.FC<Props> = ({ data }) => {
       {Object.entries(groupedData).map(([letter, items]) => (
         <div key={letter} className="mb-6">
           <h2 className="text-3xl font-bold opacity-30 mt-2">{letter}</h2>
-          <hr
-            className="my-2"
-            style={{
-              border: 'none',
-              borderBottom: '0.5px solid rgba(255,255,255,0.1)'
-            }}
-          />
+          <hr className="my-2 border-b-1 border-black border-opacity-10" />
           <ul>
             {items.map(note => (
               <div className="py-1" key={note.id}>
                 <Link
                   to={`/notes/${note.id}`}
-                  className="text-white hover:text-white opacity-70 hover:opacity-90 line-clamp-1">
+                  className="text-black hover:text-black dark:text-white dark:hover:text-white opacity-70 hover:opacity-90 line-clamp-1">
                   {displayName(note.name)}
                 </Link>
               </div>

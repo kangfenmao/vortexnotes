@@ -8,6 +8,7 @@ import EditNoteScreen from '@/screens/EditNoteScreen'
 import '@uiw/react-md-editor/markdown-editor.css'
 import '@uiw/react-markdown-preview/markdown.css'
 import NotesScreen from '@/screens/NotesScreen'
+import TopViewContainer from '@/components/TopView.tsx'
 
 const router = createBrowserRouter([
   {
@@ -37,7 +38,11 @@ const router = createBrowserRouter([
 ])
 
 const App: React.FC = () => {
-  return <RouterProvider router={router} />
+  return (
+    <TopViewContainer>
+      <RouterProvider router={router} />
+    </TopViewContainer>
+  )
 }
 
 export default App

@@ -8,6 +8,7 @@ import useRequest from '@/hooks/useRequest.ts'
 import MDEditor from '@uiw/react-md-editor'
 import useDebouncedValue from '@/hooks/useDebouncedValue.ts'
 import LoadingView from '@/components/LoadingView.tsx'
+import AlertPopup from '@/components/popups/AlertPopup.tsx'
 
 const NoteScreen: React.FC = () => {
   const [note, setNote] = useState<NoteType>()
@@ -37,10 +38,17 @@ const NoteScreen: React.FC = () => {
     } catch (error) {
       if (isAxiosError(error)) {
         if (error.response) {
-          return alert('Delete note error: ' + error.response.data?.message)
+          return AlertPopup.show({
+            title: 'Delete note error',
+            content: error.response.data?.message
+          })
         }
       }
-      return alert('Delete note error')
+
+      return AlertPopup.show({
+        title: 'Unknown Error',
+        content: 'Delete note error.'
+      })
     }
   }
 
@@ -55,7 +63,7 @@ const NoteScreen: React.FC = () => {
               <h1 className="flex-1 text-2xl font-bold line-clamp-1">{displayName(note.name)}</h1>
               <button
                 tabIndex={4}
-                className="p-1 px-2 hover:bg-zinc-900 transition-all rounded-md flex flex-row items-center opacity-70 hover:opacity-100"
+                className="p-1 px-2 transition-all rounded-md flex flex-row items-center opacity-70 hover:bg-gray-200 dark:hover:bg-zinc-900 hover:opacity-90"
                 onClick={onEdit}>
                 <i className="iconfont icon-edit1 text-2xl mr-1"></i>
                 <span className="hidden sm:inline">Edit</span>
@@ -70,7 +78,7 @@ const NoteScreen: React.FC = () => {
             </div>
             <MDEditor.Markdown
               source={note.content}
-              className="py-0 sm:py-4 px-0 sm:px-4 border-transparent sm:border-white sm:border-opacity-20"
+              className="py-0 px-0 border-transparent sm:py-4 sm:px-4 sm:border-black sm:border-opacity-20 sm:dark:border-white sm:dark:border-opacity-20"
               style={{ borderWidth: 0.5, borderRadius: 3 }}
             />
           </>

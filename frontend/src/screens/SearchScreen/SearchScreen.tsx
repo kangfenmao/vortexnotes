@@ -77,7 +77,7 @@ const SearchScreen: React.FC = () => {
                 dangerouslySetInnerHTML={{ __html: displayName(note.name) }}></h4>
             </Link>
             <p
-              className="text-sm font-medium text-white opacity-80 line-clamp-5 search-content"
+              className="text-sm font-medium opacity-80 line-clamp-5 search-content"
               dangerouslySetInnerHTML={{ __html: note.content }}></p>
           </div>
         ))}

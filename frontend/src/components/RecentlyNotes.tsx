@@ -23,14 +23,14 @@ const RecentlyNotes: React.FC = () => {
           <li className="flex flex-col items-center" key={note.id}>
             <Link
               to={`/notes/${note.id}`}
-              className="py-1 px-3 text-white text-md opacity-50 hover:text-white hover:opacity-80 hover:bg-zinc-700 transition-all rounded-sm">
+              className="py-1 px-3 text-md transition-all rounded-sm opacity-50 text-black hover:text-black dark:text-white dark:hover:text-white">
               {displayName(note.name)}
             </Link>
           </li>
         ))}
       </ul>
       <Link to="/notes" className="py-1 px-3 text-md opacity-50">
-        All Notes
+        - All Notes -
       </Link>
     </div>
   )

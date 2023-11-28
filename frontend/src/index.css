@@ -11,15 +11,27 @@
     font-weight: 400;
     font-size: 15px;
 
+    --theme-bg-color: #0e1116;
+    --theme-text-color: rgba(255, 255, 255, 0.87);
     color-scheme: light dark;
-    color: rgba(255, 255, 255, 0.87);
-    background-color: #0e1116;
+    color: var(--theme-text-color);
+    background-color: var(--theme-bg-color);
 
     font-synthesis: none;
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     -webkit-text-size-adjust: 100%;
+}
+
+[data-color-mode='dark'] {
+    --theme-bg-color: #0e1116;
+    --theme-text-color: rgba(255, 255, 255, 0.87)
+}
+
+[data-color-mode='light'] {
+    --theme-bg-color: white;
+    --theme-text-color: rgba(0, 0, 0, 0.87)
 }
 
 * {
@@ -49,4 +61,3 @@ body {
     height: 100%;
     min-height: 100vh;
 }
-
