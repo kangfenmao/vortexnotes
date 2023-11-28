@@ -55,11 +55,11 @@ const NoteScreen: React.FC = () => {
   return (
     <main className="w-full">
       <Navbar />
-      <div className="container mx-auto px-5 mt-20 max-w-lg sm:max-w-6xl">
+      <div className="container mx-auto px-5 pt-20 max-w-lg sm:max-w-6xl">
         {loading && !note && <LoadingView />}
         {note && (
           <>
-            <div className="flex flex-row items-center mb-2" style={{ marginTop: -5 }}>
+            <div className="flex flex-row items-center mb-4">
               <h1 className="flex-1 text-2xl font-bold line-clamp-1">{displayName(note.name)}</h1>
               <button
                 tabIndex={4}
