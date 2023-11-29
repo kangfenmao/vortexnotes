@@ -25,7 +25,10 @@ const Navbar: React.FC<Props> = () => {
   return (
     <div
       className={`flex flex-row h-16 items-center fixed top-0 left-0 right-0 ${navbarBorder} ${navbarBg}`}
-      style={{ zIndex: 100, backgroundColor: 'var(--theme-bg-color)' }}>
+      style={{
+        zIndex: 100,
+        backgroundColor: isHome ? 'transparent' : 'var(--theme-navbar-color)'
+      }}>
       <div className="flex flex-row items-center justify-between m-auto w-full px-5 max-w-lg sm:max-w-6xl">
         {isHome && <div className="flex-1"></div>}
         {!isHome && (

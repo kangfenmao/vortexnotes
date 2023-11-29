@@ -4,8 +4,8 @@
   "description": "VortexNotes is a unique web-based note-taking software that offers a different approach to managing your notes.",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#0e1116",
-  "theme_color": "#0e1116",
+  "background_color": "#020409",
+  "theme_color": "#020409",
   "icons": [
     {
       "src": "/public/icon-192x192.png",
