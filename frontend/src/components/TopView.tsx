@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react'
-import { findIndex, pullAt } from 'lodash'
+import { findIndex, pullAt } from 'lodash-es'
 import EventEmitter from 'eventemitter3'
 
 const DeviceEventEmitter = new EventEmitter()

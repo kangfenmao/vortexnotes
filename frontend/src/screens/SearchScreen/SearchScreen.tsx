@@ -7,7 +7,7 @@ import './index.css'
 import LoadingView from '@/components/LoadingView.tsx'
 import useDebouncedValue from '@/hooks/useDebouncedValue.ts'
 import EmptyView from '@/components/EmptyView.tsx'
-import { isEmpty } from 'lodash'
+import { isEmpty } from 'lodash-es'
 import dayjs from 'dayjs'
 
 interface SearchResponse {

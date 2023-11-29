@@ -1,5 +1,5 @@
 import React from 'react'
-import _ from 'lodash'
+import { groupBy, sortBy } from 'lodash-es'
 import { NoteType } from '@/types'
 import { displayName } from '@/utils'
 import { Link } from 'react-router-dom'
@@ -10,9 +10,9 @@ interface Props {
 }
 
 const GroupedNotes: React.FC<Props> = ({ data }) => {
-  const sortedNotes = _.sortBy(data, 'name')
+  const sortedNotes = sortBy(data, 'name')
 
-  const groupedData = _.groupBy(sortedNotes, item => {
+  const groupedData = groupBy(sortedNotes, item => {
     const firstChar = item.name[0]
     // eslint-disable-next-line no-control-regex
     return /[^\u0000-\u00FF]/.test(firstChar) ? '#' : firstChar.toUpperCase()

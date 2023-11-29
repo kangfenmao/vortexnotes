@@ -5,7 +5,7 @@ import useRequest from '@/hooks/useRequest.ts'
 import useDebouncedValue from '@/hooks/useDebouncedValue.ts'
 import LoadingView from '@/components/LoadingView.tsx'
 import GroupedNotes from '@/screens/NotesScreen/GroupedNotes.tsx'
-import { isEmpty } from 'lodash'
+import { isEmpty } from 'lodash-es'
 
 let cachedNotes: NoteType[] = []
 
