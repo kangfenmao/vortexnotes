@@ -21,14 +21,14 @@ const HomeScreen: React.FC = () => {
           <span className="text-violet-700">N</span>
           <span>OTE</span>
         </h1>
-        <section className="relative mb-10 w-full border border-white border-opacity-30 rounded-md">
+        <section className="relative mb-10 w-full border border-black border-opacity-20 dark:border-white dark:border-opacity-30 rounded-md">
           <input
             type="text"
             name="keywords"
             value={keywords}
             onChange={e => setKeywords(e.target.value)}
             placeholder="Search Notes"
-            className="px-4 py-3 w-full outline-none bg-white border border-gray-300 dark:bg-zinc-800 dark:border-transparent rounded-md"
+            className="px-4 py-3 w-full outline-none bg-white dark:bg-zinc-800 rounded-md"
             onKeyDown={e => e.key === 'Enter' && onSearch()}
             autoComplete="off"
             autoFocus

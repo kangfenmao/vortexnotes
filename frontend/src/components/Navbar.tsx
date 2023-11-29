@@ -19,7 +19,7 @@ const Navbar: React.FC<Props> = () => {
 
   const navbarBg = isHome ? '' : 'bg-white dark:bg-black dark:bg-transparent-20'
   const navbarBorder = isHome
-    ? ''
+    ? 'border-b border-transparent'
     : 'border-b border-gray-200 dark:border-white dark:border-opacity-10'
 
   return (
@@ -43,14 +43,14 @@ const Navbar: React.FC<Props> = () => {
         )}
         {!isHome && (
           <div className="flex-1 hidden sm:flex">
-            <section className="relative w-full md:w-1/2">
+            <section className="relative w-full md:w-1/2 rounded-md border border-black border-opacity-10 dark:border-white dark:border-opacity-20">
               <input
                 type="text"
                 name="keywords"
                 value={input}
                 onChange={e => setInput(e.target.value)}
                 placeholder="Search"
-                className="w-full px-4 py-2 outline-none rounded-md bg-transparent border border-black border-opacity-30 dark:border-white dark:border-opacity-30"
+                className="w-full px-4 py-2 outline-none rounded-md bg-transparent"
                 onKeyDown={e => e.key === 'Enter' && onSearch()}
                 autoComplete="off"
                 required
@@ -59,7 +59,7 @@ const Navbar: React.FC<Props> = () => {
                 type="button"
                 onClick={onSearch}
                 className="absolute top-0 bottom-0 right-0 w-12 flex flex-row justify-center items-center cursor-pointer opacity-70">
-                <i className="iconfont icon-search text-white text-1xl mr-1"></i>
+                <i className="iconfont icon-search opacity-70 text-black dark:text-white text-1xl mr-1"></i>
               </button>
             </section>
           </div>

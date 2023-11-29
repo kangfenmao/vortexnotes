@@ -1,4 +1,4 @@
-import { Link, useSearchParams } from 'react-router-dom'
+import { Link, useNavigate, useSearchParams } from 'react-router-dom'
 import React, { useEffect, useState } from 'react'
 import { displayName, runAsyncFunction } from '@/utils'
 import Navbar from '@/components/Navbar.tsx'
@@ -27,7 +27,7 @@ const SearchScreen: React.FC = () => {
   const [notes, setNotes] = useState<NoteType[]>(cachedSearchResult.get(keywords) || [])
   const [empty, setEmpty] = useState(false)
   const [loading, setLoading] = useState(false)
-
+  const navigate = useNavigate()
   useEffect(() => {
     runAsyncFunction(async () => {
       setLoading(true)
@@ -78,7 +78,8 @@ const SearchScreen: React.FC = () => {
                 dangerouslySetInnerHTML={{ __html: displayName(note.name) }}></h4>
             </Link>
             <p
-              className="font-medium opacity-80 line-clamp-5 search-content"
+              className="font-medium opacity-80 line-clamp-5 search-content cursor-pointer"
+              onClick={() => navigate(`/notes/${note.id}`)}
               dangerouslySetInnerHTML={{ __html: note.content }}></p>
             <span className="text-xs text-opacity-50">
               {dayjs(note.created_at).format('YYYY/MM/DD HH:mm')}
