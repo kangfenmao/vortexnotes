@@ -81,7 +81,7 @@ const SearchScreen: React.FC = () => {
               dangerouslySetInnerHTML={{ __html: note.content }}></p>
           </div>
         ))}
-        <div className="h-10"></div>
+        <footer className="py-5"></footer>
       </div>
     </main>
   )

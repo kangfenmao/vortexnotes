@@ -18,7 +18,7 @@ func Start() {
 func StartIndex() {
 	logger.Logger.Println("Indexer start")
 
-	err := BeforeStart()
+	err := ResetIndex()
 	if err != nil {
 		logger.Logger.Fatal("BeforeStart index error:", err)
 		return
@@ -45,7 +45,7 @@ func StartIndex() {
 	logger.Logger.Println("Indexer done.")
 }
 
-func BeforeStart() error {
+func ResetIndex() error {
 	database.DB.Where("1 = 1").Delete(&database.Note{})
 	blevesearch.ResetIndex()
 	return nil

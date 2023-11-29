@@ -22,7 +22,7 @@ func ListAllNotes(c *gin.Context) {
 	offset := (page - 1) * limit
 
 	var notes []database.Note
-	database.DB.Select("id", "name", "content").Order(Order).Limit(limit).Offset(offset).Find(&notes)
+	database.DB.Order(Order).Limit(limit).Offset(offset).Find(&notes)
 
 	c.JSON(http.StatusOK, notes)
 }

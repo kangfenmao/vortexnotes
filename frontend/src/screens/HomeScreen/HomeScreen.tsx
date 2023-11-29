@@ -2,11 +2,13 @@ import React, { useState } from 'react'
 import RecentlyNotes from '@/components/RecentlyNotes.tsx'
 import Navbar from '@/components/Navbar.tsx'
 import { useNavigate } from 'react-router-dom'
+import { onSearch as search } from '@/utils'
+
 const HomeScreen: React.FC = () => {
   const [keywords, setKeywords] = useState('')
   const navigate = useNavigate()
 
-  const onSearch = () => keywords.trim() && navigate(`/search?keywords=${keywords}`)
+  const onSearch = search.bind(this, keywords, navigate)
 
   return (
     <main className="flex flex-1">

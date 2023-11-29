@@ -1,3 +1,5 @@
+import { NavigateFunction } from 'react-router/dist/lib/hooks'
+
 export const runAsyncFunction = async (fn: () => void) => {
   fn()
 }
@@ -16,4 +18,14 @@ export function isValidFileName(fileName: string) {
   }
 
   return !fileName.startsWith('.')
+}
+
+export function onSearch(keywords: string, navigate: NavigateFunction) {
+  const searchWords = keywords.trim()
+
+  if (searchWords === '*') {
+    return navigate('/notes')
+  }
+
+  navigate(`/search?keywords=${searchWords}`)
 }

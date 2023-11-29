@@ -29,9 +29,6 @@ const RecentlyNotes: React.FC = () => {
           </li>
         ))}
       </ul>
-      <Link to="/notes" className="py-1 px-3 text-md opacity-50">
-        - All Notes -
-      </Link>
     </div>
   )
 }

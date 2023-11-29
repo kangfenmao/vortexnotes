@@ -1,6 +1,7 @@
 import { Link, useLocation, useNavigate, useSearchParams } from 'react-router-dom'
 import React, { useState } from 'react'
 import useTheme from '@/hooks/useTheme.ts'
+import { onSearch as search } from '@/utils'
 
 interface Props {}
 
@@ -14,7 +15,7 @@ const Navbar: React.FC<Props> = () => {
   const [theme, setTheme] = useTheme()
 
   const onGoBack = () => navigate('/')
-  const onSearch = () => input.trim() && navigate(`/search?keywords=${input}`)
+  const onSearch = search.bind(this, input, navigate)
 
   const navbarBg = isHome ? '' : 'bg-white dark:bg-black dark:bg-transparent-20'
   const navbarBorder = isHome
