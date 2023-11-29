@@ -1,4 +1,4 @@
-import { defineConfig } from 'vite'
+import { defineConfig, splitVendorChunkPlugin } from 'vite'
 import react from '@vitejs/plugin-react'
 import { fileURLToPath } from 'node:url'
 
@@ -16,7 +16,7 @@ export default defineConfig({
       }
     ]
   },
-  plugins: [react()],
+  plugins: [react(), splitVendorChunkPlugin()],
   build: {
     outDir: process.env.BUILD_GO ? '../backend/web' : 'dist'
   }
