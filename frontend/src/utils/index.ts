@@ -27,5 +27,9 @@ export function onSearch(keywords: string, navigate: NavigateFunction) {
     return navigate('/notes')
   }
 
+  if (searchWords.length < 1) {
+    return
+  }
+
   navigate(`/search?keywords=${searchWords}`)
 }
