@@ -21,14 +21,14 @@ const HomeScreen: React.FC = () => {
           <span className="text-violet-700">N</span>
           <span>OTE</span>
         </h1>
-        <section className="relative mb-10 w-full">
+        <section className="relative mb-10 w-full border border-white border-opacity-30 rounded-md">
           <input
             type="text"
             name="keywords"
             value={keywords}
             onChange={e => setKeywords(e.target.value)}
             placeholder="Search Notes"
-            className="px-4 py-3 w-full outline-none bg-white border border-indigo-500 dark:bg-zinc-800 dark:border-transparent"
+            className="px-4 py-3 w-full outline-none bg-white border border-gray-300 dark:bg-zinc-800 dark:border-transparent rounded-md"
             onKeyDown={e => e.key === 'Enter' && onSearch()}
             autoComplete="off"
             autoFocus
@@ -38,7 +38,7 @@ const HomeScreen: React.FC = () => {
             type="button"
             onClick={onSearch}
             className="absolute top-0 bottom-0 right-0 w-12 flex flex-row justify-center items-center cursor-pointer">
-            <i className="iconfont icon-search text-2xl opacity-70 hover:opacity-100 transition-opacity"></i>
+            <i className="iconfont icon-search text-2xl opacity-50 hover:opacity-90 transition-opacity"></i>
           </button>
         </section>
         <RecentlyNotes />

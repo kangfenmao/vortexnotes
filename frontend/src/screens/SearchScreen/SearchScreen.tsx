@@ -8,6 +8,7 @@ import LoadingView from '@/components/LoadingView.tsx'
 import useDebouncedValue from '@/hooks/useDebouncedValue.ts'
 import EmptyView from '@/components/EmptyView.tsx'
 import { isEmpty } from 'lodash'
+import dayjs from 'dayjs'
 
 interface SearchResponse {
   data: NoteType[]
@@ -73,12 +74,15 @@ const SearchScreen: React.FC = () => {
           <div className="mb-5" key={note.id + '_' + index}>
             <Link to={`/notes/${note.id}`}>
               <h4
-                className="mb-2 text-blue-400 font-bold text-xl"
+                className="mb-2 font-bold text-opacity-70 text-xl"
                 dangerouslySetInnerHTML={{ __html: displayName(note.name) }}></h4>
             </Link>
             <p
-              className="text-sm font-medium opacity-80 line-clamp-5 search-content"
+              className="font-medium opacity-80 line-clamp-5 search-content"
               dangerouslySetInnerHTML={{ __html: note.content }}></p>
+            <span className="text-xs text-opacity-50">
+              {dayjs(note.created_at).format('YYYY/MM/DD HH:mm')}
+            </span>
           </div>
         ))}
         <footer className="py-5"></footer>
