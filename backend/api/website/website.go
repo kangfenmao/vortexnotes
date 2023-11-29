@@ -11,10 +11,12 @@ func ServeRoot(c *gin.Context) {
 }
 
 func ServeAssets(c *gin.Context) {
+	c.Header("Cache-Control", "public, max-age=31536000")
 	http.FileServer(http.FS(web.Assets)).ServeHTTP(c.Writer, c.Request)
 }
 
 func ServePublic(c *gin.Context) {
+	c.Header("Cache-Control", "public, max-age=86400")
 	http.FileServer(http.FS(web.Public)).ServeHTTP(c.Writer, c.Request)
 }
 
