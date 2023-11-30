@@ -46,7 +46,7 @@ const SearchScreen: React.FC = () => {
     prevSearchKeywords = keywords
   }, [keywords])
 
-  const isLoading = useDebouncedValue(false, loading && !notes.length, 1000)
+  const isLoading = useDebouncedValue(false, loading, 1000)
 
   useEffect(() => {
     return () => {
@@ -60,7 +60,7 @@ const SearchScreen: React.FC = () => {
         <div className="mb-4 pt-2 text-sm" style={{ color: '#9aa0a6' }}>
           About {notes.length} results ({time.toFixed(6)} seconds)
         </div>
-        {isLoading && <LoadingView />}
+        {isLoading && !notes.length && <LoadingView />}
         {empty && <EmptyView title={'No Search Results'} className="flex-1 font-thin mt-20" />}
         {notes.map((note, index) => (
           <div className="mb-5" key={note.id + '_' + index}>
