@@ -36,7 +36,7 @@ const Navbar: React.FC<Props> = () => {
         {isHome && <div className="flex-1"></div>}
         {!isHome && (
           <Link to="/" className="flex flex-row items-center">
-            <img src="/public/icon-200x200.png" className="w-10 mr-2" alt="" />
+            <img src="/public/icon-200x200.png" className="w-10 mr-2 hover:animate-spin" alt="" />
             <span
               style={{ fontFamily: 'Major Mono Display' }}
               className="text-xl text-black dark:text-white">
