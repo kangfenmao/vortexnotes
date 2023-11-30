@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { displayName } from '@/utils'
-import Navbar from '@/components/Navbar.tsx'
 import { isAxiosError } from 'axios'
 import { NoteType } from '@/types'
 import useRequest from '@/hooks/useRequest.ts'
@@ -54,7 +53,6 @@ const NoteScreen: React.FC = () => {
 
   return (
     <main className="w-full">
-      <Navbar />
       <div className="container mx-auto px-5 pt-20 max-w-lg sm:max-w-6xl">
         {loading && !note && <LoadingView />}
         {note && (

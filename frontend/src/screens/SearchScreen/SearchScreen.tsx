@@ -1,7 +1,6 @@
 import { Link, useNavigate, useSearchParams } from 'react-router-dom'
 import React, { useEffect, useState } from 'react'
 import { displayName, runAsyncFunction } from '@/utils'
-import Navbar from '@/components/Navbar.tsx'
 import { NoteType } from '@/types'
 import './index.css'
 import LoadingView from '@/components/LoadingView.tsx'
@@ -57,19 +56,12 @@ const SearchScreen: React.FC = () => {
 
   return (
     <main className="w-full flex">
-      <Navbar />
       <div className="container mx-auto mt-20 px-5 max-w-lg sm:max-w-6xl flex flex-col flex-1">
         <div className="mb-4 pt-2 text-sm" style={{ color: '#9aa0a6' }}>
           About {notes.length} results ({time.toFixed(6)} seconds)
         </div>
         {isLoading && <LoadingView />}
-        {empty && (
-          <EmptyView
-            title={'No Search Results'}
-            className="flex-1 font-thin"
-            style={{ marginTop: '-10%' }}
-          />
-        )}
+        {empty && <EmptyView title={'No Search Results'} className="flex-1 font-thin mt-20" />}
         {notes.map((note, index) => (
           <div className="mb-5" key={note.id + '_' + index}>
             <Link to={`/notes/${note.id}`}>

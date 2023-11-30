@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
 import RecentlyNotes from '@/components/RecentlyNotes.tsx'
-import Navbar from '@/components/Navbar.tsx'
 import { useNavigate } from 'react-router-dom'
 import { onSearch as search } from '@/utils'
 
@@ -12,7 +11,6 @@ const HomeScreen: React.FC = () => {
 
   return (
     <main className="flex flex-1">
-      <Navbar />
       <div className="flex flex-col mt-28 sm:m-auto items-center w-full px-5 transition-all duration-150 max-w-xl">
         <div className="flex flex-col items-center">
           <img src="/public/icon-200x200.png" className="w-28" alt="" />

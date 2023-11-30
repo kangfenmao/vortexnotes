@@ -9,31 +9,38 @@ import '@uiw/react-md-editor/markdown-editor.css'
 import '@uiw/react-markdown-preview/markdown.css'
 import NotesScreen from '@/screens/NotesScreen'
 import TopViewContainer from '@/components/TopView.tsx'
+import Root from '@/components/Root.tsx'
 
 const router = createBrowserRouter([
   {
     path: '/',
-    element: <HomeScreen />
-  },
-  {
-    path: '/search',
-    element: <SearchScreen />
-  },
-  {
-    path: '/notes',
-    element: <NotesScreen />
-  },
-  {
-    path: '/notes/:id',
-    element: <NoteScreen />
-  },
-  {
-    path: '/notes/:id/edit',
-    element: <EditNoteScreen />
-  },
-  {
-    path: '/new',
-    element: <NewNoteScreen />
+    element: <Root />,
+    children: [
+      {
+        index: true,
+        element: <HomeScreen />
+      },
+      {
+        path: '/search',
+        element: <SearchScreen />
+      },
+      {
+        path: '/notes',
+        element: <NotesScreen />
+      },
+      {
+        path: '/notes/:id',
+        element: <NoteScreen />
+      },
+      {
+        path: '/notes/:id/edit',
+        element: <EditNoteScreen />
+      },
+      {
+        path: '/new',
+        element: <NewNoteScreen />
+      }
+    ]
   }
 ])
 

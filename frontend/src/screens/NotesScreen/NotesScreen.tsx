@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react'
-import Navbar from '@/components/Navbar.tsx'
 import { NoteType } from '@/types'
 import useRequest from '@/hooks/useRequest.ts'
 import useDebouncedValue from '@/hooks/useDebouncedValue.ts'
@@ -34,7 +33,6 @@ const NotesScreen: React.FC = () => {
 
   return (
     <main className="w-full">
-      <Navbar />
       <div className="container mx-auto px-5 mt-20 max-w-lg sm:max-w-6xl">
         {loading && isEmpty(notes) && <LoadingView />}
         <GroupedNotes data={notes} />

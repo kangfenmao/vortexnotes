@@ -28,7 +28,7 @@ const Navbar: React.FC<Props> = () => {
         zIndex: 100,
         backgroundColor: isHome ? 'transparent' : 'var(--theme-navbar-color)'
       }}>
-      <div className="flex flex-row items-center justify-between m-auto w-full px-5 max-w-lg sm:max-w-6xl">
+      <div className="flex flex-row items-center justify-between m-auto w-full px-5 ">
         {isHome && <div className="flex-1"></div>}
         {!isHome && (
           <Link to="/" className="flex flex-row items-center">
@@ -41,8 +41,8 @@ const Navbar: React.FC<Props> = () => {
           </Link>
         )}
         {!isHome && (
-          <div className="flex-1 hidden sm:flex">
-            <section className="relative w-full md:w-1/2 ml-4 rounded-md border border-black border-opacity-10 dark:border-white dark:border-opacity-20">
+          <div className="flex-1 hidden sm:flex mx-8">
+            <section className="relative w-full rounded-full border border-black border-opacity-10 dark:border-white dark:border-opacity-20">
               <input
                 type="text"
                 name="keywords"
@@ -63,7 +63,7 @@ const Navbar: React.FC<Props> = () => {
             </section>
           </div>
         )}
-        <span className="flex flex-row items-center ml-5">
+        <div className="flex flex-row items-center">
           <label className="swap swap-rotate opacity-60 hover:opacity-80 transition-opacity">
             {/* this hidden checkbox controls the state */}
             <input
@@ -94,7 +94,7 @@ const Navbar: React.FC<Props> = () => {
               <button className="text-black dark:text-white ml-1">New Note</button>
             </div>
           </Link>
-        </span>
+        </div>
       </div>
     </div>
   )
