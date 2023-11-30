@@ -33,12 +33,28 @@ To start using VortexNotes, follow these steps:
 5. Paste your content into the submission field and let it disappear into the void.
 6. Use the search interface to retrieve your notes when needed.
 
+## Docker compose
+
+```yml
+version: '3'
+
+services:
+  vortexnotes:
+    container_name: vortexnotes
+    image: vortexnotes:latest
+    ports:
+      - "7701:7701"
+    volumes:
+      - ./app/data/notes:/data/notes
+      - ./app/data/vortexnotes:/data/vortexnotes
+```
+
 ## Service Port
 
-| Service     | Port | Public |
-|-------------|------|--------|
-| API         | 7701 | false  |
-| Web         | 7702 | true   |
+| Service | Port | Public |
+|---------|------|--------|
+| API     | 7701 | true   |
+| Web     | 7701 | true   |
 
 ## Contributing
 
