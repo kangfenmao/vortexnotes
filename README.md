@@ -2,6 +2,14 @@
 
 VortexNotes is a unique web-based note-taking software that offers a different approach to managing your notes.
 
+## Overview
+
+<a href="" target="_blank">
+  <div align="center">
+    <img width="668" alt="image" src="https://github.com/kangfenmao/vortexnotes/assets/8253512/6c7e6893-3e41-4580-90a3-747cafba0638">
+  </div>
+</a>
+
 ## Introduction
 
 VortexNotes is designed to be a simple yet powerful note-taking tool. It provides users with a single entry point to submit new content without the need for note organization or management features. It serves as a "black hole" for your notes, where you can simply paste your content and let it disappear into the void.
