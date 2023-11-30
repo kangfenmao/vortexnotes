@@ -74,11 +74,11 @@ const SearchScreen: React.FC = () => {
           <div className="mb-5" key={note.id + '_' + index}>
             <Link to={`/notes/${note.id}`}>
               <h4
-                className="mb-2 font-bold text-opacity-70 text-xl"
+                className="mb-2 font-bold text-xl"
                 dangerouslySetInnerHTML={{ __html: displayName(note.name) }}></h4>
             </Link>
             <p
-              className="font-medium opacity-80 line-clamp-5 search-content cursor-pointer"
+              className="font-medium line-clamp-5 search-content cursor-pointer"
               onClick={() => navigate(`/notes/${note.id}`)}
               dangerouslySetInnerHTML={{ __html: note.content }}></p>
             <span className="text-xs text-opacity-50">

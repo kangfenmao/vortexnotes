@@ -73,3 +73,8 @@ mark {
     color: var(--theme-mark-color);
     font-weight: 700;
 }
+
+.wmde-markdown ol li {
+    list-style: auto;
+}
+

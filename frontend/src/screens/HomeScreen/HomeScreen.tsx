@@ -14,13 +14,12 @@ const HomeScreen: React.FC = () => {
     <main className="flex flex-1">
       <Navbar />
       <div className="flex flex-col mt-28 sm:m-auto items-center w-full px-5 transition-all duration-150 max-w-xl">
-        <h1
-          className="font-bold align-middle mb-8 text-4xl sm:text-5xl select-none"
-          style={{ fontFamily: 'Major Mono Display' }}>
-          <span className="text-red-500">V</span>
-          <span className="text-violet-700">N</span>
-          <span>OTE</span>
-        </h1>
+        <div className="flex flex-col items-center">
+          <img src="/public/icon-200x200.png" className="w-28" alt="" />
+          <span style={{ fontFamily: 'Major Mono Display' }} className="text-sm mb-5">
+            vortex notes
+          </span>
+        </div>
         <section className="relative mb-10 w-full border border-black border-opacity-20 dark:border-white dark:border-opacity-30 rounded-md">
           <input
             type="text"

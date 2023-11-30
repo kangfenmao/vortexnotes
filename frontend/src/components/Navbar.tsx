@@ -14,7 +14,6 @@ const Navbar: React.FC<Props> = () => {
   const isHome = location.pathname === '/'
   const [theme, setTheme] = useTheme()
 
-  const onGoBack = () => navigate('/')
   const onSearch = search.bind(this, input, navigate)
 
   const navbarBg = isHome ? '' : 'bg-white dark:bg-black dark:bg-transparent-20'
@@ -32,18 +31,18 @@ const Navbar: React.FC<Props> = () => {
       <div className="flex flex-row items-center justify-between m-auto w-full px-5 max-w-lg sm:max-w-6xl">
         {isHome && <div className="flex-1"></div>}
         {!isHome && (
-          <h1
-            className="text-2xl md:text-4xl font-bold mr-5 cursor-pointer select-none"
-            style={{ fontFamily: 'Major Mono Display' }}
-            onClick={onGoBack}>
-            <span className="text-red-500">V</span>
-            <span className="text-violet-700">N</span>
-            <span>OTE</span>
-          </h1>
+          <Link to="/" className="flex flex-row items-center">
+            <img src="/public/icon-200x200.png" className="w-10 mr-2" alt="" />
+            <span
+              style={{ fontFamily: 'Major Mono Display' }}
+              className="text-xl text-black dark:text-white">
+              VORTEX
+            </span>
+          </Link>
         )}
         {!isHome && (
           <div className="flex-1 hidden sm:flex">
-            <section className="relative w-full md:w-1/2 rounded-md border border-black border-opacity-10 dark:border-white dark:border-opacity-20">
+            <section className="relative w-full md:w-1/2 ml-4 rounded-md border border-black border-opacity-10 dark:border-white dark:border-opacity-20">
               <input
                 type="text"
                 name="keywords"
