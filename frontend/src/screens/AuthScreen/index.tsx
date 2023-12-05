@@ -66,7 +66,7 @@ const AuthScreen: React.FC = () => {
             <input
               type="password"
               placeholder={error ? 'Passcode Invalid' : 'Enter Passcode'}
-              className={`w-full input input-bordered pr-20 ${inputErrorClass}`}
+              className={`w-full input input-bordered pr-12 ${inputErrorClass}`}
               value={passcode}
               ref={inputRef}
               onKeyDown={e => e.key === 'Enter' && onAuth()}
