@@ -35,9 +35,11 @@ export function onSearch(keywords: string, navigate: NavigateFunction) {
 }
 
 export const hasPermission = (scope: string) => {
-  if (!localStorage.vortexnotes_passcode) {
+  if (localStorage.vortexnotes_auth_type === 'passcode') {
     if (localStorage.vortexnotes_auth_scope?.includes(scope)) {
-      return false
+      if (!localStorage.vortexnotes_passcode) {
+        return false
+      }
     }
   }
 

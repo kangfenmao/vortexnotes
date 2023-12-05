@@ -15,6 +15,7 @@ const Navbar: React.FC<Props> = () => {
   const [theme, setTheme] = useTheme()
 
   const onSearch = search.bind(this, input, navigate)
+  const isPasscodeAuth = localStorage.vortexnotes_auth_type === 'passcode'
 
   useEffect(() => {
     setInput(keywords)
@@ -100,9 +101,6 @@ const Navbar: React.FC<Props> = () => {
             <Link to="/new">
               <button className="flex flex-row items-center ml-5 opacity-60 hover:opacity-80 transition-opacity">
                 <i className="iconfont icon-add-circle text-black dark:text-white text-2xl"></i>
-                <span className="text-black dark:text-white ml-1" style={{ marginTop: '-2px' }}>
-                  New Note
-                </span>
               </button>
             </Link>
           )}
@@ -124,25 +122,29 @@ const Navbar: React.FC<Props> = () => {
                   </div>
                 </Link>
               </li>
-              {!hasPasscode() && (
-                <li>
-                  <Link to="/auth">
-                    <div className="flex flex-row items-center opacity-60">
-                      <i className="iconfont icon-user text-black dark:text-white text-2xl"></i>
-                      <span className="text-black dark:text-white ml-2">Login</span>
-                    </div>
-                  </Link>
-                </li>
-              )}
-              {hasPasscode() && (
-                <li>
-                  <Link to="" onClick={onLogout}>
-                    <div className="flex flex-row items-center opacity-60">
-                      <i className="iconfont icon-logout text-black dark:text-white text-2xl"></i>
-                      <span className="text-black dark:text-white ml-2">Logout</span>
-                    </div>
-                  </Link>
-                </li>
+              {isPasscodeAuth && (
+                <>
+                  {!hasPasscode() && (
+                    <li>
+                      <Link to="/auth">
+                        <div className="flex flex-row items-center opacity-60">
+                          <i className="iconfont icon-user text-black dark:text-white text-2xl"></i>
+                          <span className="text-black dark:text-white ml-2">Login</span>
+                        </div>
+                      </Link>
+                    </li>
+                  )}
+                  {hasPasscode() && (
+                    <li>
+                      <Link to="" onClick={onLogout}>
+                        <div className="flex flex-row items-center opacity-60">
+                          <i className="iconfont icon-logout text-black dark:text-white text-2xl"></i>
+                          <span className="text-black dark:text-white ml-2">Logout</span>
+                        </div>
+                      </Link>
+                    </li>
+                  )}
+                </>
               )}
             </ul>
           </div>

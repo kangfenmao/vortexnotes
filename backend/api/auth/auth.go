@@ -20,9 +20,11 @@ func Auth(c *gin.Context) {
 		return
 	}
 
-	if requestData.Passcode != passcode {
-		c.JSON(http.StatusBadRequest, gin.H{"message": "ePasscode Invalid"})
-		return
+	if passcode != "" {
+		if requestData.Passcode != passcode {
+			c.JSON(http.StatusBadRequest, gin.H{"message": "Passcode Invalid"})
+			return
+		}
 	}
 
 	authScopes := os.Getenv("VORTEXNOTES_AUTH_SCOPE")

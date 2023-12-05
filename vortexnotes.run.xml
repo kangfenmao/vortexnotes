@@ -3,7 +3,7 @@
     <module name="vortexnotes" />
     <working_directory value="$PROJECT_DIR$/app" />
     <envs>
-      <env name="VORTEXNOTES_AUTH_SCOPE" value="create,edit,delete" />
+      <env name="VORTEXNOTES_AUTH_SCOPE" value="show,create,edit,delete" />
       <env name="VORTEXNOTES_PASSCODE" value="123456" />
     </envs>
     <kind value="PACKAGE" />
