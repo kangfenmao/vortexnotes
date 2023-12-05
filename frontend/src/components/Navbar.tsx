@@ -2,6 +2,7 @@ import { Link, useLocation, useNavigate, useSearchParams } from 'react-router-do
 import React, { useEffect, useState } from 'react'
 import useTheme from '@/hooks/useTheme.ts'
 import { hasPasscode, hasPermission, onSearch as search } from '@/utils'
+import { getAxiosInstance } from '@/config/http.ts'
 
 interface Props {}
 
@@ -24,12 +25,15 @@ const Navbar: React.FC<Props> = () => {
 
   const onLogout = () => {
     localStorage.removeItem('vortexnotes_passcode')
+    window.$http = getAxiosInstance()
+    navigate('/')
   }
 
   const onMenuItemClick = () => {
     setShowMenu(false)
     setTimeout(() => setShowMenu(true), 500)
   }
+
   const navbarBg = isHome ? '' : 'bg-white dark:bg-black dark:bg-transparent-20'
   const navbarBorder = isHome
     ? 'border-b border-transparent'

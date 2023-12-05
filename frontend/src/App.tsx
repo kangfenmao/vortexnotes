@@ -1,6 +1,6 @@
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import HomeScreen from '@/screens/HomeScreen'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import SearchScreen from '@/screens/SearchScreen'
 import NoteScreen from '@/screens/NoteScreen'
 import NewNoteScreen from '@/screens/NewNoteScreen'
@@ -11,7 +11,8 @@ import NotesScreen from '@/screens/NotesScreen'
 import TopViewContainer from '@/components/TopView.tsx'
 import Root from '@/components/Root.tsx'
 import AuthScreen from '@/screens/AuthScreen'
-import InitScreen from '@/screens/InitScreen'
+import LoadingView from '@/components/LoadingView.tsx'
+import { fetchConfig } from '@/utils/api.ts'
 
 const router = createBrowserRouter([
   {
@@ -45,16 +46,31 @@ const router = createBrowserRouter([
     ]
   },
   {
-    path: '/init',
-    element: <InitScreen />
-  },
-  {
     path: '/auth',
     element: <AuthScreen />
   }
 ])
 
 const App: React.FC = () => {
+  const [ready, setReady] = useState(false)
+
+  useEffect(() => {
+    if (localStorage.vortexnotes_auth_scope) {
+      setReady(true)
+      fetchConfig()
+    } else {
+      fetchConfig().then(() => setReady(true))
+    }
+  }, [])
+
+  if (!ready) {
+    return (
+      <main className="flex flex-1 justify-center items-center">
+        <LoadingView />
+      </main>
+    )
+  }
+
   return (
     <TopViewContainer>
       <RouterProvider router={router} />
