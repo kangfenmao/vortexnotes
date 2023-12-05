@@ -4,7 +4,7 @@ import (
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"vortexnotes/backend/api/auth"
-	"vortexnotes/backend/api/configuration"
+	"vortexnotes/backend/api/conf"
 	"vortexnotes/backend/api/middlewares"
 	"vortexnotes/backend/api/notes"
 	"vortexnotes/backend/api/website"
@@ -26,7 +26,7 @@ func Start() {
 
 	api := server.Group("/api")
 	{
-		api.GET("/config", configuration.Config)
+		api.GET("/config", conf.Config)
 		api.POST("/auth", auth.Auth)
 		api.GET("/search", middlewares.HasPermission("show"), notes.SearchNotes)
 		api.GET("/notes", middlewares.HasPermission("show"), notes.ListAllNotes)
