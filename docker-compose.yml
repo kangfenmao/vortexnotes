@@ -4,6 +4,9 @@ services:
   vortexnotes:
     container_name: vortexnotes
     image: vortexnotes:latest
+    environment:
+      VORTEXNOTES_PASSCODE: 123456
+      VORTEXNOTES_AUTH_SCOPE: create,edit,delete
     ports:
       - "0.0.0.0:7701:7701"
     volumes:

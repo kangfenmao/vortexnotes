@@ -1,7 +1,7 @@
 import { Link, useLocation, useNavigate, useSearchParams } from 'react-router-dom'
 import React, { useEffect, useState } from 'react'
 import useTheme from '@/hooks/useTheme.ts'
-import { onSearch as search } from '@/utils'
+import { hasPasscode, hasPermission, onSearch as search } from '@/utils'
 
 interface Props {}
 
@@ -19,6 +19,10 @@ const Navbar: React.FC<Props> = () => {
   useEffect(() => {
     setInput(keywords)
   }, [keywords])
+
+  const onLogout = () => {
+    localStorage.removeItem('vortexnotes_passcode')
+  }
 
   const navbarBg = isHome ? '' : 'bg-white dark:bg-black dark:bg-transparent-20'
   const navbarBorder = isHome
@@ -92,12 +96,56 @@ const Navbar: React.FC<Props> = () => {
               <path d="M21.64,13a1,1,0,0,0-1.05-.14,8.05,8.05,0,0,1-3.37.73A8.15,8.15,0,0,1,9.08,5.49a8.59,8.59,0,0,1,.25-2A1,1,0,0,0,8,2.36,10.14,10.14,0,1,0,22,14.05,1,1,0,0,0,21.64,13Zm-9.5,6.69A8.14,8.14,0,0,1,7.08,5.22v.27A10.15,10.15,0,0,0,17.22,15.63a9.79,9.79,0,0,0,2.1-.22A8.11,8.11,0,0,1,12.14,19.73Z" />
             </svg>
           </label>
-          <Link to="/new">
-            <div className="flex flex-row items-center ml-5 opacity-60 hover:opacity-80 transition-opacity">
-              <i className="iconfont icon-add-circle text-black dark:text-white text-2xl"></i>
-              <button className="text-black dark:text-white ml-1">New Note</button>
-            </div>
-          </Link>
+          {hasPermission('create') && (
+            <Link to="/new">
+              <button className="flex flex-row items-center ml-5 opacity-60 hover:opacity-80 transition-opacity">
+                <i className="iconfont icon-add-circle text-black dark:text-white text-2xl"></i>
+                <span className="text-black dark:text-white ml-1" style={{ marginTop: '-2px' }}>
+                  New Note
+                </span>
+              </button>
+            </Link>
+          )}
+          <div className="dropdown dropdown-end">
+            <button className="flex flex-row items-center ml-5 opacity-60 hover:opacity-80 transition-opacity">
+              <i className="iconfont icon-menu text-black dark:text-white text-2xl"></i>
+              <span className="text-black dark:text-white ml-1" style={{ marginTop: '-2px' }}>
+                Menu
+              </span>
+            </button>
+            <ul
+              tabIndex={0}
+              className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-btn w-36 mt-2">
+              <li>
+                <Link to="/notes">
+                  <div className="flex flex-row items-center opacity-60">
+                    <i className="iconfont icon-Notes text-black dark:text-white text-2xl"></i>
+                    <span className="text-black dark:text-white ml-2">All Notes</span>
+                  </div>
+                </Link>
+              </li>
+              {!hasPasscode() && (
+                <li>
+                  <Link to="/auth">
+                    <div className="flex flex-row items-center opacity-60">
+                      <i className="iconfont icon-user text-black dark:text-white text-2xl"></i>
+                      <span className="text-black dark:text-white ml-2">Login</span>
+                    </div>
+                  </Link>
+                </li>
+              )}
+              {hasPasscode() && (
+                <li>
+                  <Link to="" onClick={onLogout}>
+                    <div className="flex flex-row items-center opacity-60">
+                      <i className="iconfont icon-logout text-black dark:text-white text-2xl"></i>
+                      <span className="text-black dark:text-white ml-2">Logout</span>
+                    </div>
+                  </Link>
+                </li>
+              )}
+            </ul>
+          </div>
         </div>
       </div>
     </div>

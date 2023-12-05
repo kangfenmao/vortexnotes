@@ -20,3 +20,12 @@ func FileExists(filePath string) bool {
 	_, err := os.Stat(filePath)
 	return !os.IsNotExist(err)
 }
+
+func ArrayContainsString(arr []string, target string) bool {
+	for _, str := range arr {
+		if str == target {
+			return true
+		}
+	}
+	return false
+}

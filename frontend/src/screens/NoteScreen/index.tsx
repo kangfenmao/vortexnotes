@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
-import { displayName } from '@/utils'
+import { displayName, hasPermission } from '@/utils'
 import { isAxiosError } from 'axios'
 import { NoteType } from '@/types'
 import useRequest from '@/hooks/useRequest.ts'
@@ -59,20 +59,24 @@ const NoteScreen: React.FC = () => {
           <>
             <div className="flex flex-row items-center mb-4">
               <h1 className="flex-1 text-2xl font-bold line-clamp-1">{displayName(note.name)}</h1>
-              <button
-                tabIndex={4}
-                className="p-1 px-2 transition-all rounded-md flex flex-row items-center opacity-70 hover:bg-gray-200 dark:hover:bg-zinc-900 hover:opacity-90"
-                onClick={onEdit}>
-                <i className="iconfont icon-edit1 text-2xl mr-1"></i>
-                <span className="hidden sm:inline">Edit</span>
-              </button>
-              <button
-                className="p-1 px-2 text-red-400 hover:bg-red-500 hover:text-white transition-all rounded-md flex flex-row items-center"
-                onClick={onDelete}
-                tabIndex={3}>
-                <i className="iconfont icon-delete text-2xl mr-1"></i>
-                <span className="hidden sm:inline">Delete</span>
-              </button>
+              {hasPermission('edit') && (
+                <button
+                  tabIndex={4}
+                  className="p-1 px-2 transition-all rounded-md flex flex-row items-center opacity-70 hover:bg-gray-200 dark:hover:bg-zinc-900 hover:opacity-90"
+                  onClick={onEdit}>
+                  <i className="iconfont icon-edit1 text-2xl mr-1"></i>
+                  <span className="hidden sm:inline">Edit</span>
+                </button>
+              )}
+              {hasPermission('delete') && (
+                <button
+                  className="p-1 px-2 text-red-400 hover:bg-red-500 hover:text-white transition-all rounded-md flex flex-row items-center"
+                  onClick={onDelete}
+                  tabIndex={3}>
+                  <i className="iconfont icon-delete text-2xl mr-1"></i>
+                  <span className="hidden sm:inline">Delete</span>
+                </button>
+              )}
             </div>
             <MDEditor.Markdown
               source={note.content}

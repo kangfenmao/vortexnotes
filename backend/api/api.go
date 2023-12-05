@@ -3,6 +3,9 @@ package api
 import (
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
+	"vortexnotes/backend/api/auth"
+	"vortexnotes/backend/api/configuration"
+	"vortexnotes/backend/api/middlewares"
 	"vortexnotes/backend/api/notes"
 	"vortexnotes/backend/api/website"
 	"vortexnotes/backend/config"
@@ -10,7 +13,10 @@ import (
 
 func Start() {
 	server := gin.Default()
-	server.Use(cors.Default())
+	corsConfig := cors.DefaultConfig()
+	corsConfig.AllowAllOrigins = true
+	corsConfig.AllowHeaders = []string{"Origin", "Content-Length", "Content-Type", "Authorization"}
+	server.Use(cors.New(corsConfig))
 
 	server.GET("/", website.ServeRoot)
 	server.GET("/assets/*filepath", website.ServeAssets)
@@ -20,12 +26,14 @@ func Start() {
 
 	api := server.Group("/api")
 	{
-		api.GET("/notes", notes.ListAllNotes)
-		api.GET("/notes/:id", notes.GetNote)
-		api.DELETE("/notes/:id", notes.DeleteNote)
-		api.PATCH("/notes/:id", notes.UpdateNote)
-		api.POST("/notes/new", notes.CreateNote)
-		api.GET("/search", notes.SearchNotes)
+		api.GET("/config", configuration.Config)
+		api.POST("/auth", auth.Auth)
+		api.GET("/search", middlewares.HasPermission("show"), notes.SearchNotes)
+		api.GET("/notes", middlewares.HasPermission("show"), notes.ListAllNotes)
+		api.GET("/notes/:id", middlewares.HasPermission("show"), notes.GetNote)
+		api.DELETE("/notes/:id", middlewares.HasPermission("delete"), notes.DeleteNote)
+		api.PATCH("/notes/:id", middlewares.HasPermission("edit"), notes.UpdateNote)
+		api.POST("/notes/new", middlewares.HasPermission("create"), notes.CreateNote)
 	}
 
 	server.SetTrustedProxies(nil)

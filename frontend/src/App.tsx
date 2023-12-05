@@ -10,6 +10,8 @@ import '@uiw/react-markdown-preview/markdown.css'
 import NotesScreen from '@/screens/NotesScreen'
 import TopViewContainer from '@/components/TopView.tsx'
 import Root from '@/components/Root.tsx'
+import AuthScreen from '@/screens/AuthScreen'
+import InitScreen from '@/screens/InitScreen'
 
 const router = createBrowserRouter([
   {
@@ -41,6 +43,14 @@ const router = createBrowserRouter([
         element: <NewNoteScreen />
       }
     ]
+  },
+  {
+    path: '/init',
+    element: <InitScreen />
+  },
+  {
+    path: '/auth',
+    element: <AuthScreen />
   }
 ])
 

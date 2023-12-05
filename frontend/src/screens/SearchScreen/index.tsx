@@ -27,6 +27,7 @@ const SearchScreen: React.FC = () => {
   const [empty, setEmpty] = useState(false)
   const [loading, setLoading] = useState(false)
   const navigate = useNavigate()
+
   useEffect(() => {
     runAsyncFunction(async () => {
       setLoading(true)

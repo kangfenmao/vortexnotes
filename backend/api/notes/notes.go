@@ -63,7 +63,7 @@ func CreateNote(c *gin.Context) {
 	var requestData RequestData
 
 	if err := c.BindJSON(&requestData); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		c.JSON(http.StatusBadRequest, gin.H{"message": err.Error()})
 		return
 	}
 
@@ -156,7 +156,7 @@ func UpdateNote(c *gin.Context) {
 	err := indexer.DeleteNote(id)
 	if err != nil {
 		c.JSON(http.StatusNotFound, gin.H{
-			"error": err,
+			"message": err,
 		})
 		return
 	}

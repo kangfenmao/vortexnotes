@@ -33,3 +33,17 @@ export function onSearch(keywords: string, navigate: NavigateFunction) {
 
   navigate(`/search?keywords=${searchWords}`)
 }
+
+export const hasPermission = (scope: string) => {
+  if (!localStorage.vortexnotes_passcode) {
+    if (localStorage.vortexnotes_auth_scope?.includes(scope)) {
+      return false
+    }
+  }
+
+  return true
+}
+
+export const hasPasscode = () => {
+  return !!localStorage.vortexnotes_passcode
+}

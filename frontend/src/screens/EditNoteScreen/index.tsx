@@ -1,23 +1,39 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { isValidFileName } from '@/utils'
-import { useBlocker, useNavigate } from 'react-router-dom'
-import MDEditor from '@uiw/react-md-editor'
+import { displayName, isValidFileName } from '@/utils'
 import { isAxiosError } from 'axios'
+import { useBlocker, useNavigate, useParams } from 'react-router-dom'
+import useRequest from '@/hooks/useRequest.ts'
+import { NoteType } from '@/types'
+import MDEditor from '@uiw/react-md-editor'
 import AlertPopup from '@/components/popups/AlertPopup.tsx'
+import usePermissionCheckEffect from '@/hooks/usePermissionCheckEffect.ts'
 
-const NewNoteScreen: React.FC = () => {
-  const [title, setTitle] = useState('')
-  const [content, setContent] = useState('')
+const EditNoteScreen: React.FC = () => {
+  const params = useParams()
+  const id = params.id
+  const sessionNote = JSON.parse(sessionStorage.getItem(`EDIT_NOTE:${id}`)!)
+  const [title, setTitle] = useState(sessionNote?.name || '')
+  const [content, setContent] = useState(sessionNote?.content || '')
+  const [edited, setEdited] = useState(false)
   const [saving, setSaving] = useState(false)
+  const { data } = useRequest<NoteType>({ method: 'GET', url: `notes/${id}` })
   const navigate = useNavigate()
+
+  useEffect(() => {
+    if (data) {
+      setTitle(displayName(data.name))
+      setContent(data.content)
+    }
+  }, [data])
+
+  usePermissionCheckEffect('edit')
 
   const titleInputRef = useRef<HTMLInputElement>(null)
   const contentInputRef = useRef<HTMLTextAreaElement>(null)
 
-  const isEdited = title !== '' || content !== ''
   const blocker = useBlocker(
     ({ currentLocation, nextLocation }) =>
-      !saving && isEdited && currentLocation.pathname !== nextLocation.pathname
+      !saving && edited && currentLocation.pathname !== nextLocation.pathname
   )
 
   useEffect(() => {
@@ -30,6 +46,8 @@ const NewNoteScreen: React.FC = () => {
       blocker.reset()
     }
   }, [blocker, navigate])
+
+  const onEdit = () => !edited && setEdited(true)
 
   const onCancel = () => {
     history.back()
@@ -54,8 +72,8 @@ const NewNoteScreen: React.FC = () => {
     try {
       setSaving(true)
 
-      const res = await window.$http.post('notes/new', {
-        name: title.trim(),
+      const res = await window.$http.patch(`notes/${id}`, {
+        name: displayName(title.trim()),
         content: content.trim()
       })
 
@@ -79,17 +97,17 @@ const NewNoteScreen: React.FC = () => {
 
   return (
     <main className="w-full">
-      <div className="container mx-auto px-5 pt-20 max-w-8xl">
+      <div className="container mx-auto px-5 pt-20 sm:max-w-8xl flex flex-col flex-1">
         <div className="flex flex-row items-center mb-4">
           <input
             className="text-2xl sm:text-2xl w-full font-bold line-clamp-1 bg-transparent outline-none"
             placeholder="Title"
-            autoFocus
             name="title"
-            value={title}
+            value={displayName(title)}
             ref={titleInputRef}
             tabIndex={1}
             onChange={e => setTitle(e.target.value)}
+            onKeyDown={onEdit}
           />
           <button
             tabIndex={4}
@@ -115,6 +133,7 @@ const NewNoteScreen: React.FC = () => {
           ref={contentInputRef}
           height={window.innerHeight - 180}
           preview={window.innerWidth < 500 ? 'edit' : 'live'}
+          onKeyDown={onEdit}
         />
         <footer className="h-5"></footer>
       </div>
@@ -122,4 +141,4 @@ const NewNoteScreen: React.FC = () => {
   )
 }
 
-export default NewNoteScreen
+export default EditNoteScreen
