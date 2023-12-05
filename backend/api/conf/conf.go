@@ -7,24 +7,22 @@ import (
 )
 
 func Config(c *gin.Context) {
-	needAuthScopes := os.Getenv("VORTEXNOTES_AUTH_SCOPE")
+	authScopes := os.Getenv("VORTEXNOTES_AUTH_SCOPE")
 	passcode := os.Getenv("VORTEXNOTES_PASSCODE")
-	authType := "none"
 
-	if needAuthScopes == "" {
-		needAuthScopes = "show,create,edit,delete"
+	if authScopes == "" {
+		authScopes = "show,create,edit,delete"
 	}
 
 	if passcode != "" {
-		authType = "passcode"
 		c.JSON(http.StatusOK, gin.H{
-			"auth_type":  authType,
-			"auth_scope": needAuthScopes,
+			"auth_type":  "passcode",
+			"auth_scope": authScopes,
 		})
 		return
 	}
 
 	c.JSON(http.StatusOK, gin.H{
-		"auth_type": authType,
+		"auth_type": "none",
 	})
 }

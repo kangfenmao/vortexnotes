@@ -16,7 +16,7 @@ const Navbar: React.FC<Props> = () => {
   const [showMenu, setShowMenu] = useState(true)
 
   const onSearch = search.bind(this, input, navigate)
-  const isPasscodeAuth = localStorage.vortexnotes_auth_type === 'passcode'
+  const isPasscodeAuth = localStorage.vortexnotes_auth_type === 'passcode' || hasPasscode()
 
   useEffect(() => {
     setInput(keywords)

@@ -34,5 +34,6 @@ func Auth(c *gin.Context) {
 
 	c.JSON(http.StatusOK, gin.H{
 		"auth_scope": authScopes,
+		"auth_type":  "passcode",
 	})
 }
