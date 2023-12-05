@@ -52,16 +52,17 @@ const router = createBrowserRouter([
 ])
 
 const App: React.FC = () => {
-  const [ready, setReady] = useState(false)
+  const hasAuthScope = !!localStorage.vortexnotes_auth_scope
+  const [ready, setReady] = useState(hasAuthScope)
 
   useEffect(() => {
-    if (localStorage.vortexnotes_auth_scope) {
+    if (hasAuthScope) {
       setReady(true)
       fetchConfig()
     } else {
       fetchConfig().then(() => setReady(true))
     }
-  }, [])
+  }, [hasAuthScope])
 
   if (!ready) {
     return (

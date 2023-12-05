@@ -26,7 +26,7 @@ const Navbar: React.FC<Props> = () => {
   const onLogout = () => {
     localStorage.removeItem('vortexnotes_passcode')
     window.$http = getAxiosInstance()
-    navigate('/')
+    window.location.reload()
   }
 
   const onMenuItemClick = () => {
