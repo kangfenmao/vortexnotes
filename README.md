@@ -6,7 +6,7 @@ VortexNotes is a unique web-based note-taking software that offers a different a
 
 <a href="" target="_blank">
   <div align="center">
-    <img width="668" alt="image" src="https://github.com/kangfenmao/vortexnotes/assets/8253512/6c7e6893-3e41-4580-90a3-747cafba0638">
+    <img width="622" alt="image" src="https://github.com/kangfenmao/vortexnotes/assets/8253512/a847e8d0-c288-4ffe-b2c1-f6dfc1aeb167">
   </div>
 </a>
 
@@ -41,10 +41,7 @@ version: '3'
 services:
   vortexnotes:
     container_name: vortexnotes
-    image: vortexnotes:latest
-    environment:
-      VORTEXNOTES_PASSCODE: fcewNEjioVf8QlTHzV4U
-      VORTEXNOTES_AUTH_SCOPE: show,create,edit,delete
+    image: kangfenmao/vortexnotes:latest
     ports:
       - "7701:7701"
     volumes:
@@ -52,15 +49,21 @@ services:
       - ./app/data/vortexnotes:/data/vortexnotes
 ```
 
+Private access with passcode:
+
+```yml
+environment:
+  VORTEXNOTES_PASSCODE: 7a4019b7-4d5c-4eb5-8704-51a720e8cc4a
+  VORTEXNOTES_AUTH_SCOPE: show,create,edit,delete
+```
+
 If you only require a password to safeguard the writing actions.
 
 ```yml
 environment:
-  VORTEXNOTES_PASSCODE: fcewNEjioVf8QlTHzV4U
+  VORTEXNOTES_PASSCODE: 7a4019b7-4d5c-4eb5-8704-51a720e8cc4a
   VORTEXNOTES_AUTH_SCOPE: create,edit,delete
 ```
-
-If you want anyone to be able to view and edit. You can remove `VORTEXNOTES_PASSCODE` and `VORTEXNOTES_AUTH_SCOPE` env.
 
 ## Service Port
 
