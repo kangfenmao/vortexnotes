@@ -42,12 +42,25 @@ services:
   vortexnotes:
     container_name: vortexnotes
     image: vortexnotes:latest
+    environment:
+      VORTEXNOTES_PASSCODE: fcewNEjioVf8QlTHzV4U
+      VORTEXNOTES_AUTH_SCOPE: show,create,edit,delete
     ports:
       - "7701:7701"
     volumes:
       - ./app/data/notes:/data/notes
       - ./app/data/vortexnotes:/data/vortexnotes
 ```
+
+If you only require a password to safeguard the writing actions.
+
+```yml
+environment:
+  VORTEXNOTES_PASSCODE: fcewNEjioVf8QlTHzV4U
+  VORTEXNOTES_AUTH_SCOPE: create,edit,delete
+```
+
+If you want anyone to be able to view and edit. You can remove `VORTEXNOTES_PASSCODE` and `VORTEXNOTES_AUTH_SCOPE` env.
 
 ## Service Port
 
