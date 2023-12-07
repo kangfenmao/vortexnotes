@@ -7,7 +7,7 @@
     "start": "vite",
     "dev": "vite",
     "build": "tsc && vite build",
-    "build:go": "tsc && BUILD_GO=true vite build",
+    "build:embed": "tsc && BUILD_GO=true vite build",
     "prebuild:go": "rm -rf ../backend/web/assets && rm -rf ../backend/web/public",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
