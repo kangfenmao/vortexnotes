@@ -7,7 +7,7 @@ import (
 	"vortexnotes/backend/config"
 	"vortexnotes/backend/database"
 	"vortexnotes/backend/logger"
-	"vortexnotes/backend/storages/local"
+	"vortexnotes/backend/storages"
 	"vortexnotes/backend/types"
 )
 
@@ -18,11 +18,7 @@ func Start() {
 func StartIndex() {
 	logger.Logger.Println("Indexer start")
 
-	err := ResetIndex()
-	if err != nil {
-		logger.Logger.Fatal("BeforeStart index error:", err)
-		return
-	}
+	ResetIndex()
 
 	logger.Logger.Println("Indexer ListNotes")
 	notes := ListNotes()
@@ -36,7 +32,7 @@ func StartIndex() {
 	}
 
 	logger.Logger.Println("Indexer AddNotesToIndex")
-	err = AddNotesToIndex()
+	err := AddNotesToIndex()
 	if err != nil {
 		logger.Logger.Fatal("Add notes to index error ", err)
 		return
@@ -45,22 +41,21 @@ func StartIndex() {
 	logger.Logger.Println("Indexer done.")
 }
 
-func ResetIndex() error {
+func ResetIndex() {
 	database.DB.Where("1 = 1").Delete(&database.Note{})
 	blevesearch.ResetIndex()
-	return nil
 }
 
 func ListNotes() []string {
 	var notes []string
 
-	err := local.CreateDirectoryIfNotExists(config.LocalNotePath)
+	err := storages.CreateDirectoryIfNotExists(config.LocalNotePath)
 	if err != nil {
 		logger.Logger.Fatal("Error:", err)
 		return notes
 	}
 
-	err, notes = local.ListTextFiles(config.LocalNotePath)
+	err, notes = storages.ListTextFiles(config.LocalNotePath)
 	if err != nil {
 		logger.Logger.Println("List text files error", err)
 		return notes
@@ -150,7 +145,7 @@ func DeleteNote(id string) error {
 }
 
 func AddNoteToDatabase(path string) (note database.Note, err error) {
-	id, _ := local.CalculateFileHash(path)
+	id, _ := storages.CalculateFileHash(path)
 	note = database.Note{ID: "", Name: "", Content: ""}
 
 	fileInfo, err := os.Stat(path)
