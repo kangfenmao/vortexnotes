@@ -2,7 +2,7 @@ import axios from 'axios'
 
 export const getAxiosInstance = () => {
   const instance = axios.create({
-    baseURL: location.origin.replace('7702', '7701') + '/api/',
+    baseURL: location.origin.replace('10061', '10060') + '/api/',
     headers: {
       Authorization: localStorage.vortexnotes_passcode
         ? 'Bearer ' + localStorage.vortexnotes_passcode

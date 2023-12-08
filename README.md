@@ -43,10 +43,10 @@ services:
     container_name: vortexnotes
     image: kangfenmao/vortexnotes:latest
     ports:
-      - "7701:7701"
+      - "10060:10060"
     volumes:
-      - ./app/data/notes:/data/notes
-      - ./app/data/vortexnotes:/data/vortexnotes
+      - ./app/data/notes:/app/data/notes
+      - ./app/data/vortexnotes:/app/data/vortexnotes
 ```
 
 Private access with passcode:
@@ -64,13 +64,6 @@ environment:
   VORTEXNOTES_PASSCODE: 7a4019b7-4d5c-4eb5-8704-51a720e8cc4a
   VORTEXNOTES_AUTH_SCOPE: create,edit,delete
 ```
-
-## Service Port
-
-| Service | Port | Public |
-|---------|------|--------|
-| API     | 7701 | true   |
-| Web     | 7701 | true   |
 
 ## Contributing
 

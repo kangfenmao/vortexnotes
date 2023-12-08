@@ -8,7 +8,7 @@ services:
       VORTEXNOTES_PASSCODE: 123456
       VORTEXNOTES_AUTH_SCOPE: create,edit,delete
     ports:
-      - "0.0.0.0:7701:7701"
+      - "0.0.0.0:10060:10060"
     volumes:
       - ./app/data/notes:/data/notes
       - ./app/data/vortexnotes:/data/vortexnotes

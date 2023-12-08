@@ -31,5 +31,5 @@ RUN go build -tags netgo -o vortexnotes
 
 FROM alpine:latest
 COPY --from=builder /app/vortexnotes /app/vortexnotes
-EXPOSE 7701
+EXPOSE 10060
 CMD ["/app/vortexnotes"]
