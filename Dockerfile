@@ -22,9 +22,9 @@ COPY . .
 COPY --from=web /app/dist /app/backend/web
 
 # env
-ENV GOPROXY=https://goproxy.cn,direct
 ENV GOOS=linux
 ENV CGO_ENABLED=0
+ENV GIN_MODE=release
 
 # build
 RUN go build -tags netgo -o vortexnotes
