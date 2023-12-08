@@ -6,6 +6,7 @@ import (
 	"os"
 	"path/filepath"
 	"strings"
+	"vortexnotes/backend/config"
 	"vortexnotes/backend/logger"
 )
 
@@ -58,6 +59,11 @@ func ListTextFiles(dirPath string) (error, []string) {
 	}
 
 	return nil, textFiles
+}
+
+func Init() {
+	_ = CreateDirectoryIfNotExists(config.LocalNotePath)
+	_ = CreateDirectoryIfNotExists(config.AppDataPath)
 }
 
 func CreateDirectoryIfNotExists(dirPath string) error {

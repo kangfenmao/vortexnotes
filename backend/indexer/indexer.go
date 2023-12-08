@@ -65,6 +65,7 @@ func ListNotes() []string {
 }
 
 func NoteExist(path string) bool {
+	logger.Logger.Println("NoteExist", path)
 	fileInfo, err := os.Stat(path)
 	if err != nil {
 		return false
