@@ -114,7 +114,6 @@ const NewNoteScreen: React.FC = () => {
           onChange={v => setContent(v!)}
           tabIndex={2}
           placeholder="Note..."
-          autoFocus
           ref={contentInputRef}
           height={window.innerHeight - 180}
           preview={window.innerWidth < 500 ? 'edit' : 'live'}

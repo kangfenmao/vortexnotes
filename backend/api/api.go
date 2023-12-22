@@ -22,6 +22,7 @@ func Start() {
 	server.GET("/assets/*filepath", website.ServeAssets)
 	server.GET("/public/*filepath", website.ServePublic)
 	server.Static("/notes/attachments", config.LocalNotePath+"attachments")
+	server.Static("/notes/assets", config.LocalNotePath+"assets")
 	server.NoRoute(website.NoRoot)
 
 	api := server.Group("/api")
