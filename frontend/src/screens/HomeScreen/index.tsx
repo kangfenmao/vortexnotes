@@ -1,46 +1,44 @@
-import React, { useState } from 'react'
-import RecentlyNotes from '@/components/RecentlyNotes.tsx'
-import { useNavigate } from 'react-router-dom'
-import { onSearch as search } from '@/utils'
+import React, { useEffect, useState } from 'react'
+import { NoteType } from '@/types'
+import useRequest from '@/hooks/useRequest.ts'
+import useDebouncedValue from '@/hooks/useDebouncedValue.ts'
+import LoadingView from '@/components/LoadingView.tsx'
+import { isEmpty } from 'lodash-es'
+import GroupedNotes from './GroupedNotes.tsx'
+import EmptyView from '@/components/EmptyView.tsx'
+
+let cachedNotes: NoteType[] = []
 
 const HomeScreen: React.FC = () => {
-  const [keywords, setKeywords] = useState('')
-  const navigate = useNavigate()
+  const [notes, setNotes] = useState<NoteType[]>(cachedNotes)
+  const page = 1
+  const limit = 12
+  const { data, isLoading } = useRequest<NoteType[]>({
+    method: 'GET',
+    url: `notes?page=${page}&limit=${limit}&sort=updated_at:desc`
+  })
 
-  const onSearch = search.bind(this, keywords, navigate)
+  const loading = useDebouncedValue(false, isLoading, 1000)
+
+  useEffect(() => {
+    data && setNotes(data)
+  }, [data])
+
+  useEffect(() => {
+    return () => {
+      if (notes.length) {
+        cachedNotes = notes
+      }
+    }
+  }, [notes])
 
   return (
-    <main className="flex flex-1">
-      <div className="flex flex-col mt-28 sm:m-auto items-center w-full px-5 transition-all duration-150 max-w-xl">
-        <div className="flex flex-col items-center">
-          <img src="/public/icon-200x200.png" className="w-28 cursor-pointer" alt="" />
-          <span
-            style={{ fontFamily: 'Major Mono Display' }}
-            className="text-sm mb-5 mt-1 select-none">
-            Vortexnotes
-          </span>
-        </div>
-        <section className="relative mb-10 w-full border border-black border-opacity-20 dark:border-white dark:border-opacity-30 rounded-md">
-          <input
-            type="text"
-            name="keywords"
-            value={keywords}
-            onChange={e => setKeywords(e.target.value)}
-            placeholder="Search Notes"
-            className="px-4 py-3 w-full outline-none bg-white dark:bg-zinc-800 rounded-md"
-            onKeyDown={e => e.key === 'Enter' && onSearch()}
-            autoComplete="off"
-            autoFocus
-            required
-          />
-          <button
-            type="button"
-            onClick={onSearch}
-            className="absolute top-0 bottom-0 right-0 w-12 flex flex-row justify-center items-center cursor-pointer">
-            <i className="iconfont icon-search text-2xl opacity-50 hover:opacity-90 transition-opacity"></i>
-          </button>
-        </section>
-        <RecentlyNotes />
+    <main className="w-full">
+      <div className="container mx-auto px-5 mt-20 max-w-lg sm:max-w-6xl">
+        {loading && isEmpty(notes) && <LoadingView />}
+        {!loading && isEmpty(notes) && <EmptyView title="No notes" />}
+        {!loading && !isEmpty(notes) && <GroupedNotes data={notes} />}
+        <footer className="h-10"></footer>
       </div>
     </main>
   )

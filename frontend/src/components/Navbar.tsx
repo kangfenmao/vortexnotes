@@ -1,4 +1,4 @@
-import { Link, useLocation, useNavigate, useSearchParams } from 'react-router-dom'
+import { Link, useNavigate, useSearchParams } from 'react-router-dom'
 import React, { useEffect, useState } from 'react'
 import useTheme from '@/hooks/useTheme.ts'
 import { hasPasscode, hasPermission, onSearch as search } from '@/utils'
@@ -7,12 +7,10 @@ import { getAxiosInstance } from '@/config/http.ts'
 interface Props {}
 
 const Navbar: React.FC<Props> = () => {
-  const location = useLocation()
   const navigate = useNavigate()
   const [searchParams] = useSearchParams()
   const keywords = searchParams.get('keywords') || ''
   const [input, setInput] = useState(keywords)
-  const isHome = location.pathname === '/'
   const [theme, setTheme] = useTheme()
   const [showMenu, setShowMenu] = useState(true)
 
@@ -34,53 +32,46 @@ const Navbar: React.FC<Props> = () => {
     setTimeout(() => setShowMenu(true), 500)
   }
 
-  const navbarBg = isHome ? '' : 'bg-white dark:bg-black dark:bg-transparent-20'
-  const navbarBorder = isHome
-    ? 'border-b border-transparent'
-    : 'border-b border-gray-200 dark:border-white dark:border-opacity-10'
+  const navbarBg = 'bg-white dark:bg-black dark:bg-transparent-20'
+  const navbarBorder = 'border-b border-gray-200 dark:border-white dark:border-opacity-10'
 
   return (
     <div
       className={`flex flex-row h-16 items-center fixed top-0 left-0 right-0 ${navbarBorder} ${navbarBg}`}
       style={{
         zIndex: 100,
-        backgroundColor: isHome ? 'transparent' : 'var(--theme-navbar-color)'
+        backgroundColor: 'var(--theme-navbar-color)'
       }}>
       <div className="flex flex-row items-center justify-between m-auto w-full px-5 ">
-        {isHome && <div className="flex-1"></div>}
-        {!isHome && (
-          <Link to="/" className="flex flex-row items-center">
-            <img src="/public/icon-200x200.png" className="w-10 mr-2 hover:animate-spin" alt="" />
-            <span
-              style={{ fontFamily: 'Major Mono Display' }}
-              className="text-xl text-black dark:text-white">
-              VoRteX
-            </span>
-          </Link>
-        )}
-        {!isHome && (
-          <div className="flex-1 hidden sm:flex mx-8">
-            <section className="relative w-full rounded-full border border-black border-opacity-10 dark:border-white dark:border-opacity-20">
-              <input
-                type="text"
-                name="keywords"
-                value={input}
-                onChange={e => setInput(e.target.value)}
-                placeholder="Search"
-                className="w-full px-4 py-2 outline-none rounded-md bg-transparent"
-                onKeyDown={e => e.key === 'Enter' && onSearch()}
-                autoComplete="off"
-                required
-              />
-              <button
-                type="button"
-                onClick={onSearch}
-                className="absolute top-0 bottom-0 right-0 w-12 flex flex-row justify-center items-center cursor-pointer opacity-70">
-                <i className="iconfont icon-search opacity-70 text-black dark:text-white text-1xl mr-1"></i>
-              </button>
-            </section>
-          </div>
-        )}
+        <Link to="/" className="flex flex-row items-center">
+          <img src="/public/icon-200x200.png" className="w-10 mr-2 hover:animate-spin" alt="" />
+          <span
+            style={{ fontFamily: 'Major Mono Display' }}
+            className="text-xl text-black dark:text-white">
+            VoRteX
+          </span>
+        </Link>
+        <div className="flex-1 hidden sm:flex mx-8">
+          <section className="relative w-full rounded-full border border-black border-opacity-10 dark:border-white dark:border-opacity-20">
+            <input
+              type="text"
+              name="keywords"
+              value={input}
+              onChange={e => setInput(e.target.value)}
+              placeholder="Search"
+              className="w-full px-4 py-2 outline-none rounded-md bg-transparent"
+              onKeyDown={e => e.key === 'Enter' && onSearch()}
+              autoComplete="off"
+              required
+            />
+            <button
+              type="button"
+              onClick={onSearch}
+              className="absolute top-0 bottom-0 right-0 w-12 flex flex-row justify-center items-center cursor-pointer opacity-70">
+              <i className="iconfont icon-search opacity-70 text-black dark:text-white text-1xl mr-1"></i>
+            </button>
+          </section>
+        </div>
         <div className="flex flex-row items-center">
           <label className="swap swap-rotate opacity-60 hover:opacity-80 transition-opacity">
             {/* this hidden checkbox controls the state */}
