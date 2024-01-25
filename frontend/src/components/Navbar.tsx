@@ -47,11 +47,11 @@ const Navbar: React.FC<Props> = () => {
           <img src="/public/icon-200x200.png" className="w-10 mr-2 hover:animate-spin" alt="" />
           <span
             style={{ fontFamily: 'Major Mono Display' }}
-            className="text-xl text-black dark:text-white">
+            className="text-xl text-black dark:text-white  hidden sm:flex">
             VoRteX
           </span>
         </Link>
-        <div className="flex-1 hidden sm:flex mx-8">
+        <div className="flex flex-1 mx-4 sm:mx-8">
           <section className="relative w-full rounded-full border border-black border-opacity-10 dark:border-white dark:border-opacity-20">
             <input
               type="text"
@@ -110,7 +110,9 @@ const Navbar: React.FC<Props> = () => {
               tabIndex={0}
               className="flex flex-row items-center ml-5 opacity-60 hover:opacity-80 transition-opacity">
               <i className="iconfont icon-menu text-black dark:text-white text-2xl"></i>
-              <span className="text-black dark:text-white ml-1" style={{ marginTop: '-2px' }}>
+              <span
+                className="text-black dark:text-white ml-1 hidden sm:flex"
+                style={{ marginTop: '-2px' }}>
                 Menu
               </span>
             </div>
