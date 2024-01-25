@@ -18,7 +18,7 @@ const GroupedNotes: React.FC<Props> = ({ data }) => {
     <div>
       {Object.entries(groupedData).map(([letter, items]) => (
         <div key={letter} className="mb-6">
-          <h2 className="text-3xl font-bold opacity-30 mt-2">{letter}</h2>
+          <h2 className="text-2xl md:text-3xl font-bold opacity-30 mt-2">{letter}</h2>
           <hr className="my-2 border-b-1 border-black border-opacity-10 dark:border-white dark:border-opacity-10" />
           <ul>
             {items.map(note => (
